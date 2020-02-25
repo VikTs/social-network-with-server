@@ -77,6 +77,10 @@ export const authAPI = {
             { email, password, name, surname, age, city, facebook, youtube })
             .then(result => { localStorage.setItem('userData', result.data.token); 
             return result })
+    },
+    deletePage(userId) {
+        return instance.post(`auth/deletePage`, {userId})
+        .then((result) => { localStorage.removeItem('userData'); return result })
     }
 }
 

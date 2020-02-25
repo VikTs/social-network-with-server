@@ -4,6 +4,7 @@ import { stopSubmit } from "redux-form";
 const SET_USER_DATA = 'social-network/auth/SET_USER_DATA';
 const GET_CAPTCHA_URL_SUCCESS = 'social-network/auth/GET_CAPTCHA_URL_SUCCESS';
 const REGISTER_USER = 'social-network/auth/REGISTER_USER';
+const DELETE_USER_PAGE = 'social-network/auth/DELETE_USER_PAGE'
 
 let initialState = {
     userId: null,
@@ -18,10 +19,10 @@ const authReducer = (state = initialState, action) => {
         case SET_USER_DATA:
         case GET_CAPTCHA_URL_SUCCESS:
         case REGISTER_USER:
-            return {
-                ...state,
-                ...action.payload
-            }
+            return { ...state, ...action.payload }
+
+        case DELETE_USER_PAGE:
+            return { ...state, userId: null, email: null, login: null, isAuth: false }
 
         default: return state;
     }
@@ -38,6 +39,12 @@ export const registerUser = (email, password, name, surname, age, city, facebook
     return {
         type: REGISTER_USER,
         payload: { email, password, name, surname, age, city, facebook, youtube }
+    }
+}
+
+export const deleteUserPage = () => {
+    return {
+        type: DELETE_USER_PAGE
     }
 }
 
@@ -97,6 +104,13 @@ export const registration = (email, password, name, surname, age, city, facebook
         dispatch(registerUser(email, password, name, surname, age, city, facebook, youtube))
         dispatch(getAuthUserData())
     }
+}
+
+export const deletePage = (userId) => async (dispatch) => {
+    let response = await authAPI.deletePage(userId)
+    //if (response.data.resultCode === 0) {
+    dispatch(deleteUserPage())
+    //}
 }
 
 export const getCaptchaUrl = () => async (dispatch) => {

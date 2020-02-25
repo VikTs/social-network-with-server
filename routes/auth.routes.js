@@ -5,6 +5,7 @@ const User = require('../models/UserModel'); //подключаем модель
 const bcrypt = require('bcryptjs'); // хэширует и сравнивает пароли
 const { check, validationResult } = require('express-validator'); //проверка правильности ввода на сервере
 var jwtDecode = require('jwt-decode');
+var ObjectId = require('mongodb').ObjectId;
 
 //token используется для передачи данных для аутентификации в клиент-серверных приложениях. 
 //Токены создаются сервером, подписываются секретным ключом и передаются клиенту, 
@@ -52,7 +53,7 @@ router.post(
 
             await user.save() //ждём, пока пользователь сохраниться
 
-            const token = createToken(user.id, user.email, user.name)            
+            const token = createToken(user.id, user.email, user.name)
             res.json({ token, resultCode: 0 })
 
             res.status(201).json({ message: 'User created' }) //когда создали пользователя - сообщаем об этом fronend-y
@@ -66,8 +67,6 @@ router.post(
     '/me',
     async (req, res) => {
         try {
-
-            console.log('req.body',req.body)
 
             if (req.body.userData) {
                 let decoded = jwtDecode(req.body.userData);
@@ -138,6 +137,27 @@ router.delete(
     }
 )
 
+// api/auth/login (logout)
+router.post(
+    '/deletePage',
+    async (req, res) => {
+        try {
+
+            const query = { _id: new ObjectId(req.body.userId) };
+
+            User.deleteOne(query)
+                .then(result => console.log(`Deleted ${result.deletedCount} user.`))
+                .catch(err => console.error(`Delete failed with error: ${err}`))
+
+            res.json({ resultCode: 0 })
+
+
+        } catch (error) {
+            res.status(500).json({ message: 'Something wrong' })
+        }
+    }
+)
+
 
 const createToken = (id, email, login) => {
     return jwt.sign( //создаем token
@@ -145,9 +165,9 @@ const createToken = (id, email, login) => {
             userID: id,
             userEmail: email,
             userLogin: login
-        }, 
-        config.get('jwtSecret'), 
-        { expiresIn: '1h' } 
+        },
+        config.get('jwtSecret'),
+        { expiresIn: '1h' }
     )
 }
 
