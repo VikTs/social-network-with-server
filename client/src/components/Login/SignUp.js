@@ -9,8 +9,8 @@ let SignUpForm = ({ handleSubmit, error }) => {
     return (
         <form onSubmit={handleSubmit}>
             {CreateField('Email', 'email', [required], Input)}
-            {CreateField('Password', 'password', [], Input, { type: "password" })}
-            {CreateField('Name', 'name', [], Input)}
+            {CreateField('Password', 'password', [required], Input, { type: "password" })}
+            {CreateField('Name', 'name', [required], Input)}
             {CreateField('Surname', 'surname', [], Input)}
             {CreateField('Age', 'age', [], Input, { type: "number" })}
             {CreateField('City', 'city', [], Input)}

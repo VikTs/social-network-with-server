@@ -51,7 +51,7 @@ export const getCaptchaUrlSuccess = (captchaUrl) => {
 //THUNK - внутренняя ф-я, которая возвращает внешнюю ф-ю
 export const getAuthUserData = () => async (dispatch) => {
     let response = await authAPI.me()
-    //console.log(response.data.resultCode);
+    // console.log('response.data.resultCode',response.data.resultCode);
     if (response.data.resultCode === 0) {
         let { id, login, email } = response.data;
         dispatch(setAuthUserData(id, email, login, true))
@@ -95,6 +95,7 @@ export const registration = (email, password, name, surname, age, city, facebook
     let response = await authAPI.registration(email, password, name, surname, age, city, facebook, youtube)
     if (response.data.resultCode === 0) {
         dispatch(registerUser(email, password, name, surname, age, city, facebook, youtube))
+        dispatch(getAuthUserData())
     }
 }
 

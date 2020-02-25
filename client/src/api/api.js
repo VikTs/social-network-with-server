@@ -57,6 +57,7 @@ export const authAPI = {
         //get/delete - чтобы отправить данные - .get(`auth/me?var=10`), 
         //GET/DELETE - БЕЗ ЗАПЯТОЙ, через ?
         let userData = localStorage.getItem('userData')
+        //console.log('localStorage.getItem(userData)', userData);
         return instance.post(`auth/me`, { userData })
     },
     // в auth/login есть post и delete
@@ -69,13 +70,13 @@ export const authAPI = {
     },
     logout() {
         return instance.delete(`auth/login`) //отправляем delete запрос на тот же endpoint
-            .then((result) => {
-                localStorage.removeItem('userData'); return result
-            })
+            .then((result) => { localStorage.removeItem('userData'); return result })
     },
     registration(email, password, name, surname, age, city, facebook, youtube) {
         return instance.post(`auth/register`,
             { email, password, name, surname, age, city, facebook, youtube })
+            .then(result => { localStorage.setItem('userData', result.data.token); 
+            return result })
     }
 }
 

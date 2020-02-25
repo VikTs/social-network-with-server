@@ -5,7 +5,7 @@ const {Schema, model, Types} = require('mongoose') //работа с mongoose, i
 const schema = new Schema({ //создаем схему
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    name: {type: String},
+    name: {type: String, required: true},
     surname: {type: String},
     age: {type: Number},
     city: {type: String},

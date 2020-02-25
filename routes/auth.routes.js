@@ -51,7 +51,10 @@ router.post(
             }) //создаем нового пользователя (с помощью модели)
 
             await user.save() //ждём, пока пользователь сохраниться
-            res.json({ resultCode: 0 })
+
+            const token = createToken(user.id, user.email, user.name)            
+            res.json({ token, resultCode: 0 })
+
             res.status(201).json({ message: 'User created' }) //когда создали пользователя - сообщаем об этом fronend-y
         } catch (error) {
             res.status(500).json({ message: 'Something wrong' }) //500-ошибка сервера, json кидает сообщение
@@ -63,6 +66,8 @@ router.post(
     '/me',
     async (req, res) => {
         try {
+
+            console.log('req.body',req.body)
 
             if (req.body.userData) {
                 let decoded = jwtDecode(req.body.userData);
@@ -112,15 +117,7 @@ router.post(
                 return res.status(400).json({ message: 'Uncorrect password' })
             }
 
-            const token = jwt.sign( //создаем token
-                {
-                    userID: user.id,
-                    userEmail: user.email,
-                    userLogin: user.name
-                }, //передаем данные, которые будут зашифрованы в токене (можно ещё добавить имя, мейл)
-                config.get('jwtSecret'), //секретный ключ
-                { expiresIn: '1h' } //через сколько данный token закончит существование
-            )
+            const token = createToken(user.id, user.email, user.name)
             res.json({ token, resultCode: 0 })
 
         } catch (error) {
@@ -140,5 +137,18 @@ router.delete(
         }
     }
 )
+
+
+const createToken = (id, email, login) => {
+    return jwt.sign( //создаем token
+        {
+            userID: id,
+            userEmail: email,
+            userLogin: login
+        }, 
+        config.get('jwtSecret'), 
+        { expiresIn: '1h' } 
+    )
+}
 
 module.exports = router // export router from model
