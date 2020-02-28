@@ -23,11 +23,6 @@ const UsersContainer = React.lazy(() => import('./components/Users/UsersContaine
 const LoginOrRegistrationPage = React.lazy(() => import('./components/Login/LoginOrRegistration'));
 //const LoginPage = React.lazy(() => import('./components/Login/Login'));
 
-
-
-
-
-
 class App extends React.Component {
 
   componentDidMount() {

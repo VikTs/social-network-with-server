@@ -10,6 +10,7 @@ const app = express()
 
 app.use(express.json({ extended: true }))
 app.use('/api/auth', require('./routes/auth.routes')) // import router from auth.routes
+app.use('/api/profile', require('./routes/profile.routes')) // import router from auth.routes
 
 const PORT = config.get('port') || 5000 //порт сервера
 
@@ -29,7 +30,7 @@ async function start() {
         app.listen(PORT, () => { console.log(`App started on port ${PORT}`) }) //load server
 
     } catch (e) { // if no connect
-        console.log('Server error')
+        console.log('Server error. Mongo is not connected')
         process.exit()
     }
 

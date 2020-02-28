@@ -26,8 +26,8 @@ router.post(
 
     async (req, res) => { //ф-я       
         try {
-            const errors = validationResult(req); // экспресс валидирует входящие поля
-
+            const errors = validationResult(req.body.formData); // экспресс валидирует входящие поля
+            
             if (!errors.isEmpty()) { // если есть ошибки
                 return res.status(400).json({ // возвращаем на фронтэнд, 400 - ошибка
                     errors: errors.array(), //передаем errors м приводим его к массиву
@@ -35,7 +35,7 @@ router.post(
                 })
             }
 
-            const { email, password, name, surname, age, city, facebook, youtube } = req.body // получаем логин и пароль из запроса
+            const { email, password, name, surname, age, city, facebook, youtube } = {...req.body.formData} // получаем логин и пароль из запроса
 
             const candidate = await User.findOne({ email: email }) //поиск, зарегистрирован ли пользователь
             if (candidate) { // если уже существует
@@ -48,7 +48,7 @@ router.post(
             const user = new User({
                 email, password: hashedPassword,
                 name, surname, age, city,
-                facebook, youtube
+                facebook, youtube, status: 'Hi, I am new user'
             }) //создаем нового пользователя (с помощью модели)
 
             await user.save() //ждём, пока пользователь сохраниться
@@ -138,17 +138,17 @@ router.delete(
 )
 
 // api/auth/login (logout)
-router.post(
-    '/deletePage',
+router.delete(
+    '/deletePage/:id',
     async (req, res) => {
         try {
 
-            const query = { _id: new ObjectId(req.body.userId) };
+            console.log(req.params.id)
 
+            const query = { _id: new ObjectId(req.params.id) };
             User.deleteOne(query)
                 .then(result => console.log(`Deleted ${result.deletedCount} user.`))
                 .catch(err => console.error(`Delete failed with error: ${err}`))
-
             res.json({ resultCode: 0 })
 
 

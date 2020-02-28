@@ -10,11 +10,7 @@ const Login = (props) => {
         if (props.loginType === "signIn") {
             props.login(formData.email, formData.password, formData.rememberMe, formData.captcha)
         } else if (props.loginType === "signUp") {
-            props.registration(
-                formData.email, formData.password,
-                formData.name, formData.surname,
-                formData.age, formData.city,
-                formData.facebook, formData.youtube)
+            props.registration(formData)
         }
     }
     if (props.isAuth) {

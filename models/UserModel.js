@@ -11,7 +11,8 @@ const schema = new Schema({ //создаем схему
     city: {type: String},
     country: {type: String},
     facebook: {type: String},
-    youtube: {type: String}
+    youtube: {type: String},
+    status: {type: String}
 
     //links: [{type:Types.ObjectId, ref:'Link'}] //Link - модель,к которой мы привязываемся
 })

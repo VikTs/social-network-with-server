@@ -35,10 +35,10 @@ export const setAuthUserData = (userId, email, login, isAuth) => {
     }
 }
 
-export const registerUser = (email, password, name, surname, age, city, facebook, youtube) => {
+export const registerUser = (formData) => {
     return {
         type: REGISTER_USER,
-        payload: { email, password, name, surname, age, city, facebook, youtube }
+        payload: { ...formData }
     }
 }
 
@@ -98,10 +98,10 @@ export const logout = () => async (dispatch) => {
     }
 }
 
-export const registration = (email, password, name, surname, age, city, facebook, youtube) => async (dispatch) => {
-    let response = await authAPI.registration(email, password, name, surname, age, city, facebook, youtube)
+export const registration = (formData) => async (dispatch) => {
+    let response = await authAPI.registration(formData)
     if (response.data.resultCode === 0) {
-        dispatch(registerUser(email, password, name, surname, age, city, facebook, youtube))
+        dispatch(registerUser(formData))
         dispatch(getAuthUserData())
     }
 }
