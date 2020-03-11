@@ -11,14 +11,18 @@ router.get(
     async (req, res) => {
         try {
             let searchParams = new URLSearchParams(req._parsedOriginalUrl.search);
-            console.log(searchParams.get('page'));
-            console.log(searchParams.get('count'));
+            const currentPage = searchParams.get('page');
+            const pageSize = searchParams.get('count');
 
-            const users = await User.find({})
-            //const currentUsers = users.map()
-            //console.log(users);
+            const users = await User.find({});
+            let currentUsers = [];
 
-            res.json({"items": users, "totalCount": searchParams.get('count'), "error": null});
+            users.forEach((user, index)=>{
+                if(index>=((currentPage-1)*pageSize)&&index<pageSize*currentPage){
+                    currentUsers.push(user);}
+            });
+
+            res.json({"items": currentUsers, "totalCount": users.length, "error": null});
 
             res.status(200).json({ message: 'Users were loaded' })
         } catch (error) {

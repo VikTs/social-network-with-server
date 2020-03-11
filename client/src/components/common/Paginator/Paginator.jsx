@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import styles from "./paginator.module.css";
 import cn from "classnames";
 
-let Paginator = ({totalItemsCount, pageSize, currentPage, onPageChanged, portionSize=10}) => {
-    let pagesCount = Math.ceil(totalItemsCount / pageSize);
+let Paginator = ({totalItemsCount, pageSize, currentPage, onPageChanged, portionSize=3}) => {
+    
+    // portionSize - сколько цифр отображается в пагинаторе (для prev/next)
+    // totalItemsCount - к-во пользователей
+    // pagesCount - к-во страниц (выслитывается: пользователи/размер_страницы)
+    // pageSize - размер страницы (к-во пользователей, отображаемых на одной странице)
 
+    let pagesCount = Math.ceil(totalItemsCount / pageSize);
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
