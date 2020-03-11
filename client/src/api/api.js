@@ -8,8 +8,14 @@ const instance = axios.create({
     }
 });
 
+const getDataFromLocalStorage = () => {
+    if (localStorage.getItem('userData')) {
+        return localStorage.getItem('userData')
+    }
+}
+
 export const usersAPI = {
-    getUsers(currentPage = 1, pageSize = 10) {
+    getUsers(currentPage = 1, pageSize = 2) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`,
             { withCredentials: true })
             .then(response => { return response.data });
@@ -35,13 +41,15 @@ export const profileAPI = {
         return instance.get(`profile/status/${userId}`);
     },
     updateStatus(status) {
-        return instance.put(`profile/status`, { status: status });
+        const userData = getDataFromLocalStorage();
+        return instance.put(`profile/status`, { status, userData });
         //в put вторым свойством передаем json-объект, его тип смотрим в документации
     },
     savePhoto(photoFile) {
+        //console.log(photoFile)
         const formData = new FormData();
         formData.append("image", photoFile) //image - из документации
-
+        //console.log(formData)
         return instance.put(`profile/photo`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -56,10 +64,7 @@ export const authAPI = {
     me() {
         //get/delete - чтобы отправить данные - .get(`auth/me?var=10`), 
         //GET/DELETE - БЕЗ ЗАПЯТОЙ, через ?
-        let userData;
-        if (localStorage.getItem('userData')) {
-            userData = localStorage.getItem('userData')
-        }
+        const userData = getDataFromLocalStorage();
         return instance.post(`auth/me`, { userData })
     },
     // в auth/login есть post и delete

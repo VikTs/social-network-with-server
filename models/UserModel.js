@@ -10,9 +10,18 @@ const schema = new Schema({ //создаем схему
     age: {type: Number},
     city: {type: String},
     country: {type: String},
-    facebook: {type: String},
-    youtube: {type: String},
-    status: {type: String}
+    contacts:{
+        facebook: {type: String},
+        youtube: {type: String}
+    },
+    photos: {
+        small: {type: String},
+        large: {type: String}
+    },
+    status: {type: String},
+    aboutMe: {type: String},
+    messages: [{ id: Number, message: String }],
+    posts: [{ id: Number, name: String, likesCount: Number }]
 
     //links: [{type:Types.ObjectId, ref:'Link'}] //Link - модель,к которой мы привязываемся
 })

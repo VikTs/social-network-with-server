@@ -27,7 +27,7 @@ router.post(
     async (req, res) => { //ф-я       
         try {
             const errors = validationResult(req.body.formData); // экспресс валидирует входящие поля
-            
+
             if (!errors.isEmpty()) { // если есть ошибки
                 return res.status(400).json({ // возвращаем на фронтэнд, 400 - ошибка
                     errors: errors.array(), //передаем errors м приводим его к массиву
@@ -35,7 +35,7 @@ router.post(
                 })
             }
 
-            const { email, password, name, surname, age, city, facebook, youtube } = {...req.body.formData} // получаем логин и пароль из запроса
+            const { email, password, name, surname, age, city, facebook, youtube } = { ...req.body.formData } // получаем логин и пароль из запроса
 
             const candidate = await User.findOne({ email: email }) //поиск, зарегистрирован ли пользователь
             if (candidate) { // если уже существует
@@ -48,8 +48,10 @@ router.post(
             const user = new User({
                 email, password: hashedPassword,
                 name, surname, age, city,
-                facebook, youtube, status: 'Hi, I am new user'
-            }) //создаем нового пользователя (с помощью модели)
+                contacts: { facebook, youtube },
+                status: 'Here must be my status', aboutMe: 'Hi, I am new user',
+                photos: { small: null, large: '' }
+            }) 
 
             await user.save() //ждём, пока пользователь сохраниться
 

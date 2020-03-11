@@ -15,7 +15,7 @@ const ProfileStatusWithHooks = (props) => {
     //useEffect - ф-я, которая вызывается после отрисовки (изменение state, первая отрисовка)
     //Если добавить [], то вызовется только во время первой отрисовки
     //[] - компонент ни от чьего состояния не зависит, поэтому отрисовывается всего один раз
-    useEffect(()=>{
+    useEffect(() => {
         setStatus(props.status)
     }, [props.status] //если меняется props.status, то перерисовываем
     )
@@ -24,7 +24,7 @@ const ProfileStatusWithHooks = (props) => {
         setEditMode(true)
     }
 
-    const deactivateEditMode = () => { 
+    const deactivateEditMode = () => {
         setEditMode(false)
         props.updateUserStatus(status)
     }
@@ -37,16 +37,18 @@ const ProfileStatusWithHooks = (props) => {
         <div>
             {!editMode &&
                 <div>
-                <span onDoubleClick={activateEditMode}> {props.status || "-------"} </span>
-            </div>}
+                    <span onDoubleClick={activateEditMode}>
+                        {'Status: ' + (props.status || "-------")}
+                    </span>
+                </div>}
 
             {editMode &&
                 <div>
                     <input
                         onChange={onStatusChange}
                         autoFocus={true}
-                    onBlur={deactivateEditMode}
-                    value={status} 
+                        onBlur={deactivateEditMode}
+                        value={status}
                     />
                 </div>
             }
