@@ -21,11 +21,11 @@ export const usersAPI = {
             .then(response => { return response.data });
     },
     follow(userId) {
-        return instance.post(`follow/${userId.id}`)
+        return instance.post(`users/follow/${userId}`)
 
     },
     unfollow(userId) {
-        return instance.delete(`follow/${userId.id}`)
+        return instance.delete(`users/follow/${userId}`)
     },
     getProfile(userId) {
         console.warn('Obsolete method. Use profileAPI')

@@ -13,20 +13,6 @@ let User = ({ user, followingInProgress, unfollow, follow, ...props }) => {
                 </NavLink>
             </div>
             <div>
-                {/* {user.followed
-                            ? <button disabled={followingInProgress.some(id=>id==user._id)} 
-                            onClick={() => {
-
-                                // props.toggleFollowingProgress(true, user._id)
-                                // this.props.toggleIsFetching(false);
-                                // this.props.setUsers(response.data.items);
-                                // this.props.setTotalUsersCount(response.data.totalCount)
-                                    
-                                unfollow(user._id)
-                            }}
-                            >Unfollow</button>
-                            : <button onClick={() => {follow(user._id)}}>Follow</button>} */}
-
 
                 {user.followed
                     ? <button disabled={followingInProgress

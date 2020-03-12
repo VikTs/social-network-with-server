@@ -25,7 +25,7 @@ const usersReducer = (state = initialState, action) => {
                 ...state,
                 //users: updateObjectsInArray(state.users, action.userId, 'id', {followed: true} )
                 users: state.users.map(u => {
-                    if (u.id === action.userId) {
+                    if (u._id === action.userId) {
                         return { ...u, followed: true }
                     }
                     return u;
@@ -35,7 +35,7 @@ const usersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 users: state.users.map(u => {
-                    if (u.id === action.userId) {
+                    if (u._id === action.userId) {
                         return { ...u, followed: false }
                     }
                     return u;
@@ -137,7 +137,7 @@ export const getUsers = (currentPage, pageSize) => {
 const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {
 
     dispatch(toggleFollowingProgress(true, userId))
-    let response = apiMethod(userId)
+    let response = await apiMethod(userId)
     if (response.data.resultCode == 0) {
         dispatch(actionCreator(userId));
     }
