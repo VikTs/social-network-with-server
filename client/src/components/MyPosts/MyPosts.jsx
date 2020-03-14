@@ -8,12 +8,18 @@ import { Textarea } from '../common/FormsControls/FormsControls';
 const maxLength10 = maxLengthCreator(10)
 
 const AddNewPostForm = (props) => {
+
+  // let onAddPost = (value) => { /////copyPaste!
+  //   props.addPost('values.newPostText');
+  // }
+
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
         <Field
           component={Textarea}
           name='newPostText'
+          //onKeyPress={(e) => {if(e.key === 'Enter'){this.onSubmit();}}}
           validate={[required, maxLength10]}
           placeholder='Post message' />
       </div>
@@ -27,15 +33,20 @@ const AddNewPostRedux = reduxForm({ form: 'ProfileAddNewPostForm' })(AddNewPostF
 
 //React.memo - hoc, который проверяет, стоит ли перерисовывать компонент
 const MyPosts = React.memo((props) => {
-  console.log('render')
-  let postsElements = props.posts.map(p => (<Post name={p.name} likesCount={p.likesCount} />));
+
+  let postsElements = props.posts.map(p => (
+    <Post
+      key={p._id} postId={p._id} name={p.name} isOwner={props.isOwner}
+      likesCount={p.likesCount} deletePost={props.deletePost} setPosts={props.deletePost}
+      myId={props.myId} userId={props.currentPageUserId} likePost={props.likePost}/>
+  ));
   let onAddPost = (values) => {
     props.addPost(values.newPostText);
   }
   return (
     <div className={classes.postsBlock}>
-      <h3>My posts</h3>
-      <AddNewPostRedux onSubmit={onAddPost} />
+      <h3>My posts: </h3>
+      {props.isOwner && <AddNewPostRedux onSubmit={onAddPost} isOwner={props.isOwner} />}
       <div className={classes.posts}>
         {postsElements}
       </div>

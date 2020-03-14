@@ -21,7 +21,8 @@ const schema = new Schema({ //создаем схему
     status: {type: String},
     aboutMe: {type: String},
     messages: [{ id: Number, message: String }],
-    posts: [{ id: Number, name: String, likesCount: Number }]
+    posts: [{ id: Number, name: String, likesCount: Number,
+        likesPeopleId: Array }]
 
     //links: [{type:Types.ObjectId, ref:'Link'}] //Link - модель,к которой мы привязываемся
 })

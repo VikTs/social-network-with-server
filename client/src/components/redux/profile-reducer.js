@@ -1,16 +1,15 @@
 import { usersAPI, profileAPI } from "../../api/api";
 
 const ADD_POST = 'ADD-POST';
-const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const SET_STATUS = 'SET_STATUS';
-const DELETE_POST = 'DELETE_POST';
-const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
+const SET_POSTS = 'SET-POSTS';
+const SET_USER_PROFILE = 'SET-USER-PROFILE';
+const SET_STATUS = 'SET-STATUS';
+const DELETE_POST = 'DELETE-POST';
+const LIKE_POST = 'LIKE-POST';
+const SAVE_PHOTO_SUCCESS = 'SAVE-PHOTO-SUCCESS';
 
 let initialState = {
-    posts: [
-        { id: 1, name: 'Hi. How are you?', likesCount: 10 },
-        { id: 2, name: 'It`s my first post', likesCount: 8 }
-    ],
+    posts: [],
     profile: null,
     status: ''
 }
@@ -19,17 +18,23 @@ const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
 
-            let newPost = {
-                id: 5,
-                name: action.addNewPost,
-                likesCount: 0
-            }
+            // let newPost = {
+            //     name: action.addNewPost,
+            //     likesCount: 0
+            // }
 
             return {
                 ...state,
-                posts: [...state.posts, newPost],
+                posts: [...state.posts, action.addNewPost],
                 newPostText: ''
+            };            
+            //////////////////////////
+        case SET_POSTS: {
+            return {
+                ...state,
+                posts: action.postsFromDB
             };
+        }
 
         case SET_USER_PROFILE: {
             return {
@@ -48,7 +53,7 @@ const profileReducer = (state = initialState, action) => {
         case DELETE_POST: {
             return {
                 ...state,
-                posts: state.posts.filter(e=>e.id!=action.postId )
+                posts: state.posts.filter(e=>e._id!=action.postId )
             };
         }
 
@@ -64,9 +69,54 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
-export const addPostActionCreator = (addNewPost) => {
+const addPostAC = (addNewPost) => {
     return {  type: ADD_POST, addNewPost }
 }
+
+export const addPost = (newPostText) => async(dispatch) => {
+    const response = await profileAPI.addPost(newPostText)
+        dispatch(addPostAC(response.data.newPost));
+}
+
+const deletePostAC = (postId) => {
+    return {  type: DELETE_POST, postId }
+}
+
+export const deletePost = (userId, postId) => async(dispatch) => {
+    let response = await profileAPI.deletePost(userId, postId)
+        dispatch(deletePostAC(postId));
+}
+
+
+const likePostAC = (postId) => {
+    return {  type: LIKE_POST, postId }
+}
+
+export const likePost = (myId, userId, postId) => async(dispatch) => {
+    console.log(myId, userId, postId)
+    let response = await profileAPI.likePost(myId, userId, postId)
+        dispatch(likePostAC(postId));
+}
+
+
+
+
+
+
+const setPostAC = (postsFromDB) => {
+    return {  type: SET_POSTS, postsFromDB }
+}
+
+export const setPosts = (userId) => async(dispatch) => {
+    const response = await profileAPI.getPosts(userId)
+    //console.log(response.data.posts, 'profile-reducer')
+        dispatch(setPostAC(response.data.posts));
+}
+
+
+
+
+
 
 export const setUserProfile = (profile) => {
     return { type: SET_USER_PROFILE, profile }
@@ -74,10 +124,6 @@ export const setUserProfile = (profile) => {
 
 export const setStatus = (status) => {
     return { type: SET_STATUS, status }
-}
-
-export const deletePost = (postId) => {
-    return { type: DELETE_POST, postId }
 }
 
 export const savePhotoSuccess = (photos) => {

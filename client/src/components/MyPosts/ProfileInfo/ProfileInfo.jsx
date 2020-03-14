@@ -26,9 +26,9 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ..
         <p>{'City: ' + (profile.city || " ")}</p>
         <p>{'Age: ' + (profile.age || " ")}</p>
 
-        <ProfileStatusWithHooks
-          status={status}
-          updateUserStatus={updateUserStatus} />
+        { isOwner 
+        ? <ProfileStatusWithHooks status={status} updateUserStatus={updateUserStatus}/> 
+        : <span> {'Status: ' + (status || "-------")} </span>}
 
         <p>{'About me: ' + (profile.aboutMe || " ")}</p>
 

@@ -56,6 +56,19 @@ export const profileAPI = {
             }
         });
         //в put вторым свойством передаем json-объект, его тип смотрим в документации
+    },
+    addPost(postText) {
+        const userData = getDataFromLocalStorage();
+        return instance.put(`profile/posts`, { postText, userData });
+    },
+    getPosts(userId) {        
+        return instance.get(`profile/posts/${userId}`);
+    },
+    deletePost(userId, postId) {
+        return instance.delete(`profile/posts/?userId=${userId}&postId=${postId}`)
+    },
+    likePost(myId, userId, postId) {
+        return instance.post(`profile/posts/likes`, { myId, userId, postId })
     }
 }
 

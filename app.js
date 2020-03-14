@@ -41,10 +41,15 @@ async function start() {
             useUnifiedTopology: true
         })
 
-        // const connection = mongoose.connection;
-        // connection.once('open', function() {
-        //     console.log("MongoDB database connection established successfully");
-        // })
+
+        const connection = mongoose.connection;
+        connection.once('open', function() {
+            console.log("MongoDB database connection established successfully");
+        })
+
+       // mongoose.connection.close()
+
+
 
         app.listen(PORT, () => { console.log(`App started on port ${PORT}`) }) //load server
 
