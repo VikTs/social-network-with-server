@@ -12,3 +12,11 @@
     height: 80px;
     border-radius: 40px;
   }
+
+  .isLiked {
+    color: red;
+  }
+
+  .isNotLiked {
+    color: black;
+  }

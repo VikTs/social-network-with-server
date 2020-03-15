@@ -36,7 +36,7 @@ const MyPosts = React.memo((props) => {
 
   let postsElements = props.posts.map(p => (
     <Post
-      key={p._id} postId={p._id} name={p.name} isOwner={props.isOwner}
+      key={p._id} postId={p._id} name={p.name} isOwner={props.isOwner} isLiked={p.isLiked}
       likesCount={p.likesCount} deletePost={props.deletePost} setPosts={props.deletePost}
       myId={props.myId} userId={props.currentPageUserId} likePost={props.likePost}/>
   ));

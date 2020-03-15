@@ -61,8 +61,17 @@ export const profileAPI = {
         const userData = getDataFromLocalStorage();
         return instance.put(`profile/posts`, { postText, userData });
     },
-    getPosts(userId) {        
-        return instance.get(`profile/posts/${userId}`);
+    // getPosts(userId, myId) {        
+    //     return instance.get(`profile/posts/${userId}`);
+    // },
+    getPosts(userId, myId) {  
+        //const userData = getDataFromLocalStorage();   
+        //console.log(myId)
+       // return instance.get(`profile/posts/${userId}`);
+        return instance.get(`profile/posts/${userId}/${myId}`);
+        // return instance.get(`users?page=${currentPage}&count=${pageSize}`,
+        // { withCredentials: true })
+        // .then(response => { return response.data });
     },
     deletePost(userId, postId) {
         return instance.delete(`profile/posts/?userId=${userId}&postId=${postId}`)

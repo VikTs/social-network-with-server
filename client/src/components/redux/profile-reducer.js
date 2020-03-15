@@ -17,22 +17,26 @@ let initialState = {
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
-
-            // let newPost = {
-            //     name: action.addNewPost,
-            //     likesCount: 0
-            // }
-
             return {
                 ...state,
                 posts: [...state.posts, action.addNewPost],
                 newPostText: ''
-            };            
-            //////////////////////////
+            };
+
         case SET_POSTS: {
             return {
                 ...state,
                 posts: action.postsFromDB
+            };
+        }
+
+        case LIKE_POST: {
+            return {
+                ...state,
+                posts: state.posts.map((post) => {
+                    if (post._id === action.updatedPost._id) { return action.updatedPost }
+                    return post
+                })
             };
         }
 
@@ -53,14 +57,14 @@ const profileReducer = (state = initialState, action) => {
         case DELETE_POST: {
             return {
                 ...state,
-                posts: state.posts.filter(e=>e._id!=action.postId )
+                posts: state.posts.filter(e => e._id != action.postId)
             };
         }
 
         case SAVE_PHOTO_SUCCESS: {
             return {
                 ...state,
-                profile: {...state.profile, photos: action.photos}
+                profile: { ...state.profile, photos: action.photos }
             };
         }
 
@@ -70,32 +74,33 @@ const profileReducer = (state = initialState, action) => {
 }
 
 const addPostAC = (addNewPost) => {
-    return {  type: ADD_POST, addNewPost }
+    return { type: ADD_POST, addNewPost }
 }
 
-export const addPost = (newPostText) => async(dispatch) => {
+export const addPost = (newPostText) => async (dispatch) => {
     const response = await profileAPI.addPost(newPostText)
-        dispatch(addPostAC(response.data.newPost));
+    dispatch(addPostAC(response.data.newPost));
 }
 
 const deletePostAC = (postId) => {
-    return {  type: DELETE_POST, postId }
+    return { type: DELETE_POST, postId }
 }
 
-export const deletePost = (userId, postId) => async(dispatch) => {
+export const deletePost = (userId, postId) => async (dispatch) => {
     let response = await profileAPI.deletePost(userId, postId)
-        dispatch(deletePostAC(postId));
+    dispatch(deletePostAC(postId));
 }
 
 
-const likePostAC = (postId) => {
-    return {  type: LIKE_POST, postId }
+const likePostAC = (updatedPost) => {
+    return { type: LIKE_POST, updatedPost }
 }
 
-export const likePost = (myId, userId, postId) => async(dispatch) => {
-    console.log(myId, userId, postId)
-    let response = await profileAPI.likePost(myId, userId, postId)
-        dispatch(likePostAC(postId));
+export const likePost = (myId, userId, postId) => async (dispatch) => {
+    //console.log(myId, userId, postId)
+    let response = await profileAPI.likePost(myId, userId, postId);
+    dispatch(likePostAC(response.data.updatedPost));
+   // console.log(response.data.updatedPost);
 }
 
 
@@ -104,13 +109,13 @@ export const likePost = (myId, userId, postId) => async(dispatch) => {
 
 
 const setPostAC = (postsFromDB) => {
-    return {  type: SET_POSTS, postsFromDB }
+    return { type: SET_POSTS, postsFromDB }
 }
 
-export const setPosts = (userId) => async(dispatch) => {
-    const response = await profileAPI.getPosts(userId)
+export const setPosts = (userId, myId) => async (dispatch) => {
+    const response = await profileAPI.getPosts(userId, myId)
     //console.log(response.data.posts, 'profile-reducer')
-        dispatch(setPostAC(response.data.posts));
+    dispatch(setPostAC(response.data.posts));
 }
 
 
@@ -133,30 +138,30 @@ export const savePhotoSuccess = (photos) => {
 //thunk - ф-я, которая принимает dispatch и диспатчит мелкие action 
 //(до или после асинхронной операции или вообще без неё)
 
-export const getUserProfile = (userId) => async(dispatch) => {
+export const getUserProfile = (userId) => async (dispatch) => {
     const response = await usersAPI.getProfile(userId)
-        dispatch(setUserProfile(response.data));
+    dispatch(setUserProfile(response.data));
 }
 
 //thunk for status
 export const getUserStatus = (userId) => async (dispatch) => {
     const response = await profileAPI.getStatus(userId)
-        dispatch(setStatus(response.data));
+    dispatch(setStatus(response.data));
 }
 
 export const updateUserStatus = (status) => async (dispatch) => {
     let response = await profileAPI.updateStatus(status)
-        if (response.data.resultCode === 0) { //из документации (если =1 - ошибка, =0 - все ок)
-            dispatch(setStatus(status));
-        }
+    if (response.data.resultCode === 0) { //из документации (если =1 - ошибка, =0 - все ок)
+        dispatch(setStatus(status));
+    }
 }
 
 //thunk for choose main photo
 export const savePhoto = (file) => async (dispatch) => {
     let response = await profileAPI.savePhoto(file)
-        if (response.data.resultCode === 0) { //из документации (если =1 - ошибка, =0 - все ок)
-            dispatch(savePhotoSuccess(response.data.data.photos));
-        }
+    if (response.data.resultCode === 0) { //из документации (если =1 - ошибка, =0 - все ок)
+        dispatch(savePhotoSuccess(response.data.data.photos));
+    }
 }
 
 export default profileReducer

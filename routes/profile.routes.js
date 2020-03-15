@@ -47,7 +47,7 @@ router.get(
             res.json(myData)
             res.status(200).json({ message: 'Profile was loaded' })
         } catch (error) {
-            res.status(500).json({ message: 'Something wrong: profile wasn`t be loaded' })
+            res.status(500).json({ message: `Something wrong: profile wasn't be loaded: ${error}` })
         }
     })
 
@@ -104,14 +104,29 @@ router.put(
 
 // /profile/posts - get
 router.get(
-    '/posts/:userId',
+    '/posts/:userId/:myId',
     async (req, res) => {
         try {
+            //console.log(req.params.myId)
             const userInfo = await User.findOne({ _id: new ObjectId(req.params.userId) })
-            res.status(200).json({ message: 'Get posts sucsess', resultCode: 0, posts: userInfo.posts })
+
+            //isLikedByMe
+            let posts = userInfo.posts.map(post => {
+                post = post.toObject();
+                if(post.likesPeopleId.includes(req.params.myId)) {                    
+                    post.isLiked = true;                    
+                    return post
+                } else {
+                    post.isLiked = false; 
+                    return post
+                }
+            })
+
+            res.status(200).json({ message: 'Get posts sucsess', resultCode: 0, posts: posts })
 
         } catch (error) {
-            res.status(500).json({ message: 'Get posts error' })
+            
+            res.status(500).json({ message: `Something wrong: 'Get posts error': ${error}` })
         }
     })
 
@@ -120,6 +135,7 @@ router.delete(
     '/posts',
     async (req, res) => {
         try {
+            
             let searchParams = new URLSearchParams(req._parsedUrl.search);
             const postId = searchParams.get('postId');
             let userId = searchParams.get('userId');
@@ -149,32 +165,30 @@ router.post(
             // find user
             const userWasLikedData = await User.findOne({ _id: new ObjectId(userId) });
             //find post by id
-            const likedPost = userWasLikedData.posts.find(
+            let likedPost = userWasLikedData.posts.find(
                 (post) => { if (post._id == postId) { return post } })
-
-            console.log(likedPost)
 
             //find if user liked this post before
             let likesPeopleList = likedPost.likesPeopleId;
-            const isLiked = likesPeopleList.indexOf(myId);
-            if (isLiked == -1) { likesPeopleList.push(myId) }
-            else { likesPeopleList.pop(myId) }
+            let isLiked = likesPeopleList.indexOf(myId);
+            if (isLiked == -1) { likesPeopleList.push(myId); isLiked = 1 }
+            else { likesPeopleList.pop(myId); isLiked = 0 }
 
             // calculate likes count
-            let likesCount = likesPeopleList.length;
+            likedPost.likesCount = likesPeopleList.length;
+            
+            // add isLiked by me field 
+            likedPost = likedPost.toObject();
+            likedPost.isLiked = !!isLiked
 
             //send new values to mongo
-            // User.findByIdAndUpdate(userId, 
-            //     {  posts: { likesCount: postId, likesPeopleId: likesPeopleList } },
-            //     function (err) {
-            //         if (err) return console.log(err);
-            //         res.status(200).json({ message: 'The post was liked' })            //     });
+            User.findByIdAndUpdate(userId,
+                { $set: { posts: userWasLikedData.posts } },
+                function (err) {
+                    if (err) return console.log(err);
+                    res.status(200).json({ message: 'The post was liked', updatedPost: likedPost })
+                });
 
-            console.log(likesPeopleList, ' ', likesCount)
-
-
-
-            res.status(200).json({ message: 'The post was liked' })
         } catch (error) {
             res.status(500).json({ message: `Something wrong: The post was not be liked ${error}` })
         }

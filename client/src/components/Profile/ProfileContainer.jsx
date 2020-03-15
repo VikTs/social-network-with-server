@@ -18,7 +18,7 @@ class ProfileContainer extends React.Component {
     }
     this.props.getUserProfile(userId);
     this.props.getUserStatus(userId);
-    this.props.setPosts(userId);
+    this.props.setPosts(userId, this.props.myId);
   }
 
   componentDidMount() {
@@ -49,7 +49,8 @@ let mapStateToProps = (state) => ({
   profile: state.profileState.profile,
   status: state.profileState.status,
   autorithedUserId: state.auth.userId,
-  isAuth: state.auth.isAuth
+  isAuth: state.auth.isAuth,
+  myId: state.auth.userId
 })
 
 export default compose( //конвеер, перекидывает элемент, снизу вверх

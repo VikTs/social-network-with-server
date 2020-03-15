@@ -2,6 +2,7 @@ const express = require('express')
 const config = require('config')
 const mongoose = require('mongoose')
 const app = express();
+//mongoose.set('useFindAndModify', false);
 
 const multer  = require("multer"); 
  
@@ -46,6 +47,7 @@ async function start() {
         connection.once('open', function() {
             console.log("MongoDB database connection established successfully");
         })
+
 
        // mongoose.connection.close()
 
