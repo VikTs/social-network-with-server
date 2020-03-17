@@ -1,17 +1,32 @@
 const { Router } = require('express')
-const router = Router() //create router
-const User = require('../models/UserModel'); //подключаем модель
-var ObjectId = require('mongodb').ObjectId;
-const config = require('config'); //берет данные из файла config/default.json
-
+const router = Router()
+const User = require('../models/UserModel');
+const Notification = require('../models/NotificationModel');
+//let ObjectId = require('mongodb').ObjectId;
+//const config = require('config'); 
 
 //  /notification/like - post
+// {myId, userId, postId, isLiked}
 router.post(
     '/like',
     async (req, res) => {
         try {
-            console.log(req.body)
+
+            //  resultCode=1 - myId=userId  `I liked me`
+
+            const myId = req.body.myId
+            const userId = req.body.userId
+            const postId = req.body.postId
+            const isLiked = req.body.isLiked
+
+            console.log('req.body',req.body)
+            if(myId == userId) {
+                res.json({"resultCode":1});
+            }
+
+
             
+           
 
             res.json({"resultCode":0});
 
@@ -21,19 +36,5 @@ router.post(
         }
     })
 
-//  /users/follow - delete 
-    router.delete(
-        '/follow/:userId',
-        async (req, res) => {
-            try {
-                
-    
-                res.json({"resultCode":0});
-
-                res.status(200).json({ message: 'The user userId was unfollowed' })
-            } catch (error) {
-                res.status(500).json({ message: 'Something wrong: user cannot be unfollowed' })
-            }
-        })
 
 module.exports = router 

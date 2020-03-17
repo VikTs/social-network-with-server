@@ -86,8 +86,8 @@ const deletePostAC = (postId) => {
     return { type: DELETE_POST, postId }
 }
 
-export const deletePost = (userId, postId) => async (dispatch) => {
-    let response = await profileAPI.deletePost(userId, postId)
+export const deletePost = (postId) => async (dispatch) => {
+    let response = await profileAPI.deletePost(postId)
     dispatch(deletePostAC(postId));
 }
 
@@ -96,9 +96,9 @@ const likePostAC = (updatedPost) => {
     return { type: LIKE_POST, updatedPost }
 }
 
-export const likePost = (myId, userId, postId) => async (dispatch) => {
+export const likePost = (userId, postId) => async (dispatch) => {
     //console.log(myId, userId, postId)
-    let response = await profileAPI.likePost(myId, userId, postId);
+    let response = await profileAPI.likePost(userId, postId);
     dispatch(likePostAC(response.data.updatedPost));
    // console.log(response.data.updatedPost);
 }
@@ -112,8 +112,8 @@ const setPostAC = (postsFromDB) => {
     return { type: SET_POSTS, postsFromDB }
 }
 
-export const setPosts = (userId, myId) => async (dispatch) => {
-    const response = await profileAPI.getPosts(userId, myId)
+export const setPosts = (userId) => async (dispatch) => {
+    const response = await profileAPI.getPosts(userId)
     //console.log(response.data.posts, 'profile-reducer')
     dispatch(setPostAC(response.data.posts));
 }

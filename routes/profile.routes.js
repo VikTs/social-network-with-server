@@ -26,15 +26,15 @@ router.put(
     '/status',
     async (req, res) => {
         try {
-            let decoded = jwtDecode(req.body.userData);
-            User.findByIdAndUpdate(decoded.userID, { status: req.body.status },
+            console.log(req.body)
+            User.findByIdAndUpdate(req.body.userId, { status: req.body.status },
                 function (err) {
                     if (err) return console.log(err);
                     res.status(200).json({ message: 'Status was updated', resultCode: 0 })
                 });
 
         } catch (error) {
-            res.status(500).json({ message: 'Something wrong: Status wasn`t be updated' }) //500-ошибка сервера, json кидает сообщение
+            res.status(500).json({ message: `Something wrong: Status wasn't be updated: ${error}` }) //500-ошибка сервера, json кидает сообщение
         }
     })
 
@@ -71,8 +71,6 @@ router.put(
     async (req, res) => {
         try {
 
-            let decoded = jwtDecode(req.body.userData);
-
             let generateMongoId = function () {
                 var timestamp = (new Date().getTime() / 1000 | 0).toString(16);
                 return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, function () {
@@ -88,7 +86,7 @@ router.put(
                 likesPeopleId: []
             }
 
-            User.findByIdAndUpdate(decoded.userID, { $push: { posts: newPost } },
+            User.findByIdAndUpdate(req.body.userId, { $push: { posts: newPost } },
                 function (err) {
                     if (err) return console.log(err);
                     res.status(200).json({ message: 'Post was added', resultCode: 0, newPost: newPost })

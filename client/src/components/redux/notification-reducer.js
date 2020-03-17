@@ -1,10 +1,11 @@
 import { notificationAPI } from "../../api/api";
 
 const CREATE_LIKE_NOTIFICATION = 'CREATE-LIKE-NOTIFICATION';
+const GET_NOTIFICATION_LIST = 'GET-NOTIFICATION-LIST';
 
 let initialState = {
     likesNotification: [],
-    addToFriendNotification: [],
+    friendNotification: [],
     newNotificationsCount: 0
 }
 
@@ -23,6 +24,11 @@ const notificationReducer = (state = initialState, action) => {
                 }],
                 newNotificationsCount: ++state.newNotificationsCount
             };
+            case GET_NOTIFICATION_LIST: 
+            return {
+                ...state,
+                likesNotification: action.likesNotification
+            }
         default: return state;
     }
     //return state
@@ -35,12 +41,25 @@ const createLikeNotificationAC = (userId, postId, isLiked) => {
     }
 }
 
-export const createLikeNotification = (myId, userId, postId, isLiked) => async (dispatch) => {
-    //console.log(myId, userId, postId)
+export const createLikeNotification = (userId, postId, isLiked) => async (dispatch) => {
    // console.log(myId, userId, postId, isLiked)
-    let response = await notificationAPI.createLikeNotification(myId, userId, postId, isLiked);
+    let response = await notificationAPI.createLikeNotification( userId, postId, isLiked);
     dispatch(createLikeNotificationAC(userId, postId, isLiked));
     // console.log(response.data.updatedPost);
 }
+
+const getNotificationListAC = (likesNotification) => {
+    return {
+        type: GET_NOTIFICATION_LIST,
+        likesNotification
+    }
+}
+
+export const getNotificationList = () => async (dispatch) => {
+     let response = await notificationAPI.getNotificationList();
+     dispatch(getNotificationListAC(response.likesNotification));
+ }
+
+
 
 export default notificationReducer

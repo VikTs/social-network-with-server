@@ -50,7 +50,8 @@ router.post(
                 name, surname, age, city,
                 contacts: { facebook, youtube },
                 status: 'Here must be my status', aboutMe: 'Hi, I am new user',
-                photos: { small: null, large: '' }
+                photos: { small: null, large: '' },
+                notifications: []
             }) 
 
             await user.save() //ждём, пока пользователь сохраниться
@@ -71,18 +72,18 @@ router.post(
         try {
 
             if (req.body.userData) {
-                let decoded = jwtDecode(req.body.userData);
                 res.json({
-                    id: decoded.userID,
-                    email: decoded.userEmail,
-                    login: decoded.userLogin,
+                    id: req.body.userData.userId,
+                    email: req.body.userData.userEmail,
+                    login: req.body.userData.userLogin,
                     resultCode: 0
                 })
             } else {
                 res.json({ resultCode: -1 })
+                res.status(401).json({ message: 'You are not autorized' })
             }
         } catch (error) {
-            res.status(500).json({ message: 'Something wrong' }) //500-ошибка сервера, json кидает сообщение
+            res.status(500).json({ message: `Something wrong: ${error}` }) //500-ошибка сервера, json кидает сообщение
         }
     })
 
@@ -145,7 +146,7 @@ router.delete(
     async (req, res) => {
         try {
 
-            console.log(req.params.id)
+            //console.log(req.params.id)
 
             const query = { _id: new ObjectId(req.params.id) };
             User.deleteOne(query)
@@ -164,7 +165,7 @@ router.delete(
 const createToken = (id, email, login) => {
     return jwt.sign( //создаем token
         {
-            userID: id,
+            userId: id,
             userEmail: email,
             userLogin: login
         },

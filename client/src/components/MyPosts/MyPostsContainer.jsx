@@ -20,14 +20,14 @@ let mapDispatchToProps = (dispatch) => {
     setPosts: (userId) => {
       dispatch(setPosts(userId));
     },
-    deletePost: (userId, postId) => {
-      dispatch(deletePost(userId, postId));
+    deletePost: (postId) => {
+      dispatch(deletePost(postId));
     },
-    likePost: (myId,userId, postId) => {
-      dispatch(likePost(myId, userId, postId));
+    likePost: (userId, postId) => {
+      dispatch(likePost(userId, postId));
     },
-    createLikeNotification: (myId,userId, postId, isLiked) => {
-      dispatch(createLikeNotification(myId, userId, postId, isLiked));
+    createLikeNotification: (userId, postId, isLiked) => {
+      dispatch(createLikeNotification(userId, postId, isLiked));
     }
   }
 }

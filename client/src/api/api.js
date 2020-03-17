@@ -1,4 +1,5 @@
 import * as axios from 'axios'
+import { authCheck, getCurrentUserId } from '../middleware/auth.middleware'
 import { Result } from 'express-validator';
 
 const instance = axios.create({
@@ -7,12 +8,6 @@ const instance = axios.create({
     headers: {//'API-KEY': '916a03f6-7b8e-4743-b877-221854dab6ae'
     }
 });
-
-const getDataFromLocalStorage = () => {
-    if (localStorage.getItem('userData')) {
-        return localStorage.getItem('userData')
-    }
-}
 
 export const usersAPI = {
     getUsers(currentPage = 1, pageSize = 10) {
@@ -41,8 +36,8 @@ export const profileAPI = {
         return instance.get(`profile/status/${userId}`);
     },
     updateStatus(status) {
-        const userData = getDataFromLocalStorage();
-        return instance.put(`profile/status`, { status, userData });
+        const userId = getCurrentUserId()
+        return instance.put(`profile/status`, { status, userId });
         //в put вторым свойством передаем json-объект, его тип смотрим в документации
     },
     savePhoto(photoFile) {
@@ -58,25 +53,22 @@ export const profileAPI = {
         //в put вторым свойством передаем json-объект, его тип смотрим в документации
     },
     addPost(postText) {
-        const userData = getDataFromLocalStorage();
-        return instance.put(`profile/posts`, { postText, userData });
+        const userId = getCurrentUserId()
+        return instance.put(`profile/posts`, { postText, userId });
     },
     // getPosts(userId, myId) {        
     //     return instance.get(`profile/posts/${userId}`);
     // },
-    getPosts(userId, myId) {  
-        //const userData = getDataFromLocalStorage();   
-        //console.log(myId)
-       // return instance.get(`profile/posts/${userId}`);
+    getPosts(userId) {
+        const myId = getCurrentUserId()
         return instance.get(`profile/posts/${userId}/${myId}`);
-        // return instance.get(`users?page=${currentPage}&count=${pageSize}`,
-        // { withCredentials: true })
-        // .then(response => { return response.data });
     },
-    deletePost(userId, postId) {
+    deletePost(postId) {
+        const userId = getCurrentUserId()
         return instance.delete(`profile/posts/?userId=${userId}&postId=${postId}`)
     },
-    likePost(myId, userId, postId) {
+    likePost(userId, postId) {
+        const myId = getCurrentUserId()
         return instance.post(`profile/posts/likes`, { myId, userId, postId })
     }
 }
@@ -86,7 +78,7 @@ export const authAPI = {
     me() {
         //get/delete - чтобы отправить данные - .get(`auth/me?var=10`), 
         //GET/DELETE - БЕЗ ЗАПЯТОЙ, через ?
-        const userData = getDataFromLocalStorage();
+        const userData = authCheck();
         return instance.post(`auth/me`, { userData })
     },
     // в auth/login есть post и delete
@@ -122,8 +114,9 @@ export const securityAPI = {
 }
 
 export const notificationAPI = {
-    createLikeNotification(myId, userId, postId, isLiked) {
-        return instance.post(`notification/like`, {myId, userId, postId, isLiked})
+    createLikeNotification( userId, postId, isLiked) {
+        const myId = getCurrentUserId()
+        return instance.post(`notification/like`, { myId, userId, postId, isLiked })
     }
 }
 

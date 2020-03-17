@@ -1,18 +1,32 @@
 import React from 'react';
 // import style from './Notification.module.css'
 
-class Notification extends React.Component { 
+class Notifications extends React.Component {
     componentDidMount() {
-        //this.props.createLikeNotification({})
-    }   
+        //this.props.getNotificationList({})
+    }
 
     render() {
-        return (
-            <div>
-                <h1>Notification</h1>
-            </div>
-        );
+        let notifications = this.props.likesNotification.map(n => (
+            <Notification />
+        ));
+        return(
+        <div>
+            <h1>Notifications:</h1>
+            <p>{this.props.newNotificationsCount}</p>
+            {notifications}
+        </div>)
     }
 }
 
-export default Notification;
+
+const Notification = () => {
+
+    return (
+        <div>
+            <p>Notification__</p>
+        </div>
+    );
+
+}
+export default Notifications;

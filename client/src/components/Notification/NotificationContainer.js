@@ -1,22 +1,23 @@
-import { createLikeNotification } from '../redux/notification-reducer';
-import Notification from './Notification';
+import { getNotificationList } from '../redux/notification-reducer';
+import Notifications from './Notification';
 import { connect } from 'react-redux';
 
 let mapStateToProps = (state) => {
   return {
-    // posts: state.profileState.posts,
-    // myId: state.auth.userId
+     likesNotification: state.notification.likesNotification,
+     friendNotification: state.notification.friendNotification,
+     newNotificationsCount: state.notification.newNotificationsCount
   }
 }
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    createLikeNotification: (notification) => {
-      dispatch(createLikeNotification(notification));
+    getNotificationList: () => {
+      dispatch(getNotificationList());
     }
   }
 }
 
-let NotificationContainer = connect(mapStateToProps, mapDispatchToProps)(Notification);
+let NotificationContainer = connect(mapStateToProps, mapDispatchToProps)(Notifications);
 
 export default NotificationContainer;
