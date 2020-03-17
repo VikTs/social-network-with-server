@@ -38,7 +38,8 @@ const MyPosts = React.memo((props) => {
     <Post
       key={p._id} postId={p._id} name={p.name} isOwner={props.isOwner} isLiked={p.isLiked}
       likesCount={p.likesCount} deletePost={props.deletePost} setPosts={props.deletePost}
-      myId={props.myId} userId={props.currentPageUserId} likePost={props.likePost}/>
+      myId={props.myId} userId={props.currentPageUserId} likePost={props.likePost}
+      createLikeNotification={props.createLikeNotification}/>
   ));
   let onAddPost = (values) => {
     props.addPost(values.newPostText);

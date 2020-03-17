@@ -4,8 +4,10 @@ import style from './Post.module.css'
 class Post extends React.Component {    
     onLikePost(e){
         //console.log(this.props.myId, ' ', this.props.userId ,' ', this.props.postId)
-        console.log('this.props',this.props)
+        // console.log('this.props',this.props)
         this.props.likePost(this.props.myId, this.props.userId, this.props.postId);
+        //console.log('!this.props.isLiked',!this.props.isLiked)
+        this.props.createLikeNotification(this.props.myId, this.props.userId, this.props.postId, !this.props.isLiked);        
     }
     
     onDeletePost() {

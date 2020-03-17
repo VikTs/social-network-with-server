@@ -20,6 +20,7 @@ import LoginPage from './components/Login/Login';
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
+const NotificationContainer = React.lazy(() => import('./components/Notification/NotificationContainer'));
 const LoginOrRegistrationPage = React.lazy(() => import('./components/Login/LoginOrRegistration'));
 //const LoginPage = React.lazy(() => import('./components/Login/Login'));
 
@@ -44,6 +45,7 @@ class App extends React.Component {
           <Route path='/profiles/:userId?' render={withSuspense(ProfileContainer)} />
           <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
           <Route path='/users' render={withSuspense(UsersContainer)} />
+          <Route path='/notification' render={withSuspense(NotificationContainer)} />
           {/* <Route path='/login' render={withSuspense(LoginPage)} /> */}
           <Route path='/login' render={withSuspense(LoginOrRegistrationPage)} />
           <Route path='/signIn' render={()=><LoginPage loginType="signIn"/>} />

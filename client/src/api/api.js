@@ -119,5 +119,11 @@ export const securityAPI = {
     getCaptchaUrl() {
         return instance.get(`security/get-captcha-url`)
     }
-
 }
+
+export const notificationAPI = {
+    createLikeNotification(myId, userId, postId, isLiked) {
+        return instance.post(`notification/like`, {myId, userId, postId, isLiked})
+    }
+}
+
