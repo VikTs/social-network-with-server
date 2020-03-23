@@ -116,7 +116,7 @@ export const securityAPI = {
 export const notificationAPI = {
     createLikeNotification( userId, postId, isLiked) {
         const myId = getCurrentUserId()
-        return instance.post(`notification/like`, { myId, userId, postId, isLiked })
+        return instance.post(`notification/newLike`, { myId, userId, postId, isLiked })
     }
 }
 

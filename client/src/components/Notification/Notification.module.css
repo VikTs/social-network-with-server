@@ -1,0 +1,15 @@
+.notificationBlock {
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.item {
+  color: white;
+}
+
+.item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 40px;
+}

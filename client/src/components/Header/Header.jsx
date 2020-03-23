@@ -1,28 +1,36 @@
-import React from 'react';
-import classes from './Header.module.css'
-import { NavLink } from 'react-router-dom'
+import React from "react";
+import classes from "./Header.module.css";
+import { NavLink } from "react-router-dom";
 
-const Header = (props) => {
-    return (
-        <header className={classes.header}>
-            <img src='https://99designs-start-attachments.imgix.net/alchemy-pictures/2019%2F02%2F01%2F23%2F47%2F26%2Ff919da14-1e80-42b8-ae4c-33c381ede7f9%2Fextrafin.png?auto=format&ch=Width%2CDPR&fm=png&w=450&h=450'></img>
-            <div className={classes.loginBlock}>
-                {props.isAuth ?
-                    <div>
-                        <div className={classes.notification}>
-                            <button>
-                                <NavLink to='/notification'> &#128276; </NavLink>
-                            </button>
-                        </div>
-                        <div> {props.login} -
-                            <button onClick={props.logout}>LogOut</button>
-                            <button onClick={() => props.deletePage(props.userId)}>Delete Page</button>
-                        </div>
-                    </div> :
-                    <NavLink to={'/login'}>Login</NavLink>}
+const Header = props => {
+  return (
+    <header className={classes.header}>
+      <img src="https://99designs-start-attachments.imgix.net/alchemy-pictures/2019%2F02%2F01%2F23%2F47%2F26%2Ff919da14-1e80-42b8-ae4c-33c381ede7f9%2Fextrafin.png?auto=format&ch=Width%2CDPR&fm=png&w=450&h=450"></img>
+      <div className={classes.loginBlock}>
+        {props.isAuth ? (
+          <div>
+            <div className={classes.notification}>
+              <button>
+                <NavLink to="/notification">
+                  {" "}
+                  &#128276; {props.newNotificationsCount}
+                </NavLink>
+              </button>
             </div>
-        </header>
-    );
-}
+            <div>
+              {" "}
+              {props.login} -<button onClick={props.logout}>LogOut</button>
+              <button onClick={() => props.deletePage(props.userId)}>
+                Delete Page
+              </button>
+            </div>
+          </div>
+        ) : (
+          <NavLink to={"/login"}>Login</NavLink>
+        )}
+      </div>
+    </header>
+  );
+};
 
 export default Header;

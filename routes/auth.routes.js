@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router() //create router
 const User = require('../models/UserModel'); //подключаем модель
-// const SomeModel = require('../models/SomeModel'); //подключаем модель
+const Notification = require('../models/NotificationModel'); //подключаем модель
 const bcrypt = require('bcryptjs'); // хэширует и сравнивает пароли
 const { check, validationResult } = require('express-validator'); //проверка правильности ввода на сервере
 var jwtDecode = require('jwt-decode');
@@ -51,12 +51,20 @@ router.post(
                 contacts: { facebook, youtube },
                 status: 'Here must be my status', aboutMe: 'Hi, I am new user',
                 photos: { small: null, large: '' },
-                notifications: []
+                //notifications: []
             }) 
-
             await user.save() //ждём, пока пользователь сохраниться
 
-            const token = createToken(user.id, user.email, user.name)
+            const notification = new Notification({
+                likesNotification: [],
+                addToFriendNotification: [],
+                newNotificationsCount: 0,
+                owner: user.id 
+              });
+          
+            await notification.save() //сохраняем ссылку
+
+            const token = createToken(user.id, user.email, user.name)            
             res.json({ token, resultCode: 0 })
 
             res.status(201).json({ message: 'User created' }) //когда создали пользователя - сообщаем об этом fronend-y

@@ -25,7 +25,7 @@ const schema = new Schema({ //создаем схему
         id: Number, name: String, likesCount: Number,
         likesPeopleId: Array
     }],
-    notifications: [{ type: Types.ObjectId, ref: 'Notifications' }] //Notifications - модель,к которой мы привязываемся
+    notifications: [{ type: Types.ObjectId, ref: 'Notification' }] //Notifications - модель,к которой мы привязываемся
 })
 
 module.exports = model('User', schema) // экспортируем из файла результат работы ф-ии model
