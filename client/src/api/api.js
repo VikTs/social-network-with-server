@@ -117,6 +117,22 @@ export const notificationAPI = {
     createLikeNotification( userId, postId, isLiked) {
         const myId = getCurrentUserId()
         return instance.post(`notification/newLike`, { myId, userId, postId, isLiked })
+    },
+    getNotificationList() {
+        const myId = getCurrentUserId()
+        return instance.get(`notification/getList/${myId}`)
+    },
+    getNewNotificationCount() {
+        const myId = getCurrentUserId()
+        return instance.get(`notification/getNewCount/${myId}`)
+    },
+    zeroingNewCount() {
+        const myId = getCurrentUserId()
+        return instance.delete(`notification/zeroingNew/${myId}`)
+    },
+    cleanAllNotifications() {
+        const myId = getCurrentUserId()
+        return instance.delete(`notification/${myId}`)
     }
 }
 

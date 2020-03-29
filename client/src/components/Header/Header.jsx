@@ -13,7 +13,7 @@ const Header = props => {
               <button>
                 <NavLink to="/notification">
                   {" "}
-                  &#128276; {props.newNotificationsCount}
+                  &#128276; {props.newNotificationsCount || ""}
                 </NavLink>
               </button>
             </div>

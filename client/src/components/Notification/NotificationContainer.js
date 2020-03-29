@@ -1,4 +1,8 @@
-import { getNotificationList, zeroingNotificationsCount } from "../redux/notification-reducer";
+import {
+  getNotificationList,
+  zeroingNotificationsCount,
+  cleanAllNotifications
+} from "../redux/notification-reducer";
 import Notifications from "./Notification";
 import { connect } from "react-redux";
 
@@ -6,8 +10,7 @@ let mapStateToProps = state => {
   return {
     likesNotification: state.notification.likesNotification,
     friendNotification: state.notification.friendNotification,
-    newNotificationsCount: state.notification.newNotificationsCount,
-    posts: state.profileState.posts
+    newNotificationsCount: state.notification.newNotificationsCount
   };
 };
 
@@ -18,6 +21,9 @@ let mapDispatchToProps = dispatch => {
     },
     zeroingNotificationsCount: () => {
       dispatch(zeroingNotificationsCount());
+    },
+    cleanAllNotifications: () => {
+      dispatch(cleanAllNotifications());
     }
   };
 };

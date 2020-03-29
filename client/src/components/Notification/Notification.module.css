@@ -1,7 +1,20 @@
 .notificationBlock {
   margin: 5px;
   padding: 10px;
+}
+
+.notificationBlock.isNew {
+  border: 1px solid rgb(211, 0, 0);
+  background-color: rgb(245, 133, 133);
+}
+
+.notificationBlock.isNotNew {
   border: 1px solid black;
+  background-color: rgb(172, 166, 166);
+}
+
+.newActionText {
+  color: red;
 }
 
 .item {
