@@ -14,25 +14,26 @@ router.post("/newLike", async (req, res) => {
     const isLiked = req.body.isLiked;
 
     const userData = await User.findOne({ _id: new ObjectId(userId) });
-    const userName = userData.name;
-    const userSurname = userData.surname;
 
     const myData = await User.findOne({ _id: new ObjectId(myId) });
+    const myName = myData.name;
+    const mySurname = myData.surname;
 
-    let postInfo = myData.posts.find(post => {
+    let postInfo = userData.posts.find(post => { ///!!!
       if (post._id == postId) return post;
     });
 
     const newNotificationInfo = {
-      userId,
-      userName,
-      userSurname,
+      //userId,
+      userId: myId,///!!!
+      userName: myName,
+      userSurname: mySurname,
       postId,
       isLiked,
       postInfo: postInfo
     };
     let update = Notification.updateOne(
-      { owner: new ObjectId(myId) },
+      { owner: new ObjectId(userId) },///!!!
       {
         $push: { likesNotification: newNotificationInfo },
         $inc: { newNotificationsCount: 1 }
