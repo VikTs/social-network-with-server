@@ -9,7 +9,8 @@ export const authCheck = () => {
 
 export const getCurrentUserId = () => {
   const decoded = authCheck();
-  if (decoded.userId) {
+  // if (decoded.userId) {
+  if (decoded) {
     return decoded.userId
   }
 }

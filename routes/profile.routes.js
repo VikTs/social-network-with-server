@@ -170,7 +170,7 @@ router.post(
             let likesPeopleList = likedPost.likesPeopleId;
             let isLiked = likesPeopleList.indexOf(myId);
             if (isLiked == -1) { likesPeopleList.push(myId); isLiked = 1 }
-            else { likesPeopleList.pop(myId); isLiked = 0 }
+            else { likesPeopleList.splice(isLiked, 1); isLiked = 0 }
 
             // calculate likes count
             likedPost.likesCount = likesPeopleList.length;

@@ -1,6 +1,6 @@
 import { notificationAPI } from "../../api/api";
 
-const CREATE_LIKE_NOTIFICATION = "CREATE-LIKE-NOTIFICATION";
+// const CREATE_LIKE_NOTIFICATION = "CREATE-LIKE-NOTIFICATION";
 const GET_NOTIFICATION_LIST = "GET-NOTIFICATION-LIST";
 const ZEROING_NOTIFICATION_COUNT = "ZEROING-NOTIFICATION-COUNT";
 const GET_NOTIFICATION_COUNT = "GET-NOTIFICATION-COUNT";
@@ -14,16 +14,15 @@ let initialState = {
 
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_LIKE_NOTIFICATION:
-      //newNotificationInfo
-      return {
-        ...state,
-        likesNotification: [
-          ...state.likesNotification,
-          action.newNotificationInfo
-        ],
-        newNotificationsCount: ++state.newNotificationsCount
-      };
+    // case CREATE_LIKE_NOTIFICATION:
+    //   //newNotificationInfo
+    //   return {
+    //     ...state,
+    //     likesNotification: [
+    //       ...state.likesNotification,
+    //       action.newNotificationInfo
+    //     ],
+    //   };
     case GET_NOTIFICATION_LIST:
       return {
         ...state,
@@ -52,12 +51,12 @@ const notificationReducer = (state = initialState, action) => {
   //return state
 };
 
-const createLikeNotificationAC = newNotificationInfo => {
-  return {
-    type: CREATE_LIKE_NOTIFICATION,
-    newNotificationInfo
-  };
-};
+// const createLikeNotificationAC = newNotificationInfo => {
+//   return {
+//     type: CREATE_LIKE_NOTIFICATION,
+//     newNotificationInfo
+//   };
+// };
 
 const zeroingNotificationsCountAC = () => {
   return {
@@ -86,17 +85,9 @@ const cleanAllNotificationsAC = () => {
   };
 };
 
-export const createLikeNotification = (
-  userId,
-  postId,
-  isLiked
-) => async dispatch => {
-  let response = await notificationAPI.createLikeNotification(
-    userId,
-    postId,
-    isLiked
-  );
-  dispatch(createLikeNotificationAC(response.data.newNotificationInfo));
+export const createLikeNotification = (userId, postId, isLiked) => async dispatch => {
+  await notificationAPI.createLikeNotification( userId, postId, isLiked );
+  //dispatch(createLikeNotificationAC(response.data.newNotificationInfo));
 };
 
 export const zeroingNotificationsCount = () => async dispatch => {

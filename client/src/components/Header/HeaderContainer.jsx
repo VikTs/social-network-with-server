@@ -6,7 +6,7 @@ import { getNewNotificationCount } from "../redux/notification-reducer";
 
 class HeaderContainer extends React.Component {
 
-  componentDidMount(){
+  componentDidUpdate(){
     this.props.getNewNotificationCount()
   }
 

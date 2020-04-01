@@ -34,9 +34,11 @@ class Notifications extends React.Component {
       <div>
         <h1>Notifications:</h1>
         <p>You have {this.props.newNotificationsCount} new notifications</p>
-        <button type="button" onClick={this.props.cleanAllNotifications}>
-          Clean all notifications
-        </button>
+        {/* {this.props.newNotificationsCount ? */}
+          <button type="button" onClick={this.props.cleanAllNotifications}>
+            Clean all notifications
+        </button> 
+        {/* : <> </>} */}
         {notifications}
       </div>
     );
@@ -56,8 +58,8 @@ const Notification = props => {
       {props.isLiked === true ? (
         <p>liked your post</p>
       ) : (
-        <p>removed like from your post</p>
-      )}
+          <p>removed like from your post</p>
+        )}
       <div className={style.item}>
         <img src="https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
         {props.postInfo.name}

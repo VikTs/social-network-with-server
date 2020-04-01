@@ -39,7 +39,7 @@ const MyPosts = React.memo((props) => {
       key={p._id} postId={p._id} name={p.name} isOwner={props.isOwner} isLiked={p.isLiked}
       likesCount={p.likesCount} deletePost={props.deletePost} setPosts={props.deletePost}
       myId={props.myId} userId={props.currentPageUserId} likePost={props.likePost}
-      createLikeNotification={props.createLikeNotification}/>
+      createLikeNotification={props.createLikeNotification} myId={props.myId}/>
   ));
   let onAddPost = (values) => {
     props.addPost(values.newPostText);
@@ -49,7 +49,7 @@ const MyPosts = React.memo((props) => {
       <h3>My posts: </h3>
       {props.isOwner && <AddNewPostRedux onSubmit={onAddPost} isOwner={props.isOwner} />}
       <div className={classes.posts}>
-        {postsElements}
+        {postsElements.reverse()}
       </div>
     </div>
   );

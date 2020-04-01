@@ -1,7 +1,8 @@
 const { Router } = require('express')
 const router = Router() //create router
-const User = require('../models/UserModel'); //подключаем модель
-const Notification = require('../models/NotificationModel'); //подключаем модель
+const User = require('../models/UserModel'); 
+const Notification = require('../models/NotificationModel'); 
+const Post = require('../models/PostModel');
 const bcrypt = require('bcryptjs'); // хэширует и сравнивает пароли
 const { check, validationResult } = require('express-validator'); //проверка правильности ввода на сервере
 var jwtDecode = require('jwt-decode');
@@ -63,6 +64,13 @@ router.post(
               });
           
             await notification.save() //сохраняем ссылку
+
+            const posts = new Post({
+                posts: [],
+                owner: user.id
+              });
+          
+            await posts.save() //сохраняем ссылку
 
             const token = createToken(user.id, user.email, user.name)            
             res.json({ token, resultCode: 0 })
