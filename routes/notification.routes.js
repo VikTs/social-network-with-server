@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const User = require("../models/UserModel");
+const Post = require("../models/PostModel");
 const Notification = require("../models/NotificationModel");
 let ObjectId = require("mongodb").ObjectId;
 
@@ -13,43 +14,79 @@ router.post("/newLike", async (req, res) => {
     const postId = req.body.postId;
     const isLiked = req.body.isLiked;
 
-    const userData = await User.findOne({ _id: new ObjectId(userId) });
+    // const userData = await User.findOne({ _id: new ObjectId(userId) });
+
+    // const myData = await User.findOne({ _id: new ObjectId(myId) });
+    // const myName = myData.name;
+    // const mySurname = myData.surname;
+
+    // let postInfo = userData.posts.find(post => { ///!!!
+    //   if (post._id == postId) return post;
+    // });
+
+    // const newNotificationInfo = {
+    //   //userId,
+    //   userId: myId,///!!!
+    //   userName: myName,
+    //   userSurname: mySurname,
+    //   postId,
+    //   isLiked,
+    //   postInfo: postInfo
+    // };
+    // let update = Notification.updateOne(
+    //   { owner: new ObjectId(userId) },///!!!
+    //   {
+    //     $push: { likesNotification: newNotificationInfo },
+    //     $inc: { newNotificationsCount: 1 }
+    //   },
+    //   function(err) {
+    //     if (err) return console.log(err);
+    //   }
+    // );
+
+    // if (update) {
+    //   res.status(201).json({
+    //     message: "Notification was created",
+    //     resultCode: 0,
+    //     newNotificationInfo
+    //   });
+    // }
+
+    const postData = await Post.findOne({ owner: new ObjectId(userId) });
 
     const myData = await User.findOne({ _id: new ObjectId(myId) });
     const myName = myData.name;
     const mySurname = myData.surname;
 
-    let postInfo = userData.posts.find(post => { ///!!!
+    let postInfo = postData.posts.find(post => {
       if (post._id == postId) return post;
     });
 
     const newNotificationInfo = {
-      //userId,
-      userId: myId,///!!!
+      userId: myId,
       userName: myName,
       userSurname: mySurname,
       postId,
       isLiked,
       postInfo: postInfo
     };
-    let update = Notification.updateOne(
-      { owner: new ObjectId(userId) },///!!!
+    let update = await Notification.updateOne(
+      { owner: new ObjectId(userId) },
       {
         $push: { likesNotification: newNotificationInfo },
         $inc: { newNotificationsCount: 1 }
       },
-      function(err) {
+      function (err) {
         if (err) return console.log(err);
       }
     );
 
-    if (update) {
-      res.status(201).json({
-        message: "Notification was created",
-        resultCode: 0,
-        newNotificationInfo
-      });
-    }
+    res.status(201).json({
+      message: "Notification was created",
+      resultCode: 0,
+      newNotificationInfo
+    });
+
   } catch (error) {
     res.status(500).json({
       message: `Something wrong: notification was not created: ${error}`
@@ -113,7 +150,7 @@ router.delete("/zeroingNew/:id", async (req, res) => {
     Notification.updateOne(
       { owner: new ObjectId(myId) },
       { $set: { newNotificationsCount: 0 } },
-      function(err) {
+      function (err) {
         if (err) return console.log(err);
         res.status(200).json({
           message: "Notifications count was zeroing",
@@ -142,7 +179,7 @@ router.delete("/:id", async (req, res) => {
           addToFriendNotification: []
         }
       },
-      function(err) {
+      function (err) {
         console.log(myId, "myId");
         if (err) return console.log(err);
         res.status(200).json({

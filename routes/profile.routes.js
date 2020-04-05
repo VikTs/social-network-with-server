@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const router = Router() //create router
 const User = require('../models/UserModel'); //подключаем модель
+const Post = require('../models/PostModel'); //подключаем модель
 var ObjectId = require('mongodb').ObjectId;
 const config = require('config'); //берет данные из файла config/default.json
 var jwtDecode = require('jwt-decode');
@@ -71,6 +72,8 @@ router.put(
     async (req, res) => {
         try {
 
+            const userId = req.body.userId;
+
             let generateMongoId = function () {
                 var timestamp = (new Date().getTime() / 1000 | 0).toString(16);
                 return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, function () {
@@ -86,11 +89,23 @@ router.put(
                 likesPeopleId: []
             }
 
-            User.findByIdAndUpdate(req.body.userId, { $push: { posts: newPost } },
+            // User.findByIdAndUpdate(userId, { $push: { posts: newPost } },
+            //     function (err) {
+            //         if (err) return console.log(err);
+            //         res.status(200).json({ message: 'Post was added', resultCode: 0, newPost: newPost })
+            //     });
+
+            ///////////////////////////////////////////////
+
+            Post.updateOne(
+                { owner: new ObjectId(userId) },
+                { $push: { posts: newPost } },
                 function (err) {
                     if (err) return console.log(err);
                     res.status(200).json({ message: 'Post was added', resultCode: 0, newPost: newPost })
                 });
+
+            ///////////////////////////////////////////////
 
 
 
@@ -106,24 +121,44 @@ router.get(
     async (req, res) => {
         try {
             //console.log(req.params.myId)
-            const userInfo = await User.findOne({ _id: new ObjectId(req.params.userId) })
+            const myId = req.params.myId;
+            const userId = req.params.userId;
+
+            ////////////////////////////////////////////
+            // const userInfo = await User.findOne({ _id: new ObjectId(userId) })
+
+            // //isLikedByMe
+            // let posts = userInfo.posts.map(post => {
+            //     post = post.toObject();
+            //     if (post.likesPeopleId.includes(myId)) {
+            //         post.isLiked = true;
+            //         return post
+            //     } else {
+            //         post.isLiked = false;
+            //         return post
+            //     }
+            // })
+
+            const postsInfo = await Post.findOne({ owner: new ObjectId(userId) })
 
             //isLikedByMe
-            let posts = userInfo.posts.map(post => {
+            let posts = postsInfo.posts.map(post => {
                 post = post.toObject();
-                if(post.likesPeopleId.includes(req.params.myId)) {                    
-                    post.isLiked = true;                    
+                if (post.likesPeopleId.includes(myId)) {
+                    post.isLiked = true;
                     return post
                 } else {
-                    post.isLiked = false; 
+                    post.isLiked = false;
                     return post
                 }
             })
 
+            /////////////////////////////////////////////////////////
+
             res.status(200).json({ message: 'Get posts sucsess', resultCode: 0, posts: posts })
 
         } catch (error) {
-            
+
             res.status(500).json({ message: `Something wrong: 'Get posts error': ${error}` })
         }
     })
@@ -133,16 +168,27 @@ router.delete(
     '/posts',
     async (req, res) => {
         try {
-            
+
             let searchParams = new URLSearchParams(req._parsedUrl.search);
             const postId = searchParams.get('postId');
             let userId = searchParams.get('userId');
 
-            User.findByIdAndUpdate(userId, { $pull: { posts: { _id: postId } } },
+            //////////////////////////////////////////////////////
+
+            // User.findByIdAndUpdate(userId, { $pull: { posts: { _id: postId } } },
+            //     function (err) {
+            //         if (err) return console.log(err);
+            //         res.status(200).json({ message: `Delete post ${postId} sucsess`, resultCode: 0 })
+            //     });
+
+            Post.updateOne(
+                { owner: new ObjectId(userId) },
+                { $pull: { posts: { _id: postId } } },
                 function (err) {
                     if (err) return console.log(err);
                     res.status(200).json({ message: `Delete post ${postId} sucsess`, resultCode: 0 })
                 });
+            //////////////////////////////////////////////////////
 
         } catch (error) {
             res.status(500).json({ message: `Delete post error: ${error} ` })
@@ -160,13 +206,41 @@ router.post(
             const userId = req.body.userId;
             const postId = req.body.postId;
 
-            // find user
-            const userWasLikedData = await User.findOne({ _id: new ObjectId(userId) });
+            // // find user
+            // const userWasLikedData = await User.findOne({ _id: new ObjectId(userId) });
+            // //find post by id
+            // let likedPost = userWasLikedData.posts.find(
+            //     (post) => { if (post._id == postId) { return post } })
+
+            // //find if me liked this post before
+            // let likesPeopleList = likedPost.likesPeopleId;
+            // let isLiked = likesPeopleList.indexOf(myId);
+            // if (isLiked == -1) { likesPeopleList.push(myId); isLiked = 1 }
+            // else { likesPeopleList.splice(isLiked, 1); isLiked = 0 }
+
+            // // calculate likes count
+            // likedPost.likesCount = likesPeopleList.length;
+
+            // // add isLiked by me field 
+            // likedPost = likedPost.toObject();
+            // likedPost.isLiked = !!isLiked
+
+            // //send new values to mongo
+            // User.findByIdAndUpdate(userId,
+            //     { $set: { posts: userWasLikedData.posts } },
+            //     function (err) {
+            //         if (err) return console.log(err);
+            //         res.status(200).json({ message: 'The post was liked', updatedPost: likedPost })
+            //     });
+
+
+            // find post info block
+            const postsInfo = await Post.findOne({ owner: new ObjectId(userId) });
             //find post by id
-            let likedPost = userWasLikedData.posts.find(
+            let likedPost = postsInfo.posts.find(
                 (post) => { if (post._id == postId) { return post } })
 
-            //find if user liked this post before
+            //find if me liked this post before
             let likesPeopleList = likedPost.likesPeopleId;
             let isLiked = likesPeopleList.indexOf(myId);
             if (isLiked == -1) { likesPeopleList.push(myId); isLiked = 1 }
@@ -174,14 +248,15 @@ router.post(
 
             // calculate likes count
             likedPost.likesCount = likesPeopleList.length;
-            
+
             // add isLiked by me field 
             likedPost = likedPost.toObject();
             likedPost.isLiked = !!isLiked
 
             //send new values to mongo
-            User.findByIdAndUpdate(userId,
-                { $set: { posts: userWasLikedData.posts } },
+            Post.updateOne(
+                { owner: new ObjectId(userId) },
+                { $set: { posts: postsInfo.posts } },
                 function (err) {
                     if (err) return console.log(err);
                     res.status(200).json({ message: 'The post was liked', updatedPost: likedPost })
