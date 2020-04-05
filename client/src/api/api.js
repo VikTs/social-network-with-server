@@ -1,6 +1,6 @@
 import * as axios from 'axios'
 import { authCheck, getCurrentUserId } from '../middleware/auth.middleware'
-import { Result } from 'express-validator';
+// import { Result } from 'express-validator';
 
 const instance = axios.create({
     withCredentials: true, //сервер должен поддерж
@@ -11,16 +11,18 @@ const instance = axios.create({
 
 export const usersAPI = {
     getUsers(currentPage = 1, pageSize = 10) {
-        return instance.get(`users?page=${currentPage}&count=${pageSize}`,
+        const myId = getCurrentUserId();
+        return instance.get(`users?page=${currentPage}&count=${pageSize}&id=${myId}`,
             { withCredentials: true })
             .then(response => { return response.data });
     },
     follow(userId) {
-        return instance.post(`users/follow/${userId}`)
-
+        const myId = getCurrentUserId();
+        return instance.post(`users/follow`, { userId, myId })
     },
     unfollow(userId) {
-        return instance.delete(`users/follow/${userId}`)
+        const myId = getCurrentUserId();
+        return instance.delete(`users/follow?userid=${userId}&myid=${myId}`)
     },
     getProfile(userId) {
         console.warn('Obsolete method. Use profileAPI')
@@ -114,7 +116,7 @@ export const securityAPI = {
 }
 
 export const notificationAPI = {
-    createLikeNotification( userId, postId, isLiked) {
+    createLikeNotification(userId, postId, isLiked) {
         const myId = getCurrentUserId()
         return instance.post(`notification/newLike`, { myId, userId, postId, isLiked })
     },

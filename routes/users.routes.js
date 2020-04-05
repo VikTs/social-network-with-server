@@ -3,7 +3,6 @@ const router = Router() //create router
 const User = require('../models/UserModel'); //подключаем модель
 var ObjectId = require('mongodb').ObjectId;
 const config = require('config'); //берет данные из файла config/default.json
-var jwtDecode = require('jwt-decode');
 
 //  /users
 router.get(
@@ -13,17 +12,26 @@ router.get(
             let searchParams = new URLSearchParams(req._parsedOriginalUrl.search);
             const currentPage = searchParams.get('page');
             const pageSize = searchParams.get('count');
+            const myId = searchParams.get('id');
 
             const users = await User.find({});
+            const me = await User.findOne({ _id: new ObjectId(myId) });
             let currentUsers = [];
+            const myFriends = me.friends;
 
-            users.forEach((user, index)=>{
-                if(index>=((currentPage-1)*pageSize)&&index<pageSize*currentPage){
-                    currentUsers.push(user);}
+            users.forEach((user, index) => {
+                if (index >= ((currentPage - 1) * pageSize) && 
+                index < pageSize * currentPage && 
+                user._id != myId) {
+                    if(myFriends.indexOf(user._id) != -1) {
+                        user = user.toObject();
+                        user.followed = true;
+                    }
+                    currentUsers.push(user);
+                }
             });
 
-            res.json({"items": currentUsers, "totalCount": users.length, "error": null});
-
+            res.json({ "items": currentUsers, "totalCount": users.length, "error": null });
             res.status(200).json({ message: 'Users were loaded' })
         } catch (error) {
             res.status(500).json({ message: 'Something wrong: users weren`t loaded' })
@@ -32,33 +40,48 @@ router.get(
 
 //  /users/follow - post
 router.post(
-    '/follow/:userId',
+    '/follow',
     async (req, res) => {
         try {
-            //console.log(req.params.userId)
-            
 
-            res.json({"resultCode":0});
+            const myId = req.body.myId;
+            const userId = req.body.userId;
 
-            res.status(200).json({ message: 'The user userId was followed' })
+            User.updateOne(
+                { _id: new ObjectId(myId) },
+                { $push: { friends: userId } },
+                function (err) {
+                    if (err) return console.log(err);
+                    res.status(200).json({ message: `The user ${userId} was followed`, resultCode: 0})
+                });
+
         } catch (error) {
             res.status(500).json({ message: 'Something wrong: user cannot be followed' })
         }
     })
 
 //  /users/follow - delete 
-    router.delete(
-        '/follow/:userId',
-        async (req, res) => {
-            try {
-                
-    
-                res.json({"resultCode":0});
+router.delete(
+    '/follow',
+    async (req, res) => {
+        try {
 
-                res.status(200).json({ message: 'The user userId was unfollowed' })
-            } catch (error) {
-                res.status(500).json({ message: 'Something wrong: user cannot be unfollowed' })
-            }
-        })
+            let searchParams = new URLSearchParams(req._parsedUrl.query);
+            const userId = searchParams.get('userid');
+            const myId = searchParams.get('myid');
+            
+            User.updateOne(
+                { _id: new ObjectId(myId) },
+                { $pull: { friends: userId } },
+                function (err) {
+                    if (err) return console.log(err);
+                    res.status(200).json({ message: `The user ${userId} was unfollowed`, resultCode: 0})
+                });
+
+
+        } catch (error) {
+            res.status(500).json({ message: `Something wrong: user cannot be unfollowed: ${error}` })
+        }
+    })
 
 module.exports = router 
