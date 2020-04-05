@@ -86,7 +86,8 @@ router.put(
                 _id: postId,
                 name: req.body.postText,
                 likesCount: 0,
-                likesPeopleId: []
+                likesPeopleId: [],
+                date: new Date
             }
 
             // User.findByIdAndUpdate(userId, { $push: { posts: newPost } },

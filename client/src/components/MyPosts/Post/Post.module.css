@@ -5,6 +5,8 @@
    */
   .item {
     color: white;
+    border: 1px blue solid;
+    margin: 4px;
   }
   
   .item img {

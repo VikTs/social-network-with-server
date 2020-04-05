@@ -6,7 +6,8 @@ const schema = new Schema({
       id: Number,
       name: String,
       likesCount: Number,
-      likesPeopleId: Array
+      likesPeopleId: Array,
+      date: Date,
     }
   ],
   owner: { type: Types.ObjectId, ref: "User" }
