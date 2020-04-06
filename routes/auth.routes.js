@@ -52,6 +52,7 @@ router.post(
                 contacts: { facebook, youtube },
                 status: 'Here must be my status', aboutMe: 'Hi, I am new user',
                 photos: { small: null, large: '' },
+               // friends:[], myRequestsToFriends: [], subscribers: []
                 //notifications: []
             }) 
             await user.save() //ждём, пока пользователь сохраниться

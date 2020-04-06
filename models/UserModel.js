@@ -26,6 +26,8 @@ const schema = new Schema({ //создаем схему
         likesPeopleId: Array
     }],
     friends: Array,
+    myfollows: Array,
+    subscribers: Array,
     notifications: [{ type: Types.ObjectId, ref: 'Notification' }] //Notifications - модель,к которой мы привязываемся
 })
 

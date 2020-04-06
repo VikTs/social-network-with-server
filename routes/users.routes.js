@@ -18,12 +18,14 @@ router.get(
             const me = await User.findOne({ _id: new ObjectId(myId) });
             let currentUsers = [];
             const myFriends = me.friends;
+            const myfollows = me.myfollows;
 
             users.forEach((user, index) => {
-                if (index >= ((currentPage - 1) * pageSize) && 
-                index < pageSize * currentPage && 
-                user._id != myId) {
-                    if(myFriends.indexOf(user._id) != -1) {
+                if (index >= ((currentPage - 1) * pageSize) &&
+                    index < pageSize * currentPage &&
+                    user._id != myId) {
+                    if (myFriends.indexOf(user._id) != -1 ||
+                        myfollows.indexOf(user._id) != -1) {
                         user = user.toObject();
                         user.followed = true;
                     }
@@ -47,13 +49,19 @@ router.post(
             const myId = req.body.myId;
             const userId = req.body.userId;
 
-            User.updateOne(
+            //push him to my requests
+            await User.updateOne(
                 { _id: new ObjectId(myId) },
-                { $push: { friends: userId } },
-                function (err) {
-                    if (err) return console.log(err);
-                    res.status(200).json({ message: `The user ${userId} was followed`, resultCode: 0})
-                });
+                { $push: { myfollows: userId } });
+
+            //push me to his subscribers
+            await User.updateOne(
+                { _id: new ObjectId(userId) },
+                { $push: { subscribers: myId } });
+
+
+            res.status(200).json({ message: `The user ${userId} was followed`, resultCode: 0 })
+
 
         } catch (error) {
             res.status(500).json({ message: 'Something wrong: user cannot be followed' })
@@ -69,14 +77,28 @@ router.delete(
             let searchParams = new URLSearchParams(req._parsedUrl.query);
             const userId = searchParams.get('userid');
             const myId = searchParams.get('myid');
-            
-            User.updateOne(
-                { _id: new ObjectId(myId) },
-                { $pull: { friends: userId } },
-                function (err) {
-                    if (err) return console.log(err);
-                    res.status(200).json({ message: `The user ${userId} was unfollowed`, resultCode: 0})
-                });
+
+            const myData = await User.findOne({ _id: new ObjectId(myId) });
+
+            if (myData.myfollows.indexOf(userId) != -1) {
+                await User.updateOne(
+                    { _id: new ObjectId(myId) },
+                    { $pull: { myfollows: userId } });
+                await User.updateOne(
+                    { _id: new ObjectId(userId) },
+                    { $pull: { subscribers: myId } });
+            }
+            else if (myData.friends.indexOf(userId) != -1) {
+                await User.updateOne(
+                    { _id: new ObjectId(myId) },
+                    { $pull: { friends: userId } });
+                await User.updateOne(
+                    { _id: new ObjectId(userId) },
+                    { $pull: { friends: myId } });
+            }
+            else { res.status(403) } //////////
+
+            res.status(200).json({ message: `The user ${userId} was unfollowed`, resultCode: 0 })
 
 
         } catch (error) {
