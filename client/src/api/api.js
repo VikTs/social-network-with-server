@@ -10,9 +10,9 @@ const instance = axios.create({
 });
 
 export const usersAPI = {
-    getUsers(currentPage = 1, pageSize = 10) {
+    getUsers(currentPage = 1, pageSize = 10, isFriendsPage = false) {
         const myId = getCurrentUserId();
-        return instance.get(`users?page=${currentPage}&count=${pageSize}&id=${myId}`,
+        return instance.get(`users?page=${currentPage}&count=${pageSize}&id=${myId}&friends=${isFriendsPage}`,
             { withCredentials: true })
             .then(response => { return response.data });
     },
@@ -119,6 +119,14 @@ export const notificationAPI = {
     createLikeNotification(userId, postId, isLiked) {
         const myId = getCurrentUserId()
         return instance.post(`notification/newLike`, { myId, userId, postId, isLiked })
+    },
+    addReqFriendNotification(userId) {
+        const myId = getCurrentUserId()
+        return instance.post(`notification/friendreq`, { myId, userId })
+    },
+    removeReqFriendNotification(userId) {
+        const myId = getCurrentUserId()
+        return instance.delete(`notification/friendreq/${myId}/${userId}`)
     },
     getNotificationList() {
         const myId = getCurrentUserId()

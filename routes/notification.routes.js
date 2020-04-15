@@ -14,46 +14,7 @@ router.post("/newLike", async (req, res) => {
     const postId = req.body.postId;
     const isLiked = req.body.isLiked;
 
-    // const userData = await User.findOne({ _id: new ObjectId(userId) });
-
-    // const myData = await User.findOne({ _id: new ObjectId(myId) });
-    // const myName = myData.name;
-    // const mySurname = myData.surname;
-
-    // let postInfo = userData.posts.find(post => { ///!!!
-    //   if (post._id == postId) return post;
-    // });
-
-    // const newNotificationInfo = {
-    //   //userId,
-    //   userId: myId,///!!!
-    //   userName: myName,
-    //   userSurname: mySurname,
-    //   postId,
-    //   isLiked,
-    //   postInfo: postInfo
-    // };
-    // let update = Notification.updateOne(
-    //   { owner: new ObjectId(userId) },///!!!
-    //   {
-    //     $push: { likesNotification: newNotificationInfo },
-    //     $inc: { newNotificationsCount: 1 }
-    //   },
-    //   function(err) {
-    //     if (err) return console.log(err);
-    //   }
-    // );
-
-    // if (update) {
-    //   res.status(201).json({
-    //     message: "Notification was created",
-    //     resultCode: 0,
-    //     newNotificationInfo
-    //   });
-    // }
-
     const postData = await Post.findOne({ owner: new ObjectId(userId) });
-
     const myData = await User.findOne({ _id: new ObjectId(myId) });
     const myName = myData.name;
     const mySurname = myData.surname;
@@ -104,12 +65,20 @@ router.get("/getList/:id", async (req, res) => {
       owner: new ObjectId(myId)
     });
     const likesNotification = notificationData.likesNotification;
+    const friendNotificationRequest = notificationData.friendNotificationRequest;
+    const friendNotificationDeleteRequest = notificationData.friendNotificationDeleteRequest;
+    const friendNotificationResponse = notificationData.friendNotificationResponse;
+    const newNotificationsCount = notificationData.newNotificationsCount;
 
     // Return result
     res.status(200).json({
       message: "Notifications were get",
       resultCode: 0,
-      likesNotification
+      likesNotification,
+      friendNotificationRequest,
+      friendNotificationResponse,
+      friendNotificationDeleteRequest,
+      newNotificationsCount
     });
   } catch (error) {
     res.status(500).json({
@@ -176,7 +145,8 @@ router.delete("/:id", async (req, res) => {
         $set: {
           newNotificationsCount: 0,
           likesNotification: [],
-          addToFriendNotification: []
+          friendNotificationRequest: [],
+          friendNotificationResponse: [],
         }
       },
       function (err) {
@@ -191,6 +161,54 @@ router.delete("/:id", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: `Something wrong: notifications was not delete: ${error}`
+    });
+  }
+});
+
+// addReqFriendNotification - post
+router.post("/friendreq", async (req, res) => {
+  try {
+    const myId = req.body.myId;
+    const userId = req.body.userId;
+
+    const myData = await User.findOne({ _id: new ObjectId(myId) });
+
+    await Notification.updateOne(
+      { owner: new ObjectId(userId) },
+      {
+        $push: { friendNotificationRequest: { userId: myId, userName: myData.name, userSurname: myData.surname } },
+        $inc: { newNotificationsCount: 1 }
+      }
+    );
+
+    res.status(200).json({ message: "The request to friends was sent", resultCode: 0 });
+
+  } catch (error) {
+    res.status(500).json({
+      message: `Something wrong with request to friends: ${error}`
+    });
+  }
+});
+
+// removeReqFriendNotification - delete
+router.delete("/friendreq/:myid/:userid", async (req, res) => {
+  try {
+    const myId = req.params.myid;
+    const userId = req.params.userid;
+    const myData = await User.findOne({ _id: new ObjectId(myId) });
+
+    await Notification.updateOne(
+      { owner: new ObjectId(userId) },
+      {
+        $push: { friendNotificationDeleteRequest: { userId: myId, userName: myData.name, userSurname: myData.surname  }} ,
+        $inc: { newNotificationsCount: 1 }
+      }
+    );
+    res.status(200).json({ message: "The request to friends was delete", resultCode: 0 });
+
+  } catch (error) {
+    res.status(500).json({
+      message: `Something wrong with deleting request to friends: ${error}`
     });
   }
 });

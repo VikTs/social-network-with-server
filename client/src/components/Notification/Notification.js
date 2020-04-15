@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./Notification.module.css";
+import { NavLink } from "react-router-dom";
 
 class Notifications extends React.Component {
   componentDidMount() {
@@ -13,12 +14,10 @@ class Notifications extends React.Component {
 
   render() {
     // console.log('this.props.likesNotification',this.props.likesNotification);
-    let notifications = this.props.likesNotification
+    let likes = this.props.likesNotification
       .map((n, i) => {
-        //console.log(this.props.likesNotification.length, '-', this.props.newNotificationsCount, i)
-        // console.log(this.props.likesNotification.length-this.props.newNotificationsCount<i)
         return (
-          <Notification
+          <NotificationLike
             key={i}
             postInfo={n.postInfo}
             userName={n.userName}
@@ -30,22 +29,55 @@ class Notifications extends React.Component {
       })
       .reverse();
 
+    // console.log(this.props, 'this.props')
+
+    let friendsRequest = this.props.friendNotificationRequest
+      .map((n, i) => {
+        return (
+          <NotificationFriend
+            key={i}
+            userName={n.userName}
+            userSurname={n.userSurname}
+            userId={n.userId}
+            text='want to be your friend'
+          />
+        );
+      })
+      .reverse();
+
+    let friendsDeleteRequest = this.props.friendNotificationDeleteRequest
+      .map((n, i) => {
+        return (
+          <NotificationFriend
+            key={i}
+            userName={n.userName}
+            userSurname={n.userSurname}
+            userId={n.userId}
+            text='removed his(her) request to friends'
+          />
+        );
+      })
+      .reverse();
+
     return (
       <div>
         <h1>Notifications:</h1>
         <p>You have {this.props.newNotificationsCount} new notifications</p>
-        {/* {this.props.newNotificationsCount ? */}
-          <button type="button" onClick={this.props.cleanAllNotifications}>
-            Clean all notifications
-        </button> 
-        {/* : <> </>} */}
-        {notifications}
+        <button type="button" onClick={this.props.cleanAllNotifications}>
+          Clean all notifications
+        </button>
+        <h2>Likes</h2>
+        <div>{likes}</div>
+        <h2>Friends Request</h2>
+        <div>{friendsRequest}</div>
+        <h2>Friends Delete Request</h2>
+        <div>{friendsDeleteRequest}</div>
       </div>
     );
   }
 }
 
-const Notification = props => {
+const NotificationLike = props => {
   return (
     <div
       className={`${style.notificationBlock} 
@@ -67,4 +99,20 @@ const Notification = props => {
     </div>
   );
 };
+
+const NotificationFriend = ({ userName, userSurname, userId, text, ...props }) => {
+  return (
+    <div className={`${style.notificationBlock}`} >
+
+      <p>
+        <NavLink to={`/profiles/${userId}`}>
+          {userName} {userSurname}
+        </NavLink>
+        {text}
+      </p>
+
+    </div>
+  );
+};
+
 export default Notifications;

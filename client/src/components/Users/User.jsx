@@ -3,7 +3,8 @@ import styles from './users.module.css'
 import userPhoto from '../../images/user.png'
 import { NavLink } from 'react-router-dom'
 
-let User = ({ user, followingInProgress, unfollow, follow, ...props }) => {
+let User = ({ user, followingInProgress, unfollow, follow, isFriendsPage,
+    removeFriendNotification, addFriendNotification, removefromFriendsAC, ...props }) => {
 
     return (<div key={user._id}>
         <span>
@@ -17,15 +18,16 @@ let User = ({ user, followingInProgress, unfollow, follow, ...props }) => {
                 {user.followed
                     ? <button disabled={followingInProgress
                         .some(id => id === user._id)}
-                        onClick={() => { unfollow(user._id) }}>
-                        Unfollow</button>
+                        onClick={() => {                            
+                            unfollow(user._id);
+                            removeFriendNotification(user._id)
+                            // if (isFriendsPage) { removefromFriendsAC(user._id) }
+                        }}>
+                        {isFriendsPage ? 'Delete from friends' : 'Unfollow'}
+                    </button>
                     : <button disabled={followingInProgress.some(id => id === user._id)}
-                        onClick={() => { follow(user._id) }}>
+                        onClick={() => { follow(user._id); addFriendNotification(user._id) }}>
                         Follow</button>}
-
-
-
-
             </div>
         </span>
         <span>

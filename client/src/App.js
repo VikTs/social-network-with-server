@@ -45,6 +45,7 @@ class App extends React.Component {
           <Route path='/profiles/:userId?' render={withSuspense(ProfileContainer)} />
           <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
           <Route path='/users' render={withSuspense(UsersContainer)} />
+          <Route path='/friends' render={withSuspense(UsersContainer)} />
           <Route path='/notification' render={withSuspense(NotificationContainer)} />
           {/* <Route path='/login' render={withSuspense(LoginPage)} /> */}
           <Route path='/login' render={withSuspense(LoginOrRegistrationPage)} />

@@ -8,6 +8,7 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
+const REMOVE_FROM_FRIENDS = 'REMOVE-FROM-FRIENDS';
 
 let initialState = {
     users: [],
@@ -69,6 +70,17 @@ const usersReducer = (state = initialState, action) => {
                     : state.followingInProgress.filter(id => id != action.userId)
             }
 
+            case REMOVE_FROM_FRIENDS:
+                return {
+                    ...state,
+                    users: state.users.filter(u => {
+                        if (u._id !== action.userId) {
+                            return u
+                        }
+                    })
+                }
+            
+
 
         default: return state;
     }
@@ -116,6 +128,13 @@ export const toggleIsFetching = (isFetching) => {
     }
 }
 
+export const removefromFriendsAC = (userId) => {
+    return {
+        type: REMOVE_FROM_FRIENDS,
+        userId
+    }
+}
+
 export const toggleFollowingProgress = (isFetching, userId) => {
     return {
         type: TOGGLE_IS_FOLLOWING_PROGRESS,
@@ -123,11 +142,11 @@ export const toggleFollowingProgress = (isFetching, userId) => {
     }
 }
 
-export const getUsers = (currentPage, pageSize) => {
+export const getUsers = (currentPage, pageSize, isFriendsPage = false) => {
     return async (dispatch) => {
         dispatch(toggleIsFetching(true));
         dispatch(setCurrentPage(currentPage));
-        let data = await usersAPI.getUsers(currentPage, pageSize);
+        let data = await usersAPI.getUsers(currentPage, pageSize, isFriendsPage);
         dispatch(toggleIsFetching(false));
         dispatch(setUsers(data.items));
         dispatch(setTotalUsersCount(data.totalCount))

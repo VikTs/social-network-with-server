@@ -8,25 +8,22 @@ const CLEAN_ALL_NOTIFICATIONS = "CLEAN-ALL-NOTIFICATIONS";
 
 let initialState = {
   likesNotification: [],
-  friendNotification: [],
+  friendNotificationRequest: [],
+  friendNotificationResponse: [],
+  friendNotificationDeleteRequest: [],
   newNotificationsCount: 0
 };
 
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case CREATE_LIKE_NOTIFICATION:
-    //   //newNotificationInfo
-    //   return {
-    //     ...state,
-    //     likesNotification: [
-    //       ...state.likesNotification,
-    //       action.newNotificationInfo
-    //     ],
-    //   };
     case GET_NOTIFICATION_LIST:
       return {
         ...state,
-        likesNotification: action.likesNotification
+        likesNotification: action.likesNotification,
+        friendNotificationRequest: action.friendNotificationRequest,
+        friendNotificationResponse: action.friendNotificationResponse,
+        friendNotificationDeleteRequest: action.friendNotificationDeleteRequest,
+        newNotificationsCount: action.newNotificationsCount,
       };
     case ZEROING_NOTIFICATION_COUNT:
       return {
@@ -42,21 +39,15 @@ const notificationReducer = (state = initialState, action) => {
       return {
         ...state,
         likesNotification: [],
-        friendNotification: [],
+        friendNotificationRequest: [],
+        friendNotificationResponse: [],
+        friendNotificationDeleteRequest: [],
         newNotificationsCount: 0
       };
     default:
       return state;
   }
-  //return state
 };
-
-// const createLikeNotificationAC = newNotificationInfo => {
-//   return {
-//     type: CREATE_LIKE_NOTIFICATION,
-//     newNotificationInfo
-//   };
-// };
 
 const zeroingNotificationsCountAC = () => {
   return {
@@ -64,11 +55,20 @@ const zeroingNotificationsCountAC = () => {
   };
 };
 
-const getNotificationListAC = (likesNotification, newCount) => {
+const getNotificationListAC = (
+  likesNotification,
+  friendNotificationRequest,
+  friendNotificationResponse,
+  friendNotificationDeleteRequest,
+  newNotificationsCount
+) => {
   return {
     type: GET_NOTIFICATION_LIST,
     likesNotification,
-    newCount
+    friendNotificationRequest,
+    friendNotificationResponse,
+    friendNotificationDeleteRequest,
+    newNotificationsCount
   };
 };
 
@@ -86,7 +86,7 @@ const cleanAllNotificationsAC = () => {
 };
 
 export const createLikeNotification = (userId, postId, isLiked) => async dispatch => {
-  await notificationAPI.createLikeNotification( userId, postId, isLiked );
+  await notificationAPI.createLikeNotification(userId, postId, isLiked);
   //dispatch(createLikeNotificationAC(response.data.newNotificationInfo));
 };
 
@@ -97,7 +97,13 @@ export const zeroingNotificationsCount = () => async dispatch => {
 
 export const getNotificationList = () => async dispatch => {
   let response = await notificationAPI.getNotificationList();
-  dispatch(getNotificationListAC(response.data.likesNotification));
+  dispatch(getNotificationListAC(
+    response.data.likesNotification,
+    response.data.friendNotificationRequest,
+    response.data.friendNotificationResponse,
+    response.data.friendNotificationDeleteRequest,    
+    response.data.newNotificationsCount
+  ));
 };
 
 export const getNewNotificationCount = () => async dispatch => {
@@ -109,5 +115,16 @@ export const cleanAllNotifications = () => async dispatch => {
   let response = await notificationAPI.cleanAllNotifications();
   dispatch(cleanAllNotificationsAC());
 };
+
+export const removeFriendNotification = (userId) => async dispatch => {
+  let response = await notificationAPI.removeReqFriendNotification(userId);
+  // dispatch(removeReqFriendNotification(userId)); //user id
+};
+
+export const addFriendNotification = (userId) => async dispatch => {
+  let response = await notificationAPI.addReqFriendNotification(userId);
+  // dispatch(addReqFriendNotification(response.data));//user id,name,surname
+};
+
 
 export default notificationReducer;

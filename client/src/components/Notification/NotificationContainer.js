@@ -9,7 +9,9 @@ import { connect } from "react-redux";
 let mapStateToProps = state => {
   return {
     likesNotification: state.notification.likesNotification,
-    friendNotification: state.notification.friendNotification,
+    friendNotificationRequest: state.notification.friendNotificationRequest,
+    friendNotificationResponse: state.notification.friendNotificationResponse,
+    friendNotificationDeleteRequest: state.notification.friendNotificationDeleteRequest,
     newNotificationsCount: state.notification.newNotificationsCount
   };
 };

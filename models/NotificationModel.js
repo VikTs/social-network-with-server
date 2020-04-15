@@ -19,7 +19,27 @@ const schema = new Schema({
       }
     }
   ],
-  addToFriendNotification: [{ userId: String }],
+  friendNotificationRequest: [
+    {
+      userId: String,
+      userName: String,
+      userSurname: String
+    }
+  ],
+  friendNotificationResponse: [
+    {
+      userId: String,
+      userName: String,
+      userSurname: String
+    }
+  ],
+  friendNotificationDeleteRequest: [
+    {
+      userId: String,
+      userName: String,
+      userSurname: String
+    }
+  ],
   newNotificationsCount: Number,
   owner: { type: Types.ObjectId, ref: "User" } //Link - модель,к которой мы привязываемся
 });
