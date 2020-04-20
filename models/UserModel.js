@@ -1,6 +1,6 @@
 // создаем модель - взаимодействие с пользователем
 const { Schema, model, Types } = require('mongoose') //работа с mongoose, import
-// !!!!!! Types.ObjectId -  СВЯЗЬ ПОЛЬЗОВАТЕЛЬ - ЕГО ССЫЛКИ  !!!!!!
+// Types.ObjectId -  СВЯЗЬ ПОЛЬЗОВАТЕЛЬ - ЕГО ССЫЛКИ
 
 const schema = new Schema({ //создаем схему
     email: { type: String, required: true, unique: true },

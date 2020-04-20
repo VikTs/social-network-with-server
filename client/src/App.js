@@ -16,6 +16,9 @@ import { Provider } from 'react-redux'
 import { withSuspense } from './hoc/withSuspense';
 import LoginPage from './components/Login/Login';
 
+import socketIOClient from "socket.io-client";
+// var socket;
+
 //lazy-подгружаем компоненту в момент перехода по вкладке
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -25,6 +28,13 @@ const LoginOrRegistrationPage = React.lazy(() => import('./components/Login/Logi
 //const LoginPage = React.lazy(() => import('./components/Login/Login'));
 
 class App extends React.Component {
+
+  state = {
+    endpoint: "http://localhost:5000/" // Update 3001 with port on which backend-my-app/server.js is running.
+  };
+  socket = socketIOClient(this.state.endpoint);
+
+
 
   componentDidMount() {
     this.props.initializeApp()
@@ -49,8 +59,8 @@ class App extends React.Component {
           <Route path='/notification' render={withSuspense(NotificationContainer)} />
           {/* <Route path='/login' render={withSuspense(LoginPage)} /> */}
           <Route path='/login' render={withSuspense(LoginOrRegistrationPage)} />
-          <Route path='/signIn' render={()=><LoginPage loginType="signIn"/>} />
-          <Route path='/signUp' render={()=><LoginPage loginType="signUp"/>} />
+          <Route path='/signIn' render={() => <LoginPage loginType="signIn" />} />
+          <Route path='/signUp' render={() => <LoginPage loginType="signUp" />} />
 
           <Route path='/news' component={News} />
           <Route path='/music' component={Music} />
