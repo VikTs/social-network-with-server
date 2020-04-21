@@ -6,4 +6,4 @@ const schema = new Schema({
   userId: { type: Types.ObjectId, ref: "User" }
 });
 
-module.exports = model("Message", schema); 
+module.exports = model("MessageStatus", schema); 

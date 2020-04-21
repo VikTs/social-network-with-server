@@ -1,12 +1,11 @@
-const socketIO = require("socket.io");
-const http = require("http");
 const express = require('express')
 const config = require('config')
 const mongoose = require('mongoose')
 const app = express();
 //IO
-const server = http.createServer(app);
-const io = socketIO(server);
+const http = require('http').Server(app);
+require('./socket/main').sockets(http);
+///
 
 const multer = require("multer");
 const storageConfig = multer.diskStorage({
@@ -20,7 +19,6 @@ const storageConfig = multer.diskStorage({
 app.use(express.static('https://www.publicdomainpictures.net/pictures/270000/nahled/avatar-people-person-business-u.jpg'));
 app.use(multer({ storage: storageConfig }).single("filedata"));
 app.put("/photo", function (req, res, next) {
-
     let filedata = req.file;
     if (!filedata)
         res.send("Ошибка при загрузке файла");
@@ -35,13 +33,6 @@ app.use('/api/profile', require('./routes/profile.routes'))
 app.use('/api/users', require('./routes/users.routes'))
 app.use('/api/notification', require('./routes/notification.routes'))
 
-io.sockets.on('connection', (socket) => {
-    console.log('Connected user to socket io with id', socket.id);
-    socket.on("disconnect", () => {
-        console.log("Disconnected")
-    })
-});
-
 const PORT = config.get('port') || 5000 //порт сервера
 
 async function start() {
@@ -55,7 +46,7 @@ async function start() {
             console.log("MongoDB database connection established successfully");
         })
         // mongoose.connection.close()
-        server.listen(PORT, () => { console.log(`App started on port ${PORT}`) }) //load server
+        http.listen(PORT, () => { console.log(`App started on port ${PORT}`) }) //load server
 
     } catch (e) { // if no connect
         console.log('Server error. Mongo is not connected')
@@ -63,4 +54,4 @@ async function start() {
     }
 
 }
-start()
+start();

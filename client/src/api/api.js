@@ -146,3 +146,9 @@ export const notificationAPI = {
     }
 }
 
+export const messagesAPI = {
+    sendMessage() {
+        return instance.post(`messages`)
+    }
+}
+

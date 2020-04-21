@@ -7,7 +7,7 @@ const schema = new Schema({
   membersId: Array,
   context: String,
   dateCreate: Date,
-  ownerId: { type: Types.ObjectId, ref: "User" }
+  // ownerId: { type: Types.ObjectId, ref: "User" }
 });
 
 module.exports = model("Chat", schema); 

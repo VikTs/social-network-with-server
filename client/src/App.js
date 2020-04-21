@@ -15,9 +15,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { withSuspense } from './hoc/withSuspense';
 import LoginPage from './components/Login/Login';
-
 import socketIOClient from "socket.io-client";
-// var socket;
+
+
+var socket = socketIOClient("http://localhost:5000/");
 
 //lazy-подгружаем компоненту в момент перехода по вкладке
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -28,20 +29,16 @@ const LoginOrRegistrationPage = React.lazy(() => import('./components/Login/Logi
 //const LoginPage = React.lazy(() => import('./components/Login/Login'));
 
 class App extends React.Component {
-
-  state = {
-    endpoint: "http://localhost:5000/" // Update 3001 with port on which backend-my-app/server.js is running.
-  };
-  socket = socketIOClient(this.state.endpoint);
-
-
+  // state = {
+  //   endpoint: "http://localhost:5000/" 
+  // };
+  // socket = socketIOClient(this.state.endpoint);
 
   componentDidMount() {
     this.props.initializeApp()
   }
 
   render() {
-
     if (!this.props.initialized) {
       return <Preloader />
     }
@@ -51,17 +48,14 @@ class App extends React.Component {
         <HeaderContainer />
         <Navbar />
         <div className="app-wrapper-content">
-
           <Route path='/profiles/:userId?' render={withSuspense(ProfileContainer)} />
           <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
           <Route path='/users' render={withSuspense(UsersContainer)} />
           <Route path='/friends' render={withSuspense(UsersContainer)} />
           <Route path='/notification' render={withSuspense(NotificationContainer)} />
-          {/* <Route path='/login' render={withSuspense(LoginPage)} /> */}
           <Route path='/login' render={withSuspense(LoginOrRegistrationPage)} />
           <Route path='/signIn' render={() => <LoginPage loginType="signIn" />} />
           <Route path='/signUp' render={() => <LoginPage loginType="signUp" />} />
-
           <Route path='/news' component={News} />
           <Route path='/music' component={Music} />
           <Route path='/settings' component={Settings} />
@@ -71,18 +65,13 @@ class App extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state) => ({
   initialized: state.app.initialized
 })
 
-
 const AppContainer = compose(
   withRouter, //withRouter - так как коннектим App компонент, сбиваются Route
   connect(mapStateToProps, { initializeApp }))(App);
-
-
-
 
 const SocialApp = (props) => {
   return (
@@ -100,4 +89,4 @@ const SocialApp = (props) => {
   )
 }
 
-export default SocialApp
+export { SocialApp, socket };

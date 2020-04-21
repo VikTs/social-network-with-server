@@ -27,7 +27,6 @@ router.put(
     '/status',
     async (req, res) => {
         try {
-            console.log(req.body)
             User.findByIdAndUpdate(req.body.userId, { status: req.body.status },
                 function (err) {
                     if (err) return console.log(err);
