@@ -1,0 +1,18 @@
+.message-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 110px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }  
+  &::-webkit-scrollbar-track {
+    background: inherit;
+  }   
+  &::-webkit-scrollbar-thumb {
+    background: #45494e; 
+    &:hover {
+      background: #555; 
+    }
+  }  
+}

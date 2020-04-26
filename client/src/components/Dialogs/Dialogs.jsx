@@ -1,60 +1,34 @@
 import React from 'react';
-import classes from './Dialogs.module.css'
-import DialogItem from './DialogItem/DialogItem';
-import Message from './Messages/Messages';
-import { Field, reduxForm } from 'redux-form';
-import { Textarea } from '../common/FormsControls/FormsControls';
-import { required, maxLengthCreator } from '../../utils/validators/validators';
-import { socket } from '../../App';
+import MessagesWrapper from './Messages/Messages';
+import DialogList from './DialogList/DialogList';
+import { Switch, Route } from 'react-router-dom';
+import NewChatForm from './NewChatForm/NewChatForm';
 
 class Dialogs extends React.PureComponent {
-    state = {
-        message: '',
-    }
-
-    addNewMessage = (values) => {
-        socket.emit('chat message', values.newMessageBody);
-
-        socket.on('output', function (data) {
-            console.log(data, 'output');
-          });
-        this.props.sendMessage(values.newMessageBody);
-    }
 
     render() {
-        const dialogsElements = this.props.messagesState.dialogs.map(dialog => (<DialogItem name={dialog.name} key={dialog.id} id={dialog.id} />))
-        const messageElements = this.props.messagesState.messages.map(mess => (<Message message={mess.message} key={mess.id} />))
         return (
-            <div className={classes.dialogs}>
-                <div className={classes.dialogsItems}>
-                    {dialogsElements}
-
-                </div>
-                <div className={classes.messages}>
-                    <div>{messageElements}</div>
-                    <AddMessageFormRedux onSubmit={this.addNewMessage} />
-                </div>
+            <div className="dialogs">
+                <Switch>
+                    <Route exact path="/dialogs" render={() =>
+                        <DialogList chats={this.props.chats} myId={this.props.myId} />
+                    } />
+                    <Route exact path="/dialogs/new" render={() =>
+                        <NewChatForm />
+                    } />
+                    <Route exact path="/dialogs/:id" render={() =>
+                        <MessagesWrapper
+                            chats={this.props.chats}
+                            messages={this.props.messages}
+                            sendMessage={this.props.sendMessage}
+                            myId={this.props.myId}
+                        />
+                    } />
+                </Switch>
             </div>
         );
     }
 }
 
-const maxLength = maxLengthCreator(100);
-
-const AddMessageForm = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                <Field
-                    component={Textarea}
-                    validate={[required, maxLength]}
-                    name='newMessageBody' placeholder='Enter your message' />
-            </div>
-            <div><button >Send</button></div>
-        </form>
-    )
-}
-
-const AddMessageFormRedux = reduxForm({ form: 'dialogAddMessageForm' })(AddMessageForm)
 
 export default Dialogs;

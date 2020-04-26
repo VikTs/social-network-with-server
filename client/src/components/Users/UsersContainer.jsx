@@ -15,11 +15,8 @@ import {
 
 
 class UsersContainer extends React.Component {
-
     componentDidMount() {
         this.isFriendsPage = window.location.pathname === '/friends';
-        console.log('componentDidMount')
-        console.log('isFriendsPage', this.isFriendsPage)
         const { currentPage, pageSize } = this.props;
         this.props.getUsers(currentPage, pageSize, this.isFriendsPage);
     }
