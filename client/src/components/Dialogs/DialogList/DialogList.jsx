@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './DialogList.scss';
 import DialogItem from '../DialogItem/DialogItem';
 import DialogHeader from '../DialogsHeader/DialogsHeader';
 
 const DialogList = ({ chats, myId }) => {
-  const dialogItems = chats.map(chat => (
+  const [filteredChats, setFilteredChats] = useState(chats);
+
+  const dialogItems = filteredChats.map(chat => (
     <DialogItem
       owner={chat.members.find(member => member.id === chat.owner_id)}
       isOwner={chat.owner_id === myId}
@@ -17,8 +19,8 @@ const DialogList = ({ chats, myId }) => {
 
   return (
     <div className="dialog-list">
-      <DialogHeader />
-      {dialogItems}
+      <DialogHeader chats={chats} setFilteredChats={setFilteredChats} />
+      {dialogItems.length ? dialogItems : "No matched chats"}
     </div>
   )
 }

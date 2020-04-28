@@ -3,10 +3,10 @@ import DialogsNewButton from './DialogsNewButton/DialogsNewButton';
 import DialogsSearch from './DialogsSearch/DialogsSearch';
 import './DialogHeader.scss';
 
-const DialogHeader = () => {
+const DialogHeader = ({ chats, setFilteredChats }) => {
   return (
     <div className="dialog-header">
-      <DialogsSearch />
+      <DialogsSearch chats={chats} setFilteredChats={setFilteredChats}/>
       <DialogsNewButton />      
     </div>
   )
