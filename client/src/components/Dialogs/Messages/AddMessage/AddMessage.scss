@@ -1,5 +1,12 @@
+@import '../../../../styles/variables.scss';
+
 .new-message-container {
-  padding: 0 30px;
-  background-color: red;
+  padding: 10px 0;
+  background-color: $add-message-bg;
   width: 100%;
+}
+
+.new-message-body {
+  width: 80%;
+  margin: 0 3%;
 }

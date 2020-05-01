@@ -5,7 +5,7 @@ import {
 } from '../redux/users-reducer'
 import { removeFriendNotification, addFriendNotification } from '../redux/notification-reducer'
 import Users from './Users'
-import Preloader from '../common/Preloader/Preloader'
+import {Spinner} from '../common/Spinner/Spinner'
 // import { withAuthRedirect } from '../../hoc/withAuthRedirect'
 import { compose } from 'redux'
 import {
@@ -35,7 +35,7 @@ class UsersContainer extends React.Component {
     render() {
         return (
             <>
-                {this.props.isFetching ? <Preloader /> : null}
+                {this.props.isFetching ? <Spinner /> : null}
                 <Users
                     totalUsersCount={this.props.totalUsersCount}
                     pageSize={this.props.pageSize}

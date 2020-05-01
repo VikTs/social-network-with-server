@@ -2,21 +2,22 @@ import React from 'react';
 import './App.css';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Navbar from './components/Navbar/Navbar';
-import { Route, withRouter } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import Music from './components/Music/Music';
-import { initializeApp } from './components/redux/app-reducer'
+import { initializeApp } from './components/redux/app-reducer';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Preloader from '../src/components/common/Preloader/Preloader';
-import store from '../src/components/redux/redux-store'
-import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { Spinner } from '../src/components/common/Spinner/Spinner';
+import store from '../src/components/redux/redux-store';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import { withSuspense } from './hoc/withSuspense';
 import LoginPage from './components/Login/Login';
 import socketIOClient from "socket.io-client";
 
+import './styles/general.scss';
 
 var socket = socketIOClient("http://localhost:5000/");
 
@@ -40,7 +41,7 @@ class App extends React.Component {
 
   render() {
     if (!this.props.initialized) {
-      return <Preloader />
+      return <Spinner />
     }
 
     return (

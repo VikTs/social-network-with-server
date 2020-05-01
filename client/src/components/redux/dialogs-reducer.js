@@ -64,20 +64,22 @@ let initialState = {
 }
 
 const dialogsReducer = (state = initialState, action) => {
-    switch (action.type) {
+    const { type, payload } = action;
+
+    switch (type) {
         case SEND_MESSAGE:
             return {
                 ...state,
-                messages: [...state.messages, action.payload]
+                messages: [...state.messages, payload.newMessage]
             };
         default: return state;
     }
 }
 
-export const sendMessageCreator = (chat_id, user_id, context, date_create) => {
+export const sendMessageCreator = (newMessage) => {
     return {
         type: SEND_MESSAGE,
-        payload: { chat_id, user_id, context, date_create },
+        payload: { newMessage },
     }
 }
 

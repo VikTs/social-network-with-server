@@ -1,0 +1,64 @@
+@import '../../../../../styles/variables.scss';
+
+.messages-chat-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-modal-container {
+  width: 60%;
+  outline: none;
+  background-color: $mess-modal-bg;
+  position: relative;
+}
+
+.chat-modal-info {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  background-color: $mess-modal-head-bg;
+}
+
+.chat-modal-memb-number {
+  text-decoration: underline;
+}
+
+.chat-modal-close {
+  position: absolute;
+  right: 5px;
+}
+
+.chat-modal-chat-icon {
+  float: left;
+  margin: 0 10px;  
+}
+
+.chat-modal-close-icon {
+  color:$close-button-color;
+}
+
+.chat-modal-members {
+  margin: 30px 10%;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.chat-modal-member {
+  margin: 3px 0;
+  &.member-add {
+    margin-bottom: 5px; 
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      background-color: $modal-add-memb-hover;
+    }
+  }
+}
+
+.modal-member-add-icon {
+  margin-right: 3px;
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import MessagesWrapper from './Messages/Messages';
+import Messages from './Messages/Messages';
 import DialogList from './DialogList/DialogList';
 import { Switch, Route } from 'react-router-dom';
 import NewChatForm from './NewChatForm/NewChatForm';
@@ -17,11 +17,12 @@ class Dialogs extends React.PureComponent {
                         <NewChatForm />
                     } />
                     <Route exact path="/dialogs/:id" render={() =>
-                        <MessagesWrapper
+                        <Messages
                             chats={this.props.chats}
                             messages={this.props.messages}
                             sendMessage={this.props.sendMessage}
                             myId={this.props.myId}
+                            friends={this.props.friends}
                         />
                     } />
                 </Switch>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import './DialogsNewButton.scss';
 
 const DialogsNewButton = () => {
@@ -8,7 +9,9 @@ const DialogsNewButton = () => {
       <NavLink
             to={'/dialogs/new'}
             className="dialog-new-button"
-        > + </NavLink>
+        > 
+        <GroupAddIcon classes={{ root: 'dialog-new-button-icon' }} />
+         </NavLink>
     </div>
   )
 }

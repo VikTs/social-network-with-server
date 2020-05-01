@@ -1,12 +1,12 @@
 import React from 'react';
 import classes from './ProfileInfo.module.css'
-import Preloader from '../../common/Preloader/Preloader';
+import { Spinner } from '../../common/Spinner/Spinner';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 import userPhoto from '../../../images/user.png'
 
 const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ...props }) => {
   if (!profile) {
-    return <Preloader />
+    return <Spinner />
   }
 
   const onMainPhotoSelected = (e) => {
@@ -26,9 +26,9 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ..
         <p>{'City: ' + (profile.city || " ")}</p>
         <p>{'Age: ' + (profile.age || " ")}</p>
 
-        { isOwner 
-        ? <ProfileStatusWithHooks status={status} updateUserStatus={updateUserStatus}/> 
-        : <span> {'Status: ' + (status || "-------")} </span>}
+        {isOwner
+          ? <ProfileStatusWithHooks status={status} updateUserStatus={updateUserStatus} />
+          : <span> {'Status: ' + (status || "-------")} </span>}
 
         <p>{'About me: ' + (profile.aboutMe || " ")}</p>
 

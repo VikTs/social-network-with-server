@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./Header.module.css";
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import { NavLink } from "react-router-dom";
 
 const Header = props => {
@@ -12,8 +13,7 @@ const Header = props => {
             <div className={classes.notification}>
               <button>
                 <NavLink to="/notification">
-                  {" "}
-                  &#128276; {props.newNotificationsCount || ""}
+                  <NotificationsNoneIcon /> {props.newNotificationsCount || ""}
                 </NavLink>
               </button>
             </div>

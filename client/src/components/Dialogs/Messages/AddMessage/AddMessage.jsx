@@ -1,11 +1,42 @@
 import React from 'react';
-import AddMessageFormRedux from './AddMessageForm/AddMessageForm';
+import { useFormik } from 'formik';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
+// import { validateNewMessage } from '../../../../utils/validators/validators';
+
 import './AddMessage.scss';
 
 const AddMessage = ({ addNewMessage, chat }) => {
+  const formik = useFormik({
+    initialValues: {
+      newMessageBody: '',
+    },
+    // validate: validateNewMessage,
+    onSubmit: (values) => {
+      values.newMessageBody && addNewMessage(values)
+    },
+    validateOnChange: false,
+  });
+
   return (
     <div className="new-message-container">
-      <AddMessageFormRedux onSubmit={addNewMessage} chat={chat} />
+      <form onSubmit={formik.handleSubmit} className="new-message-form">
+        <TextField
+          id="newMessageBody"
+          name="newMessageBody"
+          type="text"
+          placeholder="Message:"
+          classes={{ root: 'new-message-body' }}
+          onChange={formik.handleChange}
+          value={formik.values.newMessageBody}
+          helperText={formik.errors.newMessageBody}
+          error={!!formik.errors.newMessageBody}
+        />
+        <Button variant="contained" type="submit" classes={{ root: 'new-message-submit' }}>
+          Send
+      </Button>
+      </form>
     </div>
   );
 };

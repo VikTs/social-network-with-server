@@ -12,6 +12,7 @@ const REMOVE_FROM_FRIENDS = 'REMOVE-FROM-FRIENDS';
 
 let initialState = {
     users: [],
+    friends: [],
     pageSize: 3,
     totalUsersCount: 0,
     currentPage: 1,
