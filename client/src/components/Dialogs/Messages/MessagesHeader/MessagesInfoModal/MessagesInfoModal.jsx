@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '@material-ui/core/Modal';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Checkbox, FormControlLabel } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import ChatIcon from '@material-ui/icons/Chat';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -8,25 +8,57 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import './MessagesInfoModal.scss';
 
-const MessagesInfoModal = ({ chat, open, handleClose, friends }) => {
+const MessagesInfoModal = ({ chat, open, handleClose, friends, addNewChatMember }) => {
   const { chat_name, members, chat_description } = chat;
 
   const [isAddMember, setIsAddMember] = useState(false);
+  const [newMembers, toggleNewMembers] = useState([]);
 
   const openAddMember = () => setIsAddMember(true);
   const closeAddMember = () => setIsAddMember(false);
 
+  const toggleNewMembList = (newMembId) => {
+    newMembers.includes(newMembId) ?
+      toggleNewMembers(newMembers.filter(membId => membId !== newMembId)) :
+      toggleNewMembers([...newMembers, newMembId]);
+  }
+
+  const addMembersToChat = () => {
+    const newMembersFullInfo = friends.filter(friend => newMembers.includes(friend._id));
+    const newMembersInfo = newMembersFullInfo.map(({ _id, name, surname }) => ({
+      id: _id,
+      name,
+      surname,
+    }))
+    addNewChatMember(newMembersInfo, chat.id)
+  }
+
   const membersInfo = members.map(member => (
-    <div className="chat-modal-member">
+    <div className="chat-modal-member" key={member.id} >
       <p className="chat-modal-member-name">{member.name}</p>
     </div>
   )
   )
-  const friendsInfo = friends.map(friend => (
-    <div className="chat-modal-member">
-      <p className="chat-modal-member-name">{friend.name}</p>
-    </div>
-  ))
+
+  const membersId = members.map(({ id }) => id);
+  const friendsInfo = [];
+  friends.forEach(friend => {
+    if (!membersId.includes(friend._id))
+      friendsInfo.push(
+        <div className="chat-modal-member">
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={() => { toggleNewMembList(friend._id) }}
+                name={friend._id}
+                color="primary"
+              />
+            }
+            label={friend.name}
+          />
+        </div>
+      )
+  })
 
   return (
     <Modal
@@ -62,8 +94,14 @@ const MessagesInfoModal = ({ chat, open, handleClose, friends }) => {
                 <button type="button">
                   <ArrowBackIcon onClick={closeAddMember} />
                 </button>
-                {friendsInfo}
-                <button type="button">Add</button>
+                {friendsInfo.length ?
+                  <div>
+                    {friendsInfo}
+                    <button type="button" onClick={addMembersToChat}>Add</button>
+                  </div> :
+                  <div>
+                    <p>All your friends in this chat</p>
+                  </div>}
               </>
             )
           }

@@ -5,101 +5,89 @@ const SET_USER_DATA = 'social-network/auth/SET_USER_DATA';
 const GET_CAPTCHA_URL_SUCCESS = 'social-network/auth/GET_CAPTCHA_URL_SUCCESS';
 const REGISTER_USER = 'social-network/auth/REGISTER_USER';
 const DELETE_USER_PAGE = 'social-network/auth/DELETE_USER_PAGE'
+const GET_MY_DATA = 'social-network/auth/GET_MY_DATA'
 
-let initialState = {
+const initialState = {
     userId: null,
     email: null,
     login: null,
     isAuth: false,
+    myFullData: null,
+    myFriends: null,
     captchaUrl: null //if null, then captcha is not required
 }
 
 const authReducer = (state = initialState, action) => {
-    switch (action.type) {
+    const { type, payload } = action;
+
+    switch (type) {
         case SET_USER_DATA:
         case GET_CAPTCHA_URL_SUCCESS:
         case REGISTER_USER:
-            return { ...state, ...action.payload }
+            return { ...state, ...payload }
 
         case DELETE_USER_PAGE:
             return { ...state, userId: null, email: null, login: null, isAuth: false }
+
+        case GET_MY_DATA:
+            return { ...state, myFullData: payload.myFullData, myFriends: payload.myFriends }
 
         default: return state;
     }
 }
 
-export const setAuthUserData = (userId, email, login, isAuth) => {
-    return {
-        type: SET_USER_DATA,
-        payload: { userId, email, login, isAuth } //передача данных об авторизации
-    }
-}
+export const setAuthUserData = (userId, email, login, isAuth) => ({
+    type: SET_USER_DATA,
+    payload: { userId, email, login, isAuth }, //передача данных об авторизации
+});
 
-export const registerUser = (formData) => {
-    return {
-        type: REGISTER_USER,
-        payload: { ...formData }
-    }
-}
+const getMyDataAC = (myFullData, myFriends) => ({
+    type: GET_MY_DATA,
+    payload: { myFullData, myFriends },
+});
 
-export const deleteUserPage = () => {
-    return {
-        type: DELETE_USER_PAGE
-    }
-}
+export const registerUser = (formData) => ({
+    type: REGISTER_USER,
+    payload: { ...formData },
+});
 
-export const getCaptchaUrlSuccess = (captchaUrl) => {
-    return {
-        type: GET_CAPTCHA_URL_SUCCESS,
-        payload: { captchaUrl }
-    }
-}
+export const deleteUserPage = () => ({
+    type: DELETE_USER_PAGE,
+})
 
-//THUNK - внутренняя ф-я, которая возвращает внешнюю ф-ю
+export const getCaptchaUrlSuccess = (captchaUrl) => ({
+    type: GET_CAPTCHA_URL_SUCCESS,
+    payload: { captchaUrl }
+});
+
 export const getAuthUserData = () => async (dispatch) => {
-    let response = await authAPI.me()
-    // console.log('response.data.resultCode',response.data.resultCode);
+    const response = await authAPI.me()
     if (response.data.resultCode === 0) {
-        let { id, login, email } = response.data;
+        const { id, login, email } = response.data;
         dispatch(setAuthUserData(id, email, login, true))
     }
 }
 
-//THUNKcreator = () => THUNK()
+export const getMyData = () => async (dispatch) => {
+    const response = await authAPI.getMyData();
+    const { myData, friends } = response.data;
+    dispatch(getMyDataAC(myData, friends));
+}
+
 export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
-    let response = await authAPI.login(email, password, rememberMe, captcha)
-
+    const response = await authAPI.login(email, password, rememberMe, captcha)
     dispatch(getAuthUserData())
-    // if (response.data.resultCode === 0) { //если залогинены
-    //     dispatch(getAuthUserData()) //запрашиваем авторизацию у auth/me
-    // } else {
-
-    //     if (response.data.resultCode === 10) {
-    //         dispatch(getCaptchaUrl())
-    //     }
-
-    //     // stopSubmit:
-    //     // - action creator из redux-form, 
-    //     // - если произошла ошибка (resultCode=0), то сообщает форме эту информацию (для отображения для пользователя)
-    //     // - стопает форму
-    //     // 1) название нашей формы "login", там где оборачиваем ReduxForm
-    //     // 2) поле, где была ошибка и сообщение о типе ошибки 
-    //     let message = response.data.messages.length > 0 ? response.data.messages[0] : 'Smth wrong'
-    //     dispatch(stopSubmit("login", { _error: message }))
-    // }
-
-
 }
 
 export const logout = () => async (dispatch) => {
-    let response = await authAPI.logout()
+    const response = await authAPI.logout()
     if (response.data.resultCode === 0) { //если вылогинились, удаляются куки
         dispatch(setAuthUserData(null, null, null, false))
     }
 }
 
 export const registration = (formData) => async (dispatch) => {
-    let response = await authAPI.registration(formData)
+    const response = await authAPI.registration(formData)
     if (response.data.resultCode === 0) {
         dispatch(registerUser(formData))
         dispatch(getAuthUserData())
@@ -107,14 +95,12 @@ export const registration = (formData) => async (dispatch) => {
 }
 
 export const deletePage = (userId) => async (dispatch) => {
-    let response = await authAPI.deletePage(userId)
-    //if (response.data.resultCode === 0) {
+    const response = await authAPI.deletePage(userId)
     dispatch(deleteUserPage())
-    //}
 }
 
 export const getCaptchaUrl = () => async (dispatch) => {
-    let response = await securityAPI.getCaptchaUrl()
+    const response = await securityAPI.getCaptchaUrl()
     const captchaUrl = response.data.url
     dispatch(getCaptchaUrlSuccess(captchaUrl))
 }

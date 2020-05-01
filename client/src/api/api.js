@@ -83,9 +83,10 @@ export const authAPI = {
         const userData = authCheck();
         return instance.post(`auth/me`, { userData })
     },
-    // в auth/login есть post и delete
-    //мы создаем новую сессию
-    //auth/login - из документации
+    getMyData() {
+        const myId = getCurrentUserId()
+        return instance.get(`auth/myData/${myId}`)
+    },
     login(email, password, rememberMe = false, captcha = null) { //email,password - required
         //данные - через запятую
         return instance.post(`auth/login`, { email, password, rememberMe, captcha })

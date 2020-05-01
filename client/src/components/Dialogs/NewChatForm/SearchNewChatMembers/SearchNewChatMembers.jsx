@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import './SearchNewChatMembers.scss';
 
-const SearchNewChatMembers = (props) => {
+const SearchNewChatMembers = ({ setFilteredFriends, friends }) => {
   const handleChange = (e) => {
-    if (e.key === 'Enter') {
-      console.log(e.target.value);
-    }
+    const filter = e.target.value;
+    setFilteredFriends(friends.filter(({ name, surname, city }) =>
+      name.includes(filter) || 
+      surname.includes(filter) ||
+      city.includes(filter)
+      ))
   }
 
   return (
@@ -15,7 +18,7 @@ const SearchNewChatMembers = (props) => {
         name="searchFriend"
         placeholder="Enter friend name"
         className="search-field"
-      // onKeyPress={handleChange}
+        onChange={handleChange}
       />
     </div>
   )

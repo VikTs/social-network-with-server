@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 import './Messages.scss';
 
-const MessagesWrapper = ({ chats, sendMessage, messages, myId, friends }) => {
+const Messages = ({ chats, sendMessage, messages, myId, friends, addNewChatMember }) => {
   const { id } = useParams();
 
   const currentMessages = messages.filter(message => id === message.chat_id);
@@ -34,11 +34,11 @@ const MessagesWrapper = ({ chats, sendMessage, messages, myId, friends }) => {
 
   return (
     <div className="messages-container">
-      <MessagesHeader friends={friends} chat={currentChat} setFilteredMessages={setFilteredMessages} messages={currentMessages} />
+      <MessagesHeader addNewChatMember={addNewChatMember} friends={friends} chat={currentChat} setFilteredMessages={setFilteredMessages} messages={currentMessages} />
       <MessageList messages={filteredMessages} chat={currentChat} />
       <AddMessage addNewMessage={addNewMessage} chat={currentChat} />
     </div>
   )
 }
 
-export default MessagesWrapper;
+export default Messages;

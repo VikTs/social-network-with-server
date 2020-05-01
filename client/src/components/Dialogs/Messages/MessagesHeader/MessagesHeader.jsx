@@ -7,7 +7,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import './MessagesHeader.scss';
 import MessagesInfoModal from './MessagesInfoModal/MessagesInfoModal';
 
-const MessagesHeader = ({ chat, setFilteredMessages, messages, friends }) => {
+const MessagesHeader = ({ chat, setFilteredMessages, messages, friends, addNewChatMember }) => {
   const { goBack } = useHistory();
   const [isSearch, toggleIsSearch] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -34,7 +34,7 @@ const MessagesHeader = ({ chat, setFilteredMessages, messages, friends }) => {
 
   return (
     <div className="messages-header">
-      <MessagesInfoModal friends={friends} chat={chat} open={open} handleClose={handleClose} />   
+      <MessagesInfoModal addNewChatMember={addNewChatMember} friends={friends} chat={chat} open={open} handleClose={handleClose} />   
       <button type="button" className="go-back messages-header-btn">
         <ArrowBackIcon onClick={() => { goBack() }} />
       </button>

@@ -1,21 +1,25 @@
-import React from 'react';
-import { sendMessageCreator } from '../redux/dialogs-reducer';
+import { sendMessageCreator, createChat, addNewChatMember } from '../redux/dialogs-reducer';
+import { getMyData } from '../redux/auth-reducer';
 import Dialogs from './Dialogs';
 import { connect } from 'react-redux';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
 
-let mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
     return {
         myId: state.auth.userId,
         messages: state.messagesState.messages,
         chats: state.messagesState.chats,
-        friends: state.userPage.friends,
+        myData: state.auth.myFullData,
+        friends: state.auth.myFriends,
     }
 }
 
 let mapDispatchToProps = ({
     sendMessage: sendMessageCreator,
+    createChat,
+    getMyData,
+    addNewChatMember,
 })
 
 export default compose( //конвеер, перекидывает элемент, снизу вверх

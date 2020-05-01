@@ -1,4 +1,6 @@
 const SEND_MESSAGE = 'SEND-MESSAGE';
+const CREATE_CHAT = 'CREATE_CHAT';
+const ADD_NEW_CHAT_MEMBER = 'ADD_NEW_CHAT_MEMBER';
 
 let initialState = {
     chats: [
@@ -72,6 +74,24 @@ const dialogsReducer = (state = initialState, action) => {
                 ...state,
                 messages: [...state.messages, payload.newMessage]
             };
+        case CREATE_CHAT:
+            return {
+                ...state,
+                chats: [...state.chats, payload.newChat]
+            }
+        case ADD_NEW_CHAT_MEMBER:
+            const { newMember, chatId } = payload;
+            const newChats = [];
+            state.chats.forEach(chat => {
+                if (chatId === chat.id) chat.members = [...chat.members, ...newMember]
+                newChats.push(chat);
+            }
+            );
+
+            return {
+                ...state,
+                chats: newChats,
+            }
         default: return state;
     }
 }
@@ -80,6 +100,20 @@ export const sendMessageCreator = (newMessage) => {
     return {
         type: SEND_MESSAGE,
         payload: { newMessage },
+    }
+}
+
+export const createChat = (newChat) => {
+    return {
+        type: CREATE_CHAT,
+        payload: { newChat },
+    }
+}
+
+export const addNewChatMember = (newMember, chatId) => {
+    return {
+        type: ADD_NEW_CHAT_MEMBER,
+        payload: { newMember, chatId },
     }
 }
 

@@ -21,6 +21,7 @@
 .member-item {
   border: 1px solid gray;
   margin: 3px;
+  padding: 8px;
   background-color: rgba(211, 211, 211, 0.7);
   cursor: pointer;
   position: relative;
@@ -31,6 +32,7 @@
 
 .member-name {
   font-size: 20px;
+  margin-bottom: 3px;
   color: white;
 }
 
