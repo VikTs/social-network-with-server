@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '@material-ui/core/Modal';
 import { IconButton, Checkbox, FormControlLabel } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -8,8 +8,20 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import './MessagesInfoModal.scss';
 
-const MessagesInfoModal = ({ chat, open, handleClose, friends, addNewChatMember }) => {
+const MessagesInfoModal = ({ 
+  getMyData, 
+  chat, 
+  open, 
+  handleClose, 
+  friends, 
+  addNewChatMember,
+}) => {
   const { chat_name, members, chat_description } = chat;
+
+  // useEffect(() => getMyData());
+  ////////////////////
+  // const friends=[];
+  //////////
 
   const [isAddMember, setIsAddMember] = useState(false);
   const [newMembers, toggleNewMembers] = useState([]);

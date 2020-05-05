@@ -1,4 +1,4 @@
-import { sendMessageCreator, createChat, addNewChatMember } from '../redux/dialogs-reducer';
+import { sendMessageCreator, createChat, addNewChatMember, getChats } from '../redux/dialogs-reducer';
 import { getMyData } from '../redux/auth-reducer';
 import Dialogs from './Dialogs';
 import { connect } from 'react-redux';
@@ -15,11 +15,12 @@ const mapStateToProps = (state) => {
     }
 }
 
-let mapDispatchToProps = ({
+const mapDispatchToProps = ({
     sendMessage: sendMessageCreator,
     createChat,
     getMyData,
     addNewChatMember,
+    getChats,
 })
 
 export default compose( //конвеер, перекидывает элемент, снизу вверх

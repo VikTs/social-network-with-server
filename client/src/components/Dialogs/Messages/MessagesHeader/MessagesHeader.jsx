@@ -7,10 +7,17 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import './MessagesHeader.scss';
 import MessagesInfoModal from './MessagesInfoModal/MessagesInfoModal';
 
-const MessagesHeader = ({ chat, setFilteredMessages, messages, friends, addNewChatMember }) => {
+const MessagesHeader = ({
+  getMyData,
+  chat,
+  setFilteredMessages,
+  messages,
+  friends,
+  addNewChatMember
+}) => {
   const { goBack } = useHistory();
   const [isSearch, toggleIsSearch] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -34,7 +41,14 @@ const MessagesHeader = ({ chat, setFilteredMessages, messages, friends, addNewCh
 
   return (
     <div className="messages-header">
-      <MessagesInfoModal addNewChatMember={addNewChatMember} friends={friends} chat={chat} open={open} handleClose={handleClose} />   
+      {open && <MessagesInfoModal
+        getMyData={getMyData}
+        addNewChatMember={addNewChatMember}
+        friends={friends}
+        chat={chat}
+        open={open}
+        handleClose={handleClose}
+      />}
       <button type="button" className="go-back messages-header-btn">
         <ArrowBackIcon onClick={() => { goBack() }} />
       </button>
@@ -48,7 +62,7 @@ const MessagesHeader = ({ chat, setFilteredMessages, messages, friends, addNewCh
       </div> :
         <div className='header-chat-info' onClick={handleOpen}>
           <h3 className='chat-name'>{chat.chat_name}</h3>
-          <p className='chat-members-number'>{chat.members.length} members</p>          
+          <p className='chat-members-number'>{chat.members && chat.members.length} members</p>
         </div>
       }
       <div className="header-chat-btns">

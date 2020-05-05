@@ -5,7 +5,7 @@ import MembersList from './MembersList/MembersList';
 import './NewChatForm.scss';
 import ChatParamentsToChoose from './ChatParamentsToChoose/ChatParamentsToChoose';
 
-const NewChatForm = ({ createChat, myData = {}, friends = [] }) => {
+const NewChatForm = ({ createChat, myData = {}, friends = [], filteredChats, setFilteredChats }) => {
   const { goBack, push } = useHistory();
   const [choosedMembersId, setNewMemberId] = useState([]);
   const [chatName, setChatName] = useState('');
@@ -20,7 +20,7 @@ const NewChatForm = ({ createChat, myData = {}, friends = [] }) => {
       choosedMembers.push({ id: _id, name, surname });
     });
 
-    createChat({
+    const newChatData = {
       id: '3',
       members: [
         ...choosedMembers,
@@ -28,9 +28,14 @@ const NewChatForm = ({ createChat, myData = {}, friends = [] }) => {
       ],
       chat_name: chatName,
       chat_description: chatDescription,
+      date_create: new Date(),
       owner_id: myData._id,
-    });
-    push('/dialogs');
+    }
+
+    createChat(newChatData).then((chat) => {
+      setFilteredChats([...filteredChats, chat]);
+      push('/dialogs');
+    })    
   }
 
   return (

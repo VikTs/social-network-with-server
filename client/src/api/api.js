@@ -126,30 +126,37 @@ export const notificationAPI = {
         return instance.post(`notification/friendreq`, { myId, userId })
     },
     removeReqFriendNotification(userId) {
-        const myId = getCurrentUserId()
-        return instance.delete(`notification/friendreq/${myId}/${userId}`)
+        const myId = getCurrentUserId();
+        return instance.delete(`notification/friendreq/${myId}/${userId}`);
     },
     getNotificationList() {
-        const myId = getCurrentUserId()
-        return instance.get(`notification/getList/${myId}`)
+        const myId = getCurrentUserId();
+        return instance.get(`notification/getList/${myId}`);
     },
     getNewNotificationCount() {
-        const myId = getCurrentUserId()
-        return instance.get(`notification/getNewCount/${myId}`)
+        const myId = getCurrentUserId();
+        return instance.get(`notification/getNewCount/${myId}`);
     },
     zeroingNewCount() {
-        const myId = getCurrentUserId()
-        return instance.delete(`notification/zeroingNew/${myId}`)
+        const myId = getCurrentUserId();
+        return instance.delete(`notification/zeroingNew/${myId}`);
     },
     cleanAllNotifications() {
-        const myId = getCurrentUserId()
-        return instance.delete(`notification/${myId}`)
+        const myId = getCurrentUserId();
+        return instance.delete(`notification/${myId}`);
     }
 }
 
 export const messagesAPI = {
-    sendMessage() {
-        return instance.post(`messages`)
+    sendMessage(newMessage) {
+        return instance.post(`messages/message`, {newMessage});
+    },
+    createChat(newChat) {
+        return instance.post(`messages/chat`, {newChat});
+    },
+    getChats() {
+        const myId = getCurrentUserId();
+        return instance.get(`messages/chats/${myId}`);
     }
 }
 

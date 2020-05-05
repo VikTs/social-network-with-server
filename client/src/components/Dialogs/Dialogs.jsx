@@ -1,43 +1,49 @@
-import React from 'react';
-import Messages from './Messages/Messages';
-import DialogList from './DialogList/DialogList';
+import React, { useEffect, useState } from 'react';
+import Messages from './Messages/MessagesContainer';
+import DialogList from './DialogList/DialogListContainer';
 import { Switch, Route } from 'react-router-dom';
-import NewChatForm from './NewChatForm/NewChatForm';
+import NewChatForm from './NewChatForm/NewChatFormContainer';
 
-class Dialogs extends React.PureComponent {
-    componentDidMount() {
-        this.props.getMyData();
-    }
+const Dialogs = ({
+    chats,
+    myData,
+    myId,
+    friends,
+    createChat,
+    getMyData,
+    getChats,
+}) => {
+    const [filteredChats, setFilteredChats] = useState(chats);
 
-    render() {
-        return (
-            <div className="dialogs">
-                <Switch>
-                    <Route exact path="/dialogs" render={() =>
-                        <DialogList chats={this.props.chats} myId={this.props.myId} />
-                    } />
-                    <Route exact path="/dialogs/new" render={() =>
-                        <NewChatForm
-                            createChat={this.props.createChat}
-                            myData={this.props.myData}
-                            friends={this.props.friends}
-                        />
-                    } />
-                    <Route exact path="/dialogs/:id" render={() =>
-                        <Messages
-                            chats={this.props.chats}
-                            messages={this.props.messages || []}
-                            sendMessage={this.props.sendMessage}
-                            myId={this.props.myId}
-                            friends={this.props.friends}
-                            addNewChatMember={this.props.addNewChatMember}
-                        />
-                    } />
-                </Switch>
-            </div>
-        );
-    }
+    useEffect(async() => {
+        if (!myData) getMyData();
+        if(!chats.length) {
+            const gotChat = await getChats();
+            setFilteredChats(gotChat);
+        }
+    }, []);
+
+    return (
+        <div className="dialogs">
+            <Switch>
+                <Route exact path="/dialogs" render={() =>
+                    <DialogList
+                        filteredChats={filteredChats}
+                        setFilteredChats={setFilteredChats}
+                    />
+                } />
+                <Route exact path="/dialogs/new" render={() =>
+                    <NewChatForm
+                        setFilteredChats={setFilteredChats}
+                        filteredChats={filteredChats}
+                    />
+                } />
+                <Route exact path="/dialogs/:id" render={() =>
+                    <Messages />
+                } />
+            </Switch>
+        </div>
+    );
 }
-
 
 export default Dialogs;
