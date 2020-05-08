@@ -22,6 +22,7 @@ const MessagesInfoModal = ({
   ////////////////////
   // const friends=[];
   //////////
+  console.log("!!!!!!!!!!!!!!!!!!!");
 
   const [isAddMember, setIsAddMember] = useState(false);
   const [newMembers, toggleNewMembers] = useState([]);
@@ -41,8 +42,8 @@ const MessagesInfoModal = ({
       id: _id,
       name,
       surname,
-    }))
-    addNewChatMember(newMembersInfo, chat.id)
+    }));
+    addNewChatMember(newMembersInfo, chat._id)
   }
 
   const membersInfo = members.map(member => (
@@ -54,23 +55,29 @@ const MessagesInfoModal = ({
 
   const membersId = members.map(({ id }) => id);
   const friendsInfo = [];
-  friends.forEach(friend => {
-    if (!membersId.includes(friend._id))
-      friendsInfo.push(
-        <div className="chat-modal-member">
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => { toggleNewMembList(friend._id) }}
-                name={friend._id}
-                color="primary"
-              />
-            }
-            label={friend.name}
-          />
-        </div>
-      )
-  })
+    friends.forEach(friend => {
+      if (!membersId.includes(friend._id))
+        friendsInfo.push(
+          <div className="chat-modal-member">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={() => { toggleNewMembList(friend._id) }}
+                  name={friend._id}
+                  color="primary"
+                />
+              }
+              label={friend.name}
+            />
+          </div>
+        )
+    });
+  
+
+  // console.log(members, 'members');
+  // console.log(chat, 'chat');
+  // console.log(friends, 'friends');
+  // console.log(membersId, 'membersId');
 
   return (
     <Modal

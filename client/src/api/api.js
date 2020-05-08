@@ -157,6 +157,13 @@ export const messagesAPI = {
     getChats() {
         const myId = getCurrentUserId();
         return instance.get(`messages/chats/${myId}`);
+    },
+    getMessages() {
+        const myId = getCurrentUserId();
+        return instance.get(`messages/messages/${myId}`);
+    },
+    addNewChatMember(newMember, chatId) {
+        return instance.put(`messages/chats/member`, {newMember, chatId});
     }
 }
 

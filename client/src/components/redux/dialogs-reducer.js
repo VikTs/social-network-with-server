@@ -4,48 +4,13 @@ const SEND_MESSAGE = 'SEND-MESSAGE';
 const CREATE_CHAT = 'CREATE_CHAT';
 const ADD_NEW_CHAT_MEMBER = 'ADD_NEW_CHAT_MEMBER';
 const GET_CHATS = 'GET_CHATS';
+const GET_MESSAGES = 'GET_MESSAGES';
+const SET_CURRENT_CHAT = 'SET_CURRENT_CHAT';
 
 let initialState = {
-    chats: [],
-    messages: [],
-    // messages: [
-    //     {
-    //         chat_id: '1',
-    //         user_id: '9',
-    //         context: 'Hello',
-    //         date_create: new Date(),
-    //     },
-    //     {
-    //         chat_id: '1',
-    //         user_id: '9',
-    //         context: 'How are you?',
-    //         date_create: new Date(),
-    //     },
-    //     {
-    //         chat_id: '1',
-    //         user_id: '2',
-    //         context: 'I`m fine',
-    //         date_create: new Date(),
-    //     },
-    //     {
-    //         chat_id: '2',
-    //         user_id: '5e97566137513a21d8e72649',
-    //         context: 'This is our new chat',
-    //         date_create: new Date(),
-    //     },
-    //     {
-    //         chat_id: '2',
-    //         user_id: '7',
-    //         context: 'Thanks',
-    //         date_create: new Date(),
-    //     },
-    //     {
-    //         chat_id: '2',
-    //         user_id: '5e97566137513a21d8e72649',
-    //         context: 'Let`s start',
-    //         date_create: new Date(),
-    //     },
-    // ],
+    currentChat: null,
+    chats: null,
+    messages: null,    
 }
 
 const dialogsReducer = (state = initialState, action) => {
@@ -64,6 +29,7 @@ const dialogsReducer = (state = initialState, action) => {
             }
         case ADD_NEW_CHAT_MEMBER:
             const { newMember, chatId } = payload;
+            console.log(chatId);
             const newChats = [];
             state.chats.forEach(chat => {
                 if (chatId === chat.id) chat.members = [...chat.members, ...newMember]
@@ -78,6 +44,18 @@ const dialogsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 chats: payload.chats,
+            }
+
+        case GET_MESSAGES:
+            return {
+                ...state,
+                messages: payload.messages,
+            }
+
+        case SET_CURRENT_CHAT:
+            return {
+                ...state,
+                currentChat: payload.currentChat,
             }
 
         default: return state;
@@ -99,7 +77,17 @@ const getChatsAC = (chats) => ({
     payload: { chats },
 });
 
-export const addNewChatMember = (newMember, chatId) => {
+const getMessagesAC = (messages) => ({
+    type: GET_MESSAGES,
+    payload: { messages },
+});
+
+export const setCurrentChat = (currentChat) => ({
+    type: SET_CURRENT_CHAT,
+    payload: { currentChat },
+});
+
+export const addNewChatMemberAC = (newMember, chatId) => {
     return {
         type: ADD_NEW_CHAT_MEMBER,
         payload: { newMember, chatId },
@@ -121,6 +109,16 @@ export const getChats = () => async (dispatch) => {
     const response = await messagesAPI.getChats();
     dispatch(getChatsAC(response.data.chats));
     return response.data.chats;
+}
+
+export const getMessages = () => async (dispatch) => {
+    const response = await messagesAPI.getMessages();
+    dispatch(getMessagesAC(response.data.messages));
+}
+
+export const addNewChatMember = (newMember, chatId) => async (dispatch) => {
+    await messagesAPI.addNewChatMember(newMember, chatId);
+    dispatch(addNewChatMemberAC(newMember, chatId));
 }
 
 export default dialogsReducer

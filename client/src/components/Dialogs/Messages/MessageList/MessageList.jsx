@@ -6,7 +6,7 @@ import './MessageList.scss';
 const MessageList = ({ messages, chat }) => {
     const messageElements = messages.map(message =>
         <Message
-            key={message.id}
+            key={message._id}
             context={message.context}
             date={message.date_create}
             user={chat.members.find(member => member.id === message.user_id)}

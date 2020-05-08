@@ -13,11 +13,11 @@ const Dialogs = ({
     getMyData,
     getChats,
 }) => {
-    const [filteredChats, setFilteredChats] = useState(chats);
+    const [filteredChats, setFilteredChats] = useState([]);
 
     useEffect(async() => {
         if (!myData) getMyData();
-        if(!chats.length) {
+        if(!chats) {
             const gotChat = await getChats();
             setFilteredChats(gotChat);
         }

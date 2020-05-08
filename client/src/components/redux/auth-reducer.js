@@ -30,7 +30,11 @@ const authReducer = (state = initialState, action) => {
             return { ...state, userId: null, email: null, login: null, isAuth: false }
 
         case GET_MY_DATA:
-            return { ...state, myFullData: payload.myFullData, myFriends: payload.myFriends }
+            return {
+                ...state,
+                myFullData: payload.myFullData,
+                myFriends: payload.myFriends
+            }
 
         default: return state;
     }

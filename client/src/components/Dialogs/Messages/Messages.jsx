@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MessageList from './MessageList/MessageList';
 import AddMessage from './AddMessage/AddMessage';
 import MessagesHeader from './MessagesHeader/MessagesHeader';
@@ -9,12 +9,17 @@ import './Messages.scss';
 
 const Messages = ({
   chats,
+  currentChat,
   sendMessage,
   messages,
   myId,
+  myData,
   friends,
   addNewChatMember,
-  getMyData
+  getMyData,
+  getMessages,
+  getChats,
+  setCurrentChat
 }) => {
   const { id } = useParams();
 
@@ -22,16 +27,39 @@ const Messages = ({
   //   // socket.emit('chat message', values.newMessageBody);
   //   socket.on('output', function (data) {
   //     console.log(data, 'output');
+  //     // getMessages();
   //   });
   // }
-
   // watchForMessagesUpdate();
 
+  const [filteredMessages, setFilteredMessages] = useState([]);
+  let currentMessages = [];
 
+  useEffect(() => {
+    if (!messages) {
+      getMessages();
 
-  const currentMessages = messages.filter(message => id === message.chat_id);
-  
-  const currentChat = chats.find(chat => chat._id === id);
+      // Messages listener from DB
+      socket.on('output', function (data) {
+        getMessages();
+      });
+    }
+    if (!chats) getChats();
+    if (!myData) getMyData();
+  }, []);
+
+  useEffect(() => {
+    if (messages) {
+      currentMessages = messages.filter(message => id === message.chat_id);
+      setFilteredMessages(currentMessages);
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    if (chats) {
+      setCurrentChat(chats.find(chat => `${chat._id}` == `${id}`))
+    }
+  }, [chats]);
 
   const addNewMessage = (values) => {
     const newMessage = {
@@ -45,20 +73,21 @@ const Messages = ({
     setFilteredMessages([...filteredMessages, newMessage]);
   }
 
-  const [filteredMessages, setFilteredMessages] = useState(currentMessages);
-
   return (
-    <div className="messages-container">
-      <MessagesHeader
-        addNewChatMember={addNewChatMember}
-        friends={friends} chat={currentChat}
-        setFilteredMessages={setFilteredMessages}
-        messages={currentMessages}
-        getMyData={getMyData}
-      />
-      <MessageList messages={filteredMessages} chat={currentChat} />
-      <AddMessage addNewMessage={addNewMessage} chat={currentChat} />
-    </div>
+    <>
+      {filteredMessages && currentChat &&
+        (<div className="messages-container">
+          <MessagesHeader
+            addNewChatMember={addNewChatMember}
+            friends={friends} chat={currentChat}
+            setFilteredMessages={setFilteredMessages}
+            messages={filteredMessages}
+            getMyData={getMyData}
+          />
+          <MessageList messages={filteredMessages} chat={currentChat} />
+          <AddMessage addNewMessage={addNewMessage} chat={currentChat} />
+        </div>)}
+    </>
   )
 }
 

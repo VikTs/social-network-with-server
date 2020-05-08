@@ -3,7 +3,7 @@ import './DialogList.scss';
 import DialogItem from '../DialogItem/DialogItem';
 import DialogHeader from '../DialogsHeader/DialogsHeader';
 
-const DialogList = ({ chats, myId, filteredChats, setFilteredChats }) => {
+const DialogList = ({ chats, myId, filteredChats=chats, setFilteredChats }) => {
   const dialogItems = filteredChats.map(chat => (
     <DialogItem
       owner={chat.members.find(member => member.id === chat.owner_id)}

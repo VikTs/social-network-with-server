@@ -5,6 +5,7 @@ import './Message.scss';
 
 const Message = ({ context, date, user }) => {
   const { id, name } = user;
+  const formatDate = new Date(date);
 
   return (
     <div className="message">
@@ -13,8 +14,8 @@ const Message = ({ context, date, user }) => {
       </NavLink>
       <p className="message-context">{context}</p>
       <div className="message-date">
-        <p className="message-date-day">{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</p>
-        <p className="message-date-time">{`${date.getHours()} : ${date.getMinutes()}`}</p>
+        <p className="message-date-day">{`${formatDate.getDate()}.${formatDate.getMonth() + 1}.${formatDate.getFullYear()}`}</p>
+        <p className="message-date-time">{`${formatDate.getHours()} : ${formatDate.getMinutes()}`}</p>
       </div>
     </div>
   )
