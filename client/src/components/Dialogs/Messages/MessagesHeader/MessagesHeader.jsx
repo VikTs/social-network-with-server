@@ -8,12 +8,16 @@ import './MessagesHeader.scss';
 import MessagesInfoModal from './MessagesInfoModal/MessagesInfoModal';
 
 const MessagesHeader = ({
-  getMyData,
   chat,
+  getMyData,
   setFilteredMessages,
+  deleteMemberFromChat,
+  setCurrentMessages,
+  addNewChatMember,
+  setCurrentChat,
   messages,
   friends,
-  addNewChatMember
+  myId,
 }) => {
   const { goBack } = useHistory();
   const [isSearch, toggleIsSearch] = useState(false);
@@ -35,23 +39,28 @@ const MessagesHeader = ({
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      console.log(messages);
       setFilteredMessages(messages.filter(mess => mess.context.includes(e.target.value)));
     }
+  }
+
+  const handleGoBack = () => {
+    goBack(); 
   }
 
   return (
     <div className="messages-header">
       {open && <MessagesInfoModal
-        getMyData={getMyData}
+        deleteMemberFromChat={deleteMemberFromChat}
         addNewChatMember={addNewChatMember}
+        getMyData={getMyData}
         friends={friends}
         chat={chat}
+        myId={myId}
         open={open}
         handleClose={handleClose}
       />}
       <button type="button" className="go-back messages-header-btn">
-        <ArrowBackIcon onClick={() => { goBack() }} />
+        <ArrowBackIcon onClick={handleGoBack} />
       </button>
       {isSearch ? <div className="message-search">
         <input

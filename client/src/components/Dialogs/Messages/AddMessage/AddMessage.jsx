@@ -13,8 +13,9 @@ const AddMessage = ({ addNewMessage, chat }) => {
       newMessageBody: '',
     },
     // validate: validateNewMessage,
-    onSubmit: (values) => {
-      values.newMessageBody && addNewMessage(values)
+    onSubmit: (values, { resetForm }) => {
+      values.newMessageBody && addNewMessage(values);
+      resetForm();
     },
     validateOnChange: false,
   });

@@ -167,6 +167,9 @@ export const messagesAPI = {
     },
     deleteChat(chatId) {
         return instance.delete(`messages/chats/${chatId}`);
+    },
+    deleteMemberFromChat(memberId, chatId) {
+        return instance.delete(`messages/chats/${chatId}/${memberId}`);
     }
 }
 

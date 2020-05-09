@@ -1,0 +1,38 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-main {
+  width: 300px;
+  padding: 20px 40px;
+  background-color: #fff;
+  position: relative;
+}
+
+.modal-main-close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  &:hover {
+    color: red;
+  }
+}
+
+.form-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-main-title {
+  text-align: center;
+}
+
+.form-main-submit {
+  margin-top: 25px;
+}
+
+.form-main-cancel {
+  margin-top: 10px;
+}

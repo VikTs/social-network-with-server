@@ -8,6 +8,7 @@ const GET_MESSAGES = 'GET_MESSAGES';
 const SET_CURRENT_CHAT = 'SET_CURRENT_CHAT';
 const SET_CURRENT_MESSAGES = 'SET_CURRENT_MESSAGES';
 const DELETE_CHAT = 'DELETE_CHAT';
+const DELETE_MEMBER_FROM_CHAT = 'DELETE_MEMBER_FROM_CHAT';
 
 let initialState = {
     currentChat: null,
@@ -32,15 +33,14 @@ const dialogsReducer = (state = initialState, action) => {
             }
         case ADD_NEW_CHAT_MEMBER:
             const { newMember, chatId } = payload;
-            console.log(chatId);
-            const newChats = [];
-            state.chats.forEach(chat => {
-                if (chatId === chat.id) chat.members = [...chat.members, ...newMember]
-                newChats.push(chat);
-            });
+           
             return {
                 ...state,
-                chats: newChats,
+                chats: state.chats.map(chat => {
+                    if (chatId === chat._id) {
+                        chat.members = [...chat.members, ...newMember]}
+                    return chat;
+                })
             }
 
         case GET_CHATS:
@@ -70,6 +70,15 @@ const dialogsReducer = (state = initialState, action) => {
                 ...state,
                 chats: state.chats.filter(chat => chat._id !== payload.chatId),
             }
+        case DELETE_MEMBER_FROM_CHAT:
+            return {
+                ...state,
+                chats: state.chats.map(chat => {
+                    if (chat._id === payload.chatId)
+                        chat.members = chat.members.filter(member => member.id !== payload.memberId)
+                    return chat;
+                })
+            }
 
         default: return state;
     }
@@ -98,6 +107,11 @@ const getMessagesAC = (messages) => ({
 const deleteChatAC = (chatId) => ({
     type: DELETE_CHAT,
     payload: { chatId },
+});
+
+const deleteMemberFromChatAC = (memberId, chatId) => ({
+    type: DELETE_MEMBER_FROM_CHAT,
+    payload: { memberId, chatId },
 });
 
 export const setCurrentMessages = (currentMessages) => ({
@@ -147,6 +161,11 @@ export const addNewChatMember = (newMember, chatId) => async (dispatch) => {
 export const deleteChat = (chatId) => async (dispatch) => {
     await messagesAPI.deleteChat(chatId);
     dispatch(deleteChatAC(chatId));
+}
+
+export const deleteMemberFromChat = (memberId, chatId) => async (dispatch) => {
+    await messagesAPI.deleteMemberFromChat(memberId, chatId);
+    dispatch(deleteMemberFromChatAC(memberId, chatId));
 }
 
 

@@ -5,6 +5,7 @@ import {
   getChats,
   setCurrentChat,
   setCurrentMessages,
+  deleteMemberFromChat,
 } from '../../redux/dialogs-reducer';
 import { getMyData } from '../../redux/auth-reducer';
 import Messages from './Messages';
@@ -30,6 +31,7 @@ const mapDispatchToProps = ({
   getChats,
   setCurrentChat,
   setCurrentMessages,
+  deleteMemberFromChat,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

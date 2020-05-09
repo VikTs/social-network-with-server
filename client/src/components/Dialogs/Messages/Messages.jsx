@@ -3,7 +3,7 @@ import MessageList from './MessageList/MessageList';
 import AddMessage from './AddMessage/AddMessage';
 import MessagesHeader from './MessagesHeader/MessagesHeader';
 import { socket } from '../../../App';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import './Messages.scss';
 
@@ -22,6 +22,7 @@ const Messages = ({
   getChats,
   setCurrentChat,
   setCurrentMessages,
+  deleteMemberFromChat,
 }) => {
   const { id } = useParams();
 
@@ -55,7 +56,7 @@ const Messages = ({
       setCurrentMessages(currentMessages)
       setFilteredMessages(currentMessages);
     }
-  }, [messages, currentMessages]);
+  }, [messages]);
 
   useEffect(() => {
     if (chats) {
@@ -80,11 +81,16 @@ const Messages = ({
       {filteredMessages && currentChat &&
         (<div className="messages-container">
           <MessagesHeader
-            addNewChatMember={addNewChatMember}
-            friends={friends} chat={currentChat}
+            deleteMemberFromChat={deleteMemberFromChat}
             setFilteredMessages={setFilteredMessages}
+            setCurrentMessages={setCurrentMessages}
+            setCurrentChat={setCurrentChat}
+            addNewChatMember={addNewChatMember}
             messages={currentMessages}
             getMyData={getMyData}
+            chat={currentChat}
+            friends={friends} 
+            myId={myId}
           />
           <MessageList messages={filteredMessages} chat={currentChat} />
           <AddMessage addNewMessage={addNewMessage} chat={currentChat} />

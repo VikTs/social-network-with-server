@@ -101,12 +101,32 @@ router.delete(
       const { id } = req.params;
 
       await Chat.deleteOne({ _id: new ObjectId(id) });
-      await Message.delete({ chat_id: new ObjectId(id) });
+      await Message.deleteMany({ chat_id: new ObjectId(id) });
 
       res.status(200).json({ message: `Chat and it's messages were deleted:` });
     } catch (error) {
       res.status(500).json({ message: `Something wrong: ${error}` });
     }
   });
+
+  router.delete(
+    '/chats/:chatid/:memberid',
+    async (req, res) => {
+      try {
+        const { chatid, memberid } = req.params;
+  
+        Chat.updateOne(
+          { _id: new ObjectId(chatid) },          
+          { $pull: { members: { id: memberid } } },
+          function (err) {
+            if (err) return console.log(err);
+            res.status(200).json({ message: 'Member from chat was deleted' })
+          }
+        );
+  
+      } catch (error) {
+        res.status(500).json({ message: `Something wrong: ${error}` });
+      }
+    });
 
 module.exports = router;

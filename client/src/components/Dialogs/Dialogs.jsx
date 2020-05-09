@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Messages from './Messages/MessagesContainer';
 import DialogList from './DialogList/DialogListContainer';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import NewChatForm from './NewChatForm/NewChatFormContainer';
 
 const Dialogs = ({
@@ -12,8 +12,17 @@ const Dialogs = ({
     createChat,
     getMyData,
     getChats,
+    setCurrentChat,
+    setCurrentMessages,
 }) => {
     const [filteredChats, setFilteredChats] = useState([]);
+    const { location } = useHistory();
+
+    useEffect(() => {
+        if(location.pathname === '/dialogs') {
+        setCurrentChat(null)
+        setCurrentMessages(null);}
+    }, [location])
 
     useEffect(() => {
         async function getData() {
