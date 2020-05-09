@@ -6,11 +6,14 @@ const ADD_NEW_CHAT_MEMBER = 'ADD_NEW_CHAT_MEMBER';
 const GET_CHATS = 'GET_CHATS';
 const GET_MESSAGES = 'GET_MESSAGES';
 const SET_CURRENT_CHAT = 'SET_CURRENT_CHAT';
+const SET_CURRENT_MESSAGES = 'SET_CURRENT_MESSAGES';
+const DELETE_CHAT = 'DELETE_CHAT';
 
 let initialState = {
     currentChat: null,
+    currentMessages: null,
     chats: null,
-    messages: null,    
+    messages: null,
 }
 
 const dialogsReducer = (state = initialState, action) => {
@@ -57,6 +60,16 @@ const dialogsReducer = (state = initialState, action) => {
                 ...state,
                 currentChat: payload.currentChat,
             }
+        case SET_CURRENT_MESSAGES:
+            return {
+                ...state,
+                currentMessages: payload.currentMessages,
+            }
+        case DELETE_CHAT:
+            return {
+                ...state,
+                chats: state.chats.filter(chat => chat._id !== payload.chatId),
+            }
 
         default: return state;
     }
@@ -80,6 +93,16 @@ const getChatsAC = (chats) => ({
 const getMessagesAC = (messages) => ({
     type: GET_MESSAGES,
     payload: { messages },
+});
+
+const deleteChatAC = (chatId) => ({
+    type: DELETE_CHAT,
+    payload: { chatId },
+});
+
+export const setCurrentMessages = (currentMessages) => ({
+    type: SET_CURRENT_MESSAGES,
+    payload: { currentMessages },
 });
 
 export const setCurrentChat = (currentChat) => ({
@@ -120,5 +143,11 @@ export const addNewChatMember = (newMember, chatId) => async (dispatch) => {
     await messagesAPI.addNewChatMember(newMember, chatId);
     dispatch(addNewChatMemberAC(newMember, chatId));
 }
+
+export const deleteChat = (chatId) => async (dispatch) => {
+    await messagesAPI.deleteChat(chatId);
+    dispatch(deleteChatAC(chatId));
+}
+
 
 export default dialogsReducer

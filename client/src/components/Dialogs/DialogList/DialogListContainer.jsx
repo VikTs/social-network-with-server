@@ -1,4 +1,5 @@
 import DialogsList from './DialogList';
+import { deleteChat } from '../../redux/dialogs-reducer';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
@@ -6,4 +7,8 @@ const mapStateToProps = (state) => ({
   chats: state.messagesState.chats,
 });
 
-export default connect(mapStateToProps)(DialogsList);
+const mapDispatchToProps = ({
+  deleteChat,  
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DialogsList);

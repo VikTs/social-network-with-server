@@ -7,7 +7,7 @@ const DialogHeader = ({ chats, setFilteredChats }) => {
   return (
     <div className="dialog-header">
       <DialogsSearch chats={chats} setFilteredChats={setFilteredChats}/>
-      <DialogsNewButton />      
+      <DialogsNewButton chats={chats} setFilteredChats={setFilteredChats} />      
     </div>
   )
 }

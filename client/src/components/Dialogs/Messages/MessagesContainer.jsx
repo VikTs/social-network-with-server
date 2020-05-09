@@ -3,7 +3,8 @@ import {
   addNewChatMember,
   getMessages,
   getChats,
-  setCurrentChat
+  setCurrentChat,
+  setCurrentMessages,
 } from '../../redux/dialogs-reducer';
 import { getMyData } from '../../redux/auth-reducer';
 import Messages from './Messages';
@@ -17,6 +18,7 @@ const mapStateToProps = (state) => {
     friends: state.auth.myFriends,
     myData: state.auth.myData,
     currentChat: state.messagesState.currentChat,
+    currentMessages: state.messagesState.currentMessages,
   }
 }
 
@@ -27,6 +29,7 @@ const mapDispatchToProps = ({
   getMessages,
   getChats,
   setCurrentChat,
+  setCurrentMessages,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

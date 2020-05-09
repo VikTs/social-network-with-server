@@ -112,17 +112,17 @@ export const getNewNotificationCount = () => async dispatch => {
 };
 
 export const cleanAllNotifications = () => async dispatch => {
-  let response = await notificationAPI.cleanAllNotifications();
+  await notificationAPI.cleanAllNotifications();
   dispatch(cleanAllNotificationsAC());
 };
 
 export const removeFriendNotification = (userId) => async dispatch => {
-  let response = await notificationAPI.removeReqFriendNotification(userId);
+  await notificationAPI.removeReqFriendNotification(userId);
   // dispatch(removeReqFriendNotification(userId)); //user id
 };
 
 export const addFriendNotification = (userId) => async dispatch => {
-  let response = await notificationAPI.addReqFriendNotification(userId);
+  await notificationAPI.addReqFriendNotification(userId);
   // dispatch(addReqFriendNotification(response.data));//user id,name,surname
 };
 

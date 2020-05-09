@@ -164,6 +164,9 @@ export const messagesAPI = {
     },
     addNewChatMember(newMember, chatId) {
         return instance.put(`messages/chats/member`, {newMember, chatId});
+    },
+    deleteChat(chatId) {
+        return instance.delete(`messages/chats/${chatId}`);
     }
 }
 

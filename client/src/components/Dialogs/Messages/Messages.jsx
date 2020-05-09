@@ -10,6 +10,7 @@ import './Messages.scss';
 const Messages = ({
   chats,
   currentChat,
+  currentMessages,
   sendMessage,
   messages,
   myId,
@@ -19,7 +20,8 @@ const Messages = ({
   getMyData,
   getMessages,
   getChats,
-  setCurrentChat
+  setCurrentChat,
+  setCurrentMessages,
 }) => {
   const { id } = useParams();
 
@@ -33,27 +35,27 @@ const Messages = ({
   // watchForMessagesUpdate();
 
   const [filteredMessages, setFilteredMessages] = useState([]);
-  let currentMessages = [];
 
   useEffect(() => {
     if (!messages) {
       getMessages();
 
       // Messages listener from DB
-      socket.on('output', function (data) {
-        getMessages();
-      });
+      // socket.on('output', function (data) {
+      //   getMessages();
+      // });
     }
     if (!chats) getChats();
     if (!myData) getMyData();
   }, []);
 
   useEffect(() => {
-    if (messages) {
-      currentMessages = messages.filter(message => id === message.chat_id);
+    if (messages && !currentMessages) {
+      const currentMessages = messages.filter(message => id === message.chat_id);
+      setCurrentMessages(currentMessages)
       setFilteredMessages(currentMessages);
     }
-  }, [messages]);
+  }, [messages, currentMessages]);
 
   useEffect(() => {
     if (chats) {
@@ -81,7 +83,7 @@ const Messages = ({
             addNewChatMember={addNewChatMember}
             friends={friends} chat={currentChat}
             setFilteredMessages={setFilteredMessages}
-            messages={filteredMessages}
+            messages={currentMessages}
             getMyData={getMyData}
           />
           <MessageList messages={filteredMessages} chat={currentChat} />

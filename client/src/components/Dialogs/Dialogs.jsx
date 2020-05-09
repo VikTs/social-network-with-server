@@ -15,12 +15,16 @@ const Dialogs = ({
 }) => {
     const [filteredChats, setFilteredChats] = useState([]);
 
-    useEffect(async() => {
-        if (!myData) getMyData();
-        if(!chats) {
-            const gotChat = await getChats();
-            setFilteredChats(gotChat);
-        }
+    useEffect(() => {
+        async function getData() {
+            if (!myData) getMyData();
+            if (!chats) {
+                const gotChat = await getChats();
+                setFilteredChats(gotChat);
+            }
+        };
+
+        getData();
     }, []);
 
     return (

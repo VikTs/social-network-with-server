@@ -1,5 +1,5 @@
 import { usersAPI } from '../../api/api'
-import {updateObjectsInArray} from '../../utils/objects-helper'
+// import {updateObjectsInArray} from '../../utils/objects-helper'
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -76,7 +76,8 @@ const usersReducer = (state = initialState, action) => {
                     users: state.users.filter(u => {
                         if (u._id !== action.userId) {
                             return u
-                        }
+                        } 
+                        return false
                     })
                 }
             
@@ -157,7 +158,7 @@ const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) =>
 
     dispatch(toggleFollowingProgress(true, userId))
     let response = await apiMethod(userId)
-    if (response.data.resultCode == 0) {
+    if (response.data.resultCode === 0) {
         dispatch(actionCreator(userId));
     }
     dispatch(toggleFollowingProgress(false, userId))

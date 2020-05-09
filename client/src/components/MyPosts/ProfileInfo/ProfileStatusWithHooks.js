@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import classes from './ProfileInfo.module.css'
+// import classes from './ProfileInfo.module.css'
 
 //HOOKS
 //1) НЕ использовать в условиях if(...){hook}
 
 const ProfileStatusWithHooks = (props) => {
-    //useState - задает значение по умолчанию и возвращает массив из 2 элементов:
-    //1-е - значение, которое было передано в скобках
-    //2-е - ф-я, которая изменяет это значение
 
     let [editMode, setEditMode] = useState(false)
     let [status, setStatus] = useState(props.status)
@@ -17,7 +14,7 @@ const ProfileStatusWithHooks = (props) => {
     //[] - компонент ни от чьего состояния не зависит, поэтому отрисовывается всего один раз
     useEffect(() => {
         setStatus(props.status)
-    }, [props.status] //если меняется props.status, то перерисовываем
+    }, [props.status] 
     )
 
     const activateEditMode = () => {

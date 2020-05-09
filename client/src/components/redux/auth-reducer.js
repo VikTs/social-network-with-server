@@ -1,5 +1,4 @@
 import { authAPI, securityAPI } from "../../api/api";
-import { stopSubmit } from "redux-form";
 
 const SET_USER_DATA = 'social-network/auth/SET_USER_DATA';
 const GET_CAPTCHA_URL_SUCCESS = 'social-network/auth/GET_CAPTCHA_URL_SUCCESS';
@@ -79,7 +78,7 @@ export const getMyData = () => async (dispatch) => {
 }
 
 export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
-    const response = await authAPI.login(email, password, rememberMe, captcha)
+    await authAPI.login(email, password, rememberMe, captcha)
     dispatch(getAuthUserData())
 }
 
@@ -99,7 +98,7 @@ export const registration = (formData) => async (dispatch) => {
 }
 
 export const deletePage = (userId) => async (dispatch) => {
-    const response = await authAPI.deletePage(userId)
+    await authAPI.deletePage(userId)
     dispatch(deleteUserPage())
 }
 

@@ -84,11 +84,26 @@ router.put(
         { _id: new ObjectId(chatId) },
         { $addToSet: { members: newMember } },
         function (err) {
-            if (err) return console.log(err);
-            res.status(200).json({ message: 'Member was added' })
+          if (err) return console.log(err);
+          res.status(200).json({ message: 'Member was added' })
         }
-        );
+      );
 
+    } catch (error) {
+      res.status(500).json({ message: `Something wrong: ${error}` });
+    }
+  });
+
+router.delete(
+  '/chats/:id',
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      await Chat.deleteOne({ _id: new ObjectId(id) });
+      await Message.delete({ chat_id: new ObjectId(id) });
+
+      res.status(200).json({ message: `Chat and it's messages were deleted:` });
     } catch (error) {
       res.status(500).json({ message: `Something wrong: ${error}` });
     }

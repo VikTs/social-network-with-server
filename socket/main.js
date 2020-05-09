@@ -23,11 +23,11 @@ module.exports.sockets = function (http) {
 
 
 
-    const changeStream = messageModel.watch();
+    // const changeStream = messageModel.watch();
 
-    changeStream.on('change', (change) => {
-      io.emit('output', change);
-    });
+    // changeStream.on('change', (change) => {
+    //   io.emit('output', change);
+    // });
 
 
       socket.on('chat message', async (msg) => {

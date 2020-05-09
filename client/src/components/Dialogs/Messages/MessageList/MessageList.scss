@@ -1,9 +1,10 @@
 .message-list {
   display: flex;
   flex-direction: column;
-  max-height: 110px;
-  min-height: 50px;
+  max-height: 250px;
+  min-height: 150px;
   overflow-y: auto;
+  position: relative;
   &::-webkit-scrollbar {
     width: 10px;
   }  
@@ -16,4 +17,19 @@
       background: #555; 
     }
   }  
+}
+
+.scroll-bottom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 5;
+}
+
+.scroll-bottom-button {
+  position: fixed;
+  background-color: #02152c;
+  border-radius: 30px;
+  font-size: 30px;
+  color:#fff;
 }

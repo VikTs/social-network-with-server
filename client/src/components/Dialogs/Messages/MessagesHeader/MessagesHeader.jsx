@@ -35,6 +35,7 @@ const MessagesHeader = ({
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
+      console.log(messages);
       setFilteredMessages(messages.filter(mess => mess.context.includes(e.target.value)));
     }
   }
