@@ -83,9 +83,10 @@ export const authAPI = {
         const userData = authCheck();
         return instance.post(`auth/me`, { userData })
     },
-    // в auth/login есть post и delete
-    //мы создаем новую сессию
-    //auth/login - из документации
+    getMyData() {
+        const myId = getCurrentUserId()
+        return instance.get(`auth/myData/${myId}`)
+    },
     login(email, password, rememberMe = false, captcha = null) { //email,password - required
         //данные - через запятую
         return instance.post(`auth/login`, { email, password, rememberMe, captcha })
@@ -125,24 +126,50 @@ export const notificationAPI = {
         return instance.post(`notification/friendreq`, { myId, userId })
     },
     removeReqFriendNotification(userId) {
-        const myId = getCurrentUserId()
-        return instance.delete(`notification/friendreq/${myId}/${userId}`)
+        const myId = getCurrentUserId();
+        return instance.delete(`notification/friendreq/${myId}/${userId}`);
     },
     getNotificationList() {
-        const myId = getCurrentUserId()
-        return instance.get(`notification/getList/${myId}`)
+        const myId = getCurrentUserId();
+        return instance.get(`notification/getList/${myId}`);
     },
     getNewNotificationCount() {
-        const myId = getCurrentUserId()
-        return instance.get(`notification/getNewCount/${myId}`)
+        const myId = getCurrentUserId();
+        return instance.get(`notification/getNewCount/${myId}`);
     },
     zeroingNewCount() {
-        const myId = getCurrentUserId()
-        return instance.delete(`notification/zeroingNew/${myId}`)
+        const myId = getCurrentUserId();
+        return instance.delete(`notification/zeroingNew/${myId}`);
     },
     cleanAllNotifications() {
-        const myId = getCurrentUserId()
-        return instance.delete(`notification/${myId}`)
+        const myId = getCurrentUserId();
+        return instance.delete(`notification/${myId}`);
+    }
+}
+
+export const messagesAPI = {
+    sendMessage(newMessage) {
+        return instance.post(`messages/message`, {newMessage});
+    },
+    createChat(newChat) {
+        return instance.post(`messages/chat`, {newChat});
+    },
+    getChats() {
+        const myId = getCurrentUserId();
+        return instance.get(`messages/chats/${myId}`);
+    },
+    getMessages() {
+        const myId = getCurrentUserId();
+        return instance.get(`messages/messages/${myId}`);
+    },
+    addNewChatMember(newMember, chatId) {
+        return instance.put(`messages/chats/member`, {newMember, chatId});
+    },
+    deleteChat(chatId) {
+        return instance.delete(`messages/chats/${chatId}`);
+    },
+    deleteMemberFromChat(memberId, chatId) {
+        return instance.delete(`messages/chats/${chatId}/${memberId}`);
     }
 }
 

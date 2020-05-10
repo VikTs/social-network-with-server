@@ -11,7 +11,7 @@ let SignInForm = ({ handleSubmit, error, captchaUrl }) => {
             {CreateField('Password', 'password', [required], Input, { type: "password" })}
             {CreateField(null, 'rememberMe', [], Input, { type: "checkbox" }, 'Remember me')}
 
-            {captchaUrl && <img src={captchaUrl} />}
+            {captchaUrl && <img alt="captchaUrl" src={captchaUrl} />}
             {captchaUrl && CreateField('Symbols for image', 'captcha', [required], Input)}
 
             {error && <div className={style.formSummaryError}>

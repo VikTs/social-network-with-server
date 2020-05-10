@@ -41,7 +41,7 @@ const schema = new Schema({
     }
   ],
   newNotificationsCount: Number,
-  owner: { type: Types.ObjectId, ref: "User" } //Link - модель,к которой мы привязываемся
+  owner: { type: Types.ObjectId, ref: "User" } 
 });
 
 module.exports = model("Notification", schema); // экспортируем из файла результат работы ф-ии model

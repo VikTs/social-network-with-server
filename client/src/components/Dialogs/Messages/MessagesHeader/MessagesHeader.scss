@@ -1,0 +1,28 @@
+@import '../../../../styles/variables.scss';
+
+.messages-header {
+  background-color: $message-header-bg;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.message-search-input {
+  width: 900px;
+  margin: 0 20px;
+  height: 20px;
+  padding: 5px;
+}
+
+.header-chat-info {
+  text-align: center;
+  cursor: pointer;
+}
+
+.messages-header-btn {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}

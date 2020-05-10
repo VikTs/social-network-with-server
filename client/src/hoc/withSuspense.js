@@ -1,11 +1,11 @@
 //HOC - принимает компонент, делает для него обертку и возвращает компоненту
 import React from 'react'
-import Preloader from '../components/common/Preloader/Preloader'
+import { Spinner } from '../components/common/Spinner/Spinner'
 
 export const withSuspense = (Component) => {
 
     return (props) => {
-        return <React.Suspense fallback={<Preloader />}>
+        return <React.Suspense fallback={<Spinner />}>
             <Component {...props} />
         </React.Suspense>
     }

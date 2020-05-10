@@ -1,0 +1,31 @@
+.new-chat {
+  position: relative;
+  padding: 40px 20px 12px;
+  .submit {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 4px 6px;
+    outline: none;
+    cursor: pointer;
+    &:hover {
+      background-color: #c4c4c4;
+      border-color: #c4c4c4;
+      transition: 100ms;
+    }
+  }
+  .cancel {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 1;
+    background-color: inherit;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    &:hover {
+      color: red;
+      transition: 200ms;
+    }
+  }
+}

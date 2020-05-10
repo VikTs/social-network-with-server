@@ -104,6 +104,22 @@ router.post(
         }
     })
 
+    
+// auth/myData/${myId}
+router.get(
+    '/myData/:myid',
+    async (req, res) => {
+        try {
+            const myData = await User.findOne({ _id: new ObjectId(req.params.myid) });
+            const users = await User.find();            
+            const friends = users.filter(user => myData.friends.includes(user._id))
+
+            res.json({myData, friends}).status(200).json({ message: 'My data was loaded' });            
+           
+        } catch (error) {
+            res.status(500).json({ message: `Something wrong: ${error}` }) //500-ошибка сервера, json кидает сообщение
+        }
+    })
 
 // api/auth/login
 router.post(

@@ -2,19 +2,24 @@ import React from 'react';
 import './App.css';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Navbar from './components/Navbar/Navbar';
-import { Route, withRouter } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import Music from './components/Music/Music';
-import { initializeApp } from './components/redux/app-reducer'
+import { initializeApp } from './components/redux/app-reducer';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Preloader from '../src/components/common/Preloader/Preloader';
-import store from '../src/components/redux/redux-store'
-import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { Spinner } from '../src/components/common/Spinner/Spinner';
+import store from '../src/components/redux/redux-store';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import { withSuspense } from './hoc/withSuspense';
 import LoginPage from './components/Login/Login';
+import socketIOClient from "socket.io-client";
+
+import './styles/general.scss';
+
+var socket = socketIOClient("http://localhost:5000/");
 
 //lazy-подгружаем компоненту в момент перехода по вкладке
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -25,15 +30,18 @@ const LoginOrRegistrationPage = React.lazy(() => import('./components/Login/Logi
 //const LoginPage = React.lazy(() => import('./components/Login/Login'));
 
 class App extends React.Component {
+  // state = {
+  //   endpoint: "http://localhost:5000/" 
+  // };
+  // socket = socketIOClient(this.state.endpoint);
 
   componentDidMount() {
     this.props.initializeApp()
   }
 
   render() {
-
     if (!this.props.initialized) {
-      return <Preloader />
+      return <Spinner />
     }
 
     return (
@@ -41,17 +49,14 @@ class App extends React.Component {
         <HeaderContainer />
         <Navbar />
         <div className="app-wrapper-content">
-
           <Route path='/profiles/:userId?' render={withSuspense(ProfileContainer)} />
           <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
           <Route path='/users' render={withSuspense(UsersContainer)} />
           <Route path='/friends' render={withSuspense(UsersContainer)} />
           <Route path='/notification' render={withSuspense(NotificationContainer)} />
-          {/* <Route path='/login' render={withSuspense(LoginPage)} /> */}
           <Route path='/login' render={withSuspense(LoginOrRegistrationPage)} />
-          <Route path='/signIn' render={()=><LoginPage loginType="signIn"/>} />
-          <Route path='/signUp' render={()=><LoginPage loginType="signUp"/>} />
-
+          <Route path='/signIn' render={() => <LoginPage loginType="signIn" />} />
+          <Route path='/signUp' render={() => <LoginPage loginType="signUp" />} />
           <Route path='/news' component={News} />
           <Route path='/music' component={Music} />
           <Route path='/settings' component={Settings} />
@@ -61,18 +66,13 @@ class App extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state) => ({
   initialized: state.app.initialized
 })
 
-
 const AppContainer = compose(
   withRouter, //withRouter - так как коннектим App компонент, сбиваются Route
   connect(mapStateToProps, { initializeApp }))(App);
-
-
-
 
 const SocialApp = (props) => {
   return (
@@ -90,4 +90,4 @@ const SocialApp = (props) => {
   )
 }
 
-export default SocialApp
+export { SocialApp, socket };
