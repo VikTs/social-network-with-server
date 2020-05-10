@@ -12,28 +12,23 @@ const Dialogs = ({
     createChat,
     getMyData,
     getChats,
-    setCurrentChat,
-    setCurrentMessages,
+    setChats,
 }) => {
     const [filteredChats, setFilteredChats] = useState([]);
-    const { location } = useHistory();
-
-    useEffect(() => {
-        if(location.pathname === '/dialogs') {
-        setCurrentChat(null)
-        setCurrentMessages(null);}
-    }, [location])
 
     useEffect(() => {
         async function getData() {
-            if (!myData) getMyData();
-            if (!chats) {
-                const gotChat = await getChats();
-                setFilteredChats(gotChat);
-            }
+            getMyData();
+            const gotChat = await getChats();
+            setFilteredChats(gotChat);
         };
 
         getData();
+
+        return function cleanup() {
+            setFilteredChats([]);
+            setChats(null);
+        };
     }, []);
 
     return (
@@ -52,7 +47,9 @@ const Dialogs = ({
                     />
                 } />
                 <Route exact path="/dialogs/:id" render={() =>
-                    <Messages />
+                    <Messages
+                        setFilteredChats={setFilteredChats}
+                        filteredChats={filteredChats} />
                 } />
             </Switch>
         </div>

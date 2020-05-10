@@ -3,7 +3,6 @@ import './DialogsSearch.scss';
 
 const DialogsSearch = ({ chats, setFilteredChats }) => {
   const handleChange = (e) => {
-    if (e.key === 'Enter') {
       const inputValue = e.target.value;
       const filteredChats = chats.filter(
         (chat) =>
@@ -11,12 +10,11 @@ const DialogsSearch = ({ chats, setFilteredChats }) => {
           chat.chat_description.includes(inputValue)
       )
       setFilteredChats(filteredChats);
-    }
   }
   return (
     <div className="dialog-search">
       <input
-        onKeyPress={handleChange}
+        onChange={handleChange}
         className="dialog-search-field"
         type="text"
         placeholder="Search dialog" />

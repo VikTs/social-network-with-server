@@ -1,25 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { IconButton, Checkbox, FormControlLabel } from '@material-ui/core';
+import { IconButton, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import CloseIcon from '@material-ui/icons/Close';
 import ChatIcon from '@material-ui/icons/Chat';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CancelIcon from '@material-ui/icons/Cancel';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import ModalMain from '../../../../common/Modal/Modal';
 
 import './MessagesInfoModal.scss';
+import { useHistory } from 'react-router-dom';
 
 const MessagesInfoModal = ({
   getMyData,
+  myId,
   chat,
   open,
-  handleClose,
   friends,
+  deleteChat,
+  handleClose,
+  deleteChatAC,
+  filteredChats,
   addNewChatMember,
+  setFilteredChats,
   deleteMemberFromChat,
-  myId,
 }) => {
   const { chat_name, members, chat_description, owner_id, _id } = chat;
 
@@ -48,13 +55,13 @@ const MessagesInfoModal = ({
 
   const membersInfo = members.map(member => (
     <div className="chat-modal-member" key={member.id} >
-      {myId === owner_id && (
+      <span className="chat-modal-member-name">{member.name}</span>
+      {myId === owner_id && myId !== member.id && (
         <CancelIcon
           onClick={() => setDelMember(member.id)}
           classes={{ root: 'chat-modal-member-delete' }}
         />
       )}
-      <span className="chat-modal-member-name">{member.name}</span>
     </div>
   )
   )
@@ -85,7 +92,7 @@ const MessagesInfoModal = ({
 
   const openDeleteMemberModal = () => toggleDeleteMemberModal(true);
   const closeDeleteMemberModal = () => toggleDeleteMemberModal(false);
-  
+
   const setDelMember = (memberId) => {
     setMemberIdToDelete(memberId);
     openDeleteMemberModal();
@@ -96,6 +103,39 @@ const MessagesInfoModal = ({
     closeDeleteMemberModal();
   }
 
+  //HANDLE LEAVE CHAT
+  const [isOpenLeaveChatModal, toggleLeaveChat] = useState(false);
+  const { push } = useHistory();
+
+  const openLeaveChatModal = () => toggleLeaveChat(true);
+  const closeLeaveChatModal = () => toggleLeaveChat(false);
+
+  const setLeaveMember = () => {
+    setMemberIdToDelete(myId);
+    openLeaveChatModal();
+  };
+
+  const handleLeaveMember = () => {
+    deleteMemberFromChat(memberIdToDelete, _id);
+    deleteChatAC(_id);
+    setFilteredChats(filteredChats.filter(fChat => fChat._id !== _id))
+    closeLeaveChatModal();
+    push('/dialogs');
+  }
+
+  //HANDLE DELETE CHAT
+  const [isOpenDeleteChatModal, toggleDeleteChat] = useState(false);
+
+  const openDeleteChatModal = () => toggleDeleteChat(true);
+  const closeDeleteChatModal = () => toggleDeleteChat(false);
+
+  const handleDeleteChat = () => {
+    deleteChat(_id);
+    setFilteredChats(filteredChats.filter(fChat => fChat._id !== _id))
+    closeDeleteChatModal();
+    push('/dialogs');
+  }
+
   return (
     <>
       {isOpenDeleteMemberModal &&
@@ -103,6 +143,20 @@ const MessagesInfoModal = ({
           title="Do you really want to delete member from this chat?"
           onCloseMethod={closeDeleteMemberModal}
           onSubmit={handleDeleteMember}
+        />
+      }
+      {isOpenLeaveChatModal &&
+        <ModalMain
+          title="Do you really want to leave this chat? After submit you can be joined only by chat members."
+          onCloseMethod={closeLeaveChatModal}
+          onSubmit={handleLeaveMember}
+        />
+      }
+      {isOpenDeleteChatModal &&
+        <ModalMain
+          title="Do you really want to delete chat? All messages will be lost."
+          onCloseMethod={closeDeleteChatModal}
+          onSubmit={handleDeleteChat}
         />
       }
       <Modal
@@ -132,6 +186,21 @@ const MessagesInfoModal = ({
                   <p className="modal-member-add-text">Add member</p>
                 </div>
                 {membersInfo}
+                {myId === owner_id ?
+                  <Button
+                    onClick={openDeleteChatModal}
+                    size="medium"
+                    variant="outlined"
+                    endIcon={<DeleteForeverIcon />}
+                  > Delete chat </Button> 
+                  :
+                  <Button
+                    onClick={setLeaveMember}
+                    size="medium"
+                    variant="outlined"
+                    endIcon={<DirectionsRunIcon />}
+                  > Leave chat </Button>
+                }
               </>
             ) : (
                 <>

@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './DialogList.scss';
 import DialogItem from '../DialogItem/DialogItem';
 import DialogHeader from '../DialogsHeader/DialogsHeader';
+import { Spinner } from '../../common/Spinner/Spinner';
 
 const DialogList = ({ chats, myId, filteredChats=chats, setFilteredChats, deleteChat }) => {
-
+  
   return (
     <div className="dialog-list">
       <DialogHeader chats={chats} setFilteredChats={setFilteredChats} />
-      {filteredChats.length ? (
+      {filteredChats.length !== 0 && (
         filteredChats.map(chat => (
           <DialogItem
             owner={chat.members.find(member => member.id === chat.owner_id)}
@@ -22,7 +23,9 @@ const DialogList = ({ chats, myId, filteredChats=chats, setFilteredChats, delete
             id={chat._id}
           />
         ))
-      ) : "No matched chats"}
+      )}
+      {!chats && <Spinner />}
+      {!filteredChats.length && chats && "No matched chats"}
     </div>
   )
 }

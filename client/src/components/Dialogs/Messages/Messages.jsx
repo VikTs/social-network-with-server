@@ -3,24 +3,28 @@ import MessageList from './MessageList/MessageList';
 import AddMessage from './AddMessage/AddMessage';
 import MessagesHeader from './MessagesHeader/MessagesHeader';
 import { socket } from '../../../App';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import './Messages.scss';
+import { Spinner } from '../../common/Spinner/Spinner';
 
 const Messages = ({
-  chats,
-  currentChat,
-  currentMessages,
-  sendMessage,
-  messages,
   myId,
+  chats,
   myData,
   friends,
-  addNewChatMember,
-  getMyData,
-  getMessages,
+  messages,
   getChats,
+  getMyData,
+  sendMessage,
+  currentChat,
+  getMessages,
+  deleteChatAC,
+  filteredChats,
   setCurrentChat,
+  currentMessages,
+  addNewChatMember,
+  setFilteredChats,
   setCurrentMessages,
   deleteMemberFromChat,
 }) => {
@@ -38,20 +42,19 @@ const Messages = ({
   const [filteredMessages, setFilteredMessages] = useState([]);
 
   useEffect(() => {
-    if (!messages) {
       getMessages();
 
       // Messages listener from DB
       // socket.on('output', function (data) {
       //   getMessages();
       // });
-    }
-    if (!chats) getChats();
-    if (!myData) getMyData();
+      
+    getChats();
+    getMyData();
   }, []);
 
   useEffect(() => {
-    if (messages && !currentMessages) {
+    if (messages) {
       const currentMessages = messages.filter(message => id === message.chat_id);
       setCurrentMessages(currentMessages)
       setFilteredMessages(currentMessages);
@@ -76,6 +79,8 @@ const Messages = ({
     setFilteredMessages([...filteredMessages, newMessage]);
   }
 
+  if(!messages) return <Spinner />
+
   return (
     <>
       {filteredMessages && currentChat &&
@@ -84,8 +89,11 @@ const Messages = ({
             deleteMemberFromChat={deleteMemberFromChat}
             setFilteredMessages={setFilteredMessages}
             setCurrentMessages={setCurrentMessages}
-            setCurrentChat={setCurrentChat}
+            setFilteredChats={setFilteredChats}
             addNewChatMember={addNewChatMember}
+            setCurrentChat={setCurrentChat}
+            filteredChats={filteredChats}
+            deleteChatAC={deleteChatAC}
             messages={currentMessages}
             getMyData={getMyData}
             chat={currentChat}

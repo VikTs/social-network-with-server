@@ -3,8 +3,7 @@ import {
     createChat,
     addNewChatMember,
     getChats,
-    setCurrentChat,
-    setCurrentMessages,
+    setChats,
 } from '../redux/dialogs-reducer';
 import { getMyData } from '../redux/auth-reducer';
 import Dialogs from './Dialogs';
@@ -28,8 +27,7 @@ const mapDispatchToProps = ({
     getMyData,
     addNewChatMember,
     getChats,
-    setCurrentChat,
-    setCurrentMessages,
+    setChats,
 })
 
 export default compose( //конвеер, перекидывает элемент, снизу вверх

@@ -1,6 +1,7 @@
 import {
   sendMessageCreator,
   addNewChatMember,
+  deleteChatAC,
   getMessages,
   getChats,
   setCurrentChat,
@@ -32,6 +33,7 @@ const mapDispatchToProps = ({
   setCurrentChat,
   setCurrentMessages,
   deleteMemberFromChat,
+  deleteChatAC,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

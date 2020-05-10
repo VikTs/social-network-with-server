@@ -94,7 +94,7 @@ const createChatAC = (newChat) => ({
     payload: { newChat },
 });
 
-const getChatsAC = (chats) => ({
+export const setChats = (chats) => ({
     type: GET_CHATS,
     payload: { chats },
 });
@@ -104,7 +104,7 @@ const getMessagesAC = (messages) => ({
     payload: { messages },
 });
 
-const deleteChatAC = (chatId) => ({
+export const deleteChatAC = (chatId) => ({
     type: DELETE_CHAT,
     payload: { chatId },
 });
@@ -144,7 +144,7 @@ export const createChat = (newChat) => async (dispatch) => {
 
 export const getChats = () => async (dispatch) => {
     const response = await messagesAPI.getChats();
-    dispatch(getChatsAC(response.data.chats));
+    dispatch(setChats(response.data.chats));
     return response.data.chats;
 }
 
