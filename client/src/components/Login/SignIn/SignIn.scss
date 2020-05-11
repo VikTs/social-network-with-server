@@ -1,0 +1,30 @@
+.form-sign-in-header {
+  text-align: center;
+}
+
+.form-sign-in {
+  margin: 40px 20%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.MuiButton-contained {
+  &.form-sign-in-submit {
+    margin-top: 15px;
+  }
+}
+
+.sign-up-link {
+  margin-top: 15px;
+}
+
+.sign-up-link-text {
+  text-decoration: none;
+}
+
+.sign-in-error-message {
+  color: red;
+  font-size: 18px;
+  margin: 3px 0;
+}

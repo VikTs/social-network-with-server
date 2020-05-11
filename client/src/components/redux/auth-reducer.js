@@ -90,11 +90,15 @@ export const logout = () => async (dispatch) => {
 }
 
 export const registration = (formData) => async (dispatch) => {
-    const response = await authAPI.registration(formData)
+    // try {
+    const response = await authAPI.registration(formData);
+    // }
+    // catch(err){ console.log(err);}
+    console.log(response.data);
     if (response.data.resultCode === 0) {
         dispatch(registerUser(formData))
         dispatch(getAuthUserData())
-    }
+    } else throw new Error('Registration wrong');
 }
 
 export const deletePage = (userId) => async (dispatch) => {

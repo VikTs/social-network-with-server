@@ -1,0 +1,30 @@
+@import '../../styles/variables.scss';
+
+.header {
+  grid-area: h;
+  background-color: $main-header-bg;
+  height: 80px;
+  color: #fff;
+}
+
+.header img {
+  width: 20px;
+}
+
+.login-block {
+  float: right;
+}
+
+.login-block a {
+  color: white;
+}
+
+.notification a {
+  color: $bell-color;
+}
+
+.notification {
+  float: left;
+  margin-right: 40px;
+  margin-top: 10px;
+}

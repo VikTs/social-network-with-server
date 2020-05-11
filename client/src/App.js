@@ -14,8 +14,10 @@ import store from '../src/components/redux/redux-store';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { withSuspense } from './hoc/withSuspense';
-import LoginPage from './components/Login/Login';
+// import LoginPage from './components/Login/Login';
 import socketIOClient from "socket.io-client";
+import SignIn from './components/Login/SignIn/SignInContainer';
+import SignUp from './components/Login/SignUp/SignUpContainer';
 
 import './styles/general.scss';
 
@@ -26,8 +28,7 @@ const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsCo
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const NotificationContainer = React.lazy(() => import('./components/Notification/NotificationContainer'));
-const LoginOrRegistrationPage = React.lazy(() => import('./components/Login/LoginOrRegistration'));
-//const LoginPage = React.lazy(() => import('./components/Login/Login'));
+// const LoginOrRegistrationPage = React.lazy(() => import('./components/Login/LoginOrRegistration'));
 
 class App extends React.Component {
   // state = {
@@ -54,9 +55,9 @@ class App extends React.Component {
           <Route path='/users' render={withSuspense(UsersContainer)} />
           <Route path='/friends' render={withSuspense(UsersContainer)} />
           <Route path='/notification' render={withSuspense(NotificationContainer)} />
-          <Route path='/login' render={withSuspense(LoginOrRegistrationPage)} />
-          <Route path='/signIn' render={() => <LoginPage loginType="signIn" />} />
-          <Route path='/signUp' render={() => <LoginPage loginType="signUp" />} />
+          {/* <Route path='/login' render={withSuspense(LoginOrRegistrationPage)} /> */}
+          <Route path='/login' render={() => <SignIn />} />
+          <Route path='/signUp' render={() => <SignUp />} />
           <Route path='/news' component={News} />
           <Route path='/music' component={Music} />
           <Route path='/settings' component={Settings} />

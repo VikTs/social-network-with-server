@@ -3,6 +3,7 @@ const router = Router() //create router
 const User = require('../models/UserModel'); 
 const Notification = require('../models/NotificationModel'); 
 const Post = require('../models/PostModel');
+const Chat = require('../models/Chat/ChatModel');
 const bcrypt = require('bcryptjs'); // хэширует и сравнивает пароли
 const { check, validationResult } = require('express-validator'); //проверка правильности ввода на сервере
 var jwtDecode = require('jwt-decode');
@@ -40,7 +41,7 @@ router.post(
 
             const candidate = await User.findOne({ email: email }) //поиск, зарегистрирован ли пользователь
             if (candidate) { // если уже существует
-                return res.status(400).json({ message: 'This user is exist' })
+                return res.status(400).json( { message: 'This user is exist' })
             }
 
             // ШИФРУЕМ ПАРОЛЬ
@@ -78,7 +79,7 @@ router.post(
 
             res.status(201).json({ message: 'User created' }) //когда создали пользователя - сообщаем об этом fronend-y
         } catch (error) {
-            res.status(500).json({ message: 'Something wrong' }) //500-ошибка сервера, json кидает сообщение
+            res.status(500).render( 'error', { error }) //500-ошибка сервера, json кидает сообщение
         }
     })
 
@@ -178,15 +179,24 @@ router.delete(
     '/deletePage/:id',
     async (req, res) => {
         try {
+            const { id } = req.params;
 
-            //console.log(req.params.id)
-
-            const query = { _id: new ObjectId(req.params.id) };
-            User.deleteOne(query)
+            // Chat.updateOne(
+            //     { _id: new ObjectId(chatid) },          
+            //     { $pull: { members: { id: memberid } } },
+            //     function (err) {
+            //       if (err) return console.log(err);
+            //       res.status(200).json({ message: 'Member from chat was deleted' })
+            //     }
+            
+            await Notification.deleteMany({ owner: new ObjectId(id) })
+            await Post.deleteMany({ owner: new ObjectId(id) })
+            await Chat.deleteMany({ owner_id: new ObjectId(id) })
+           
+            User.deleteOne({ _id: new ObjectId(id) })
                 .then(result => console.log(`Deleted ${result.deletedCount} user.`))
                 .catch(err => console.error(`Delete failed with error: ${err}`))
             res.json({ resultCode: 0 })
-
 
         } catch (error) {
             res.status(500).json({ message: 'Something wrong' })
