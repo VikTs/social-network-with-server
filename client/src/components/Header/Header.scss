@@ -1,9 +1,9 @@
 @import '../../styles/variables.scss';
 
 .header {
-  grid-area: h;
   background-color: $main-header-bg;
   height: 80px;
+  margin-bottom: 6px;
   color: #fff;
 }
 

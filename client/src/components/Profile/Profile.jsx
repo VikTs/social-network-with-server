@@ -1,20 +1,28 @@
 import React from 'react';
-import classes from './Profile.module.css'
 import ProfileInfo from '../MyPosts/ProfileInfo/ProfileInfo';
 import MyPostsContainer from '../MyPosts/MyPostsContainer';
 
-const Profile = (props) => {
+import './Profile.scss';
+
+const Profile = ({
+  isOwner,
+  profile,
+  status,
+  updateUserStatus,
+  savePhoto,
+  currentPageUserId
+}) => {
   return (
-    <div className={classes.content}>
+    <div className="profile-content">
       <ProfileInfo
-        isOwner={props.isOwner}
-        profile={props.profile}
-        status={props.status}
-        updateUserStatus={props.updateUserStatus}
-        savePhoto={props.savePhoto} />
+        isOwner={isOwner}
+        profile={profile}
+        status={status}
+        updateUserStatus={updateUserStatus}
+        savePhoto={savePhoto} />
       <div>
-        <MyPostsContainer 
-        isOwner={props.isOwner} currentPageUserId={props.currentPageUserId}/>
+        <MyPostsContainer
+          isOwner={isOwner} currentPageUserId={currentPageUserId} />
       </div>
     </div>
   );

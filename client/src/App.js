@@ -1,8 +1,7 @@
 import React from 'react';
-import './App.css';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Navbar from './components/Navbar/Navbar';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Redirect } from 'react-router-dom';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import Music from './components/Music/Music';
@@ -14,12 +13,13 @@ import store from '../src/components/redux/redux-store';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { withSuspense } from './hoc/withSuspense';
-// import LoginPage from './components/Login/Login';
 import socketIOClient from "socket.io-client";
 import SignIn from './components/Login/SignIn/SignInContainer';
 import SignUp from './components/Login/SignUp/SignUpContainer';
 
 import './styles/general.scss';
+import './styles/scroll.scss';
+import './App.scss';
 
 var socket = socketIOClient("http://localhost:5000/");
 
@@ -28,7 +28,6 @@ const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsCo
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const NotificationContainer = React.lazy(() => import('./components/Notification/NotificationContainer'));
-// const LoginOrRegistrationPage = React.lazy(() => import('./components/Login/LoginOrRegistration'));
 
 class App extends React.Component {
   // state = {
@@ -48,19 +47,24 @@ class App extends React.Component {
     return (
       <div className="app-wrapper">
         <HeaderContainer />
-        <Navbar />
         <div className="app-wrapper-content">
-          <Route path='/profiles/:userId?' render={withSuspense(ProfileContainer)} />
-          <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
-          <Route path='/users' render={withSuspense(UsersContainer)} />
-          <Route path='/friends' render={withSuspense(UsersContainer)} />
-          <Route path='/notification' render={withSuspense(NotificationContainer)} />
-          {/* <Route path='/login' render={withSuspense(LoginOrRegistrationPage)} /> */}
-          <Route path='/login' render={() => <SignIn />} />
-          <Route path='/signUp' render={() => <SignUp />} />
-          <Route path='/news' component={News} />
-          <Route path='/music' component={Music} />
-          <Route path='/settings' component={Settings} />
+          <Navbar />
+          <div className="main-content">
+            <Route path='/profiles/:userId?' render={withSuspense(ProfileContainer)} />
+            <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
+            <Route path='/users' render={withSuspense(UsersContainer)} />
+            <Route path='/friends' render={withSuspense(UsersContainer)} />
+            <Route path='/notification' render={withSuspense(NotificationContainer)} />
+            <Route path='/login' component={SignIn} />
+            <Route path='/signUp' component={SignUp} />
+            <Route path='/news' component={News} />
+            <Route path='/music' component={Music} />
+            <Route path='/settings' component={Settings} />
+            {!this.props.isAuth ?
+              <Route exact path='/'> <Redirect to="login" /></Route> :
+              <Route exact path='/' render={withSuspense(ProfileContainer)} />
+            }
+          </div>
         </div>
       </div>
     );
@@ -68,7 +72,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  initialized: state.app.initialized
+  initialized: state.app.initialized,
+  isAuth: state.auth.isAuth,
 })
 
 const AppContainer = compose(

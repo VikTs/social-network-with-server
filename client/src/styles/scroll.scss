@@ -1,0 +1,40 @@
+@import './variables.scss';
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+  &::-webkit-scrollbar {
+    width: 14px;
+  }  
+  &::-webkit-scrollbar-track {
+    background: inherit;
+  }   
+  &::-webkit-scrollbar-thumb {
+    background: $scroll-color; 
+    &:hover {
+      background: $scroll-hover-color; 
+    }
+  }  
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 180px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }  
+  &::-webkit-scrollbar-track {
+    background: inherit;
+  }   
+  &::-webkit-scrollbar-thumb {
+    background: $scroll-color;
+    border-radius: 6px;
+    &:hover {
+      background: $scroll-hover-color; 
+    }
+  }  
+}

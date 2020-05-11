@@ -4,8 +4,9 @@ import { Button } from "@material-ui/core";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 
-import "./Header.scss";
 import ModalMain from "../common/Modal/Modal";
+
+import "./Header.scss";
 
 const Header = ({ logout, deletePage, userId, login, isAuth, newNotificationsCount }) => {
   const { push } = useHistory();
@@ -31,12 +32,12 @@ const Header = ({ logout, deletePage, userId, login, isAuth, newNotificationsCou
   return (
     <>
       {isOpenLogOutModal && <ModalMain
-        title={'Are you really want to log out?'}
+        title={'Do you really want to log out?'}
         onSubmit={handleLogOut}
         onCloseMethod={closeLogOutModal}
       />}
       {isOpenDeletePageModal && <ModalMain
-        title={`Are you really want to delete ${login} page? You will lost all information.`}
+        title={`Do you really want to delete ${login} page? You will lost all information.`}
         onSubmit={handleDeletePage}
         onCloseMethod={closeDeletePageModal}
       />}

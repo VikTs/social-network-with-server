@@ -1,43 +1,43 @@
 import React from 'react';
-import classes from './Navbar.module.css'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
+
+import './Navbar.scss';
 
 const Navbar = () => {
   return (
-    <nav className={classes.nav}>
-      <div className={classes.item}>
-        {/* <NavLink to='/profiles' className={`${classes.item} ${classes.active}`}> */}
-        <NavLink to='/profiles' className={classes.item} activeClassName={classes.active}>
+    <nav className="nav">
+      <div className="item">
+        <NavLink to='/profiles' className="item" activeClassName="active">
           Profile
         </NavLink>
       </div>
-      <div className={classes.item}>
-        <NavLink to='/dialogs' className={classes.item} activeClassName={classes.active}>
+      <div className="item">
+        <NavLink to='/dialogs' className="item" activeClassName="active">
           Messages
         </NavLink>
       </div>
-      <div className={classes.item}>
-        <NavLink to='/friends' className={classes.item} activeClassName={classes.active}>
+      <div className="item">
+        <NavLink to='/friends' className="item" activeClassName="active">
           Friends
         </NavLink>
       </div>
-      <div className={classes.item}>
-        <NavLink to='/users' className={classes.item} activeClassName={classes.active}>
+      <div className="item">
+        <NavLink to='/users' className="item" activeClassName="active">
           Users
         </NavLink>
       </div>
-      <div className={classes.item}>
-        <NavLink to='/news' className={classes.item} activeClassName={classes.active}>
+      <div className="item">
+        <NavLink to='/news' className="item" activeClassName="active">
           News
         </NavLink>
       </div>
-      <div className={classes.item}>
-        <NavLink to='/music' className={classes.item} activeClassName={classes.active}>
+      <div className="item">
+        <NavLink to='/music' className="item" activeClassName="active">
           Music
         </NavLink>
       </div>
-      <div className={classes.item}>
-        <NavLink to='/settings' className={classes.item} activeClassName={classes.active}>
+      <div className="item">
+        <NavLink to='/settings' className="item" activeClassName="active">
           Settings
         </NavLink>
       </div>

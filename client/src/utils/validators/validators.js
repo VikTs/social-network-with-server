@@ -12,6 +12,16 @@ export const validateLogin = (values) => {
   return errors;
 };
 
+export const validateNewPost = (values) => {
+  const errors = {};
+
+  if (!values.newPostText) {
+    errors.newPostText = 'You cannot post nothing';
+  }
+
+  return errors;
+};
+
 export const validateRegister = (values) => {
   const errors = {};
 

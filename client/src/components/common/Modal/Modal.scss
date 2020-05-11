@@ -11,7 +11,7 @@
   position: relative;
 }
 
-.modal-main-close {
+.MuiIconButton-root.modal-main-close {
   position: absolute;
   top: 2px;
   right: 2px;
@@ -27,12 +27,13 @@
 
 .modal-main-title {
   text-align: center;
+  margin-top: 16px;
 }
 
-.form-main-submit {
+.MuiButton-root.form-main-submit {
   margin-top: 25px;
 }
 
-.form-main-cancel {
+.MuiButton-root.form-main-cancel {
   margin-top: 10px;
 }

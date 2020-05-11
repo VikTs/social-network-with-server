@@ -1,0 +1,17 @@
+@import './styles/variables.scss';
+
+.app-wrapper {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-wrapper-content {
+  display: flex;
+  min-height: $main-content-min-height;
+}
+
+.main-content {
+    background-color: $main-content-bg;
+    flex-grow: 6;
+}

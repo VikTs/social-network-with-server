@@ -1,14 +1,32 @@
-//Header
+//HEADER - color
 $main-header-bg: #9952c9;
 $bell-color: #fff;
 
-//Messages
+//NAVIGATION - color
+$nav-bg: #200631;
+$nav-link-color: #ffffff;
+$nav-link-active-color: #8a32c5;
+$nav-link-hover-color: #b77cdf;
+//NAVIGATION - size
+$nav-link-size: 18px;
+
+//APP MAIN CONTENT - color
+$main-content-bg: #b084ce;
+//APP MAIN CONTENT - size
+$main-content-min-height: 560px;
+
+//MESSAGES - color
 $message-header-bg: #b6b6b6;
 $add-message-bg: #b6b6b6;
 
-//Modal
+//MODAL - color
 $mess-modal-bg: #ffffff;
 $mess-modal-head-bg: #d6d6d6;
 $modal-add-memb-hover: #d6d6d6;
 
+//SCROLL - color
+$scroll-color: #110124;
+$scroll-hover-color: #b791e2;
+
+//OTHERS - color
 $close-button-color: red;

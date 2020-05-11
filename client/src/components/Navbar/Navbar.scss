@@ -1,0 +1,22 @@
+@import "../../styles/variables.scss";
+
+.nav {
+  background-color: $nav-bg;
+  padding: 20px;
+  flex-grow: 1;
+  margin-right: 6px;
+}
+
+.item {
+  a {
+    color: $nav-link-color;
+    text-decoration: none;
+    font-size: $nav-link-size;
+    &.active {
+      color: $nav-link-active-color;
+    }
+    &:hover {
+      color: $nav-link-hover-color;
+    }
+  }
+}

@@ -1,8 +1,10 @@
+@import '../../../../styles/variables.scss';
+
 .message-list {
   display: flex;
   flex-direction: column;
-  max-height: 250px;
-  min-height: 150px;
+  max-height: $main-content-min-height - 130px;
+  min-height: $main-content-min-height - 130px;
   overflow-y: auto;
   position: relative;
   &::-webkit-scrollbar {

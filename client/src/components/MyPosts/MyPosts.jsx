@@ -1,89 +1,85 @@
 import React from 'react';
-import classes from './MyPosts.module.css'
 import Post from './Post/Post';
-import { Field, reduxForm } from 'redux-form';
-import { required, maxLengthCreator } from '../../utils/validators/validators'
-import { Textarea } from '../common/FormsControls/FormsControls';
+import { TextField, Button } from '@material-ui/core';
+import { useFormik } from 'formik';
 
-const maxLength10 = maxLengthCreator(10)
+import { validateNewPost } from '../../utils/validators/validators';
 
-const AddNewPostForm = (props) => {
+import './MyPosts.scss';
 
-  // let onAddPost = (value) => { /////copyPaste!
-  //   props.addPost('values.newPostText');
-  // }
+const AddNewPostForm = ({ addPost }) => {
+  const formik = useFormik({
+    initialValues: {
+      newPostText: '',
+    },
+    validate: validateNewPost,
+    onSubmit: (values, { resetForm }) => {
+      const { newPostText } = values;
+      addPost(newPostText);
+      resetForm();
+    },
+    validateOnChange: false,
+  });
 
   return (
-    <form onSubmit={props.handleSubmit}>
+    <form onSubmit={formik.handleSubmit}>
       <div>
-        <Field
-          component={Textarea}
-          name='newPostText'
-          //onKeyPress={(e) => {if(e.key === 'Enter'){this.onSubmit();}}}
-          validate={[required, maxLength10]}
-          placeholder='Post message' />
+        <TextField
+          id="newPostText"
+          label="Post: "
+          name="newPostText"
+          placeholder="Enter post message"
+          onChange={formik.handleChange}
+          value={formik.values.newPostText}
+          helperText={formik.errors.newPostText}
+          error={!!formik.errors.newPostText}
+          variant="outlined"
+          multiline
+          rows={1}
+          rowsMax={4}
+        />
       </div>
-      <button>Add post</button>
+      <Button type="submit">Add post</Button>
       {/* <button>Remove</button> */}
     </form>
   )
 }
 
-const AddNewPostRedux = reduxForm({ form: 'ProfileAddNewPostForm' })(AddNewPostForm)
-
 //React.memo - hoc, который проверяет, стоит ли перерисовывать компонент
-const MyPosts = React.memo((props) => {
-  let postsElements = props.posts.map(p => (
+const MyPosts = React.memo(({
+  myId,
+  posts,
+  addPost,
+  isOwner,
+  likePost,
+  deletePost,
+  currentPageUserId,
+  createLikeNotification,
+}) => {
+  const postsElements = posts.map(p => (
     <Post
-      key={p._id} isOwner={props.isOwner}
-      deletePost={props.deletePost} setPosts={props.deletePost}
-      myId={props.myId} userId={props.currentPageUserId} likePost={props.likePost}
-      createLikeNotification={props.createLikeNotification} myId={props.myId}
-      postFullInfo={p}/>
+      key={p._id}
+      postFullInfo={p}
+      isOwner={isOwner}
+      deletePost={deletePost}
+      setPosts={deletePost}
+      myId={myId}
+      userId={currentPageUserId}
+      likePost={likePost}
+      createLikeNotification={createLikeNotification}
+      myId={myId}
+    />
   ));
-  let onAddPost = (values) => {
-    props.addPost(values.newPostText);
-  }
+
   return (
-    <div className={classes.postsBlock}>
+    <div className="postsBlock">
       <h3>My posts: </h3>
-      {props.isOwner && <AddNewPostRedux onSubmit={onAddPost} isOwner={props.isOwner} />}
-      <div className={classes.posts}>
+      {isOwner && <AddNewPostForm addPost={addPost} isOwner={isOwner} />}
+      <div className="posts">
         {postsElements.reverse()}
       </div>
     </div>
   );
 })
-
-
-// shouldComponentUpdate(nextProps, nextState) { //нужно ли отрисовать компоненту
-//   return nextProps != this.props || nextState != this.state
-// }
-//PureComponent использовать
-
-
-
-// class MyPosts extends React.PureComponent {
-//   render() {
-//     console.log('render')
-//     let postsElements = this.props.posts.map(p => (<Post name={p.name} likesCount={p.likesCount} />));
-//     let onAddPost = (values) => {
-//       this.props.addPost(values.newPostText);
-//     }
-
-//     return (
-//       <div className={classes.postsBlock}>
-//         <h3>My posts</h3>
-
-//         <AddNewPostRedux onSubmit={onAddPost} />
-
-//         <div className={classes.posts}>
-//           {postsElements}
-//         </div>
-//       </div>
-
-//     );
-//   }
-// }
 
 export default MyPosts;
