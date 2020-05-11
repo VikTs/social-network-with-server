@@ -10,6 +10,7 @@ const ModalMain = ({ title, onSubmit, onCloseMethod }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit();
+    onCloseMethod();
   }
 
   return (
