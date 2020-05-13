@@ -42,17 +42,9 @@ export const profileAPI = {
         return instance.put(`profile/status`, { status, userId });
         //в put вторым свойством передаем json-объект, его тип смотрим в документации
     },
-    savePhoto(photoFile) {
-        //console.log(photoFile)
-        const formData = new FormData();
-        formData.append("image", photoFile) //image - из документации
-        //console.log(formData)
-        return instance.put(`profile/photo`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        //в put вторым свойством передаем json-объект, его тип смотрим в документации
+    savePhoto(photoLink) {
+        const userId = getCurrentUserId();
+        return instance.put(`profile/photo`, { photoLink, userId });
     },
     addPost(postText) {
         const userId = getCurrentUserId()

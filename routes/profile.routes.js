@@ -6,7 +6,6 @@ var ObjectId = require('mongodb').ObjectId;
 const config = require('config'); //берет данные из файла config/default.json
 var jwtDecode = require('jwt-decode');
 
-
 // /api/profile - конкатинируем с этим путем => /api/profile/status/:id
 router.get(
     '/status/:id',
@@ -55,11 +54,18 @@ router.put(
     '/photo',
     async (req, res) => {
         try {
-            console.log(req.params.page)
-            // const myData = await User.findOne({ _id: new ObjectId(req.params.id) })
+            const { userId, photoLink } = req.body;
 
-            // res.json(myData)
-            res.status(200).json({ message: 'Main image was loaded' })
+            const myData = await User.findOne({ _id: new ObjectId(userId) })
+
+            User.updateOne(
+                { _id: new ObjectId(userId) },          
+                { $set: { photos: { small: photoLink } } },
+                function (err) {
+                  if (err) return console.log(err);
+                  res.status(200).json({ message: 'Main image was loaded', photo: photoLink })
+                }
+              );          
         } catch (error) {
             res.status(500).json({ message: 'Something wrong: main image wasn`t be loaded' })
         }
@@ -202,4 +208,4 @@ router.post(
     })
 
 
-module.exports = router // export router from model
+module.exports = router;

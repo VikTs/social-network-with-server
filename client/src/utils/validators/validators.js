@@ -14,9 +14,12 @@ export const validateLogin = (values) => {
 
 export const validateNewPost = (values) => {
   const errors = {};
+  const newPostMaxLength = 50;
 
   if (!values.newPostText) {
     errors.newPostText = 'You cannot post nothing';
+  } else if(values.newPostText.length > newPostMaxLength) {
+    errors.newPostText = `Too much symbols. Max count - ${newPostMaxLength}`;
   }
 
   return errors;

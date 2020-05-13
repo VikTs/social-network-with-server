@@ -1,0 +1,39 @@
+.modal-choose-photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-photo-content {
+  width: 300px;
+  padding: 20px 40px;
+  background-color: #fff;
+  position: relative;
+}
+
+.MuiIconButton-root.modal-photo-close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  &:hover {
+    color: red;
+  }
+}
+
+.form-photo {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-photo-title {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.MuiButton-root.form-photo-submit {
+  margin-top: 25px;
+}
+
+.MuiButton-root.form-photo-cancel {
+  margin-top: 10px;
+}

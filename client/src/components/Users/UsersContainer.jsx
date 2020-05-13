@@ -6,7 +6,7 @@ import {
 import { removeFriendNotification, addFriendNotification } from '../redux/notification-reducer'
 import Users from './Users'
 import {Spinner} from '../common/Spinner/Spinner'
-// import { withAuthRedirect } from '../../hoc/withAuthRedirect'
+import { withAuthRedirect } from '../../hoc/withAuthRedirect'
 import { compose } from 'redux'
 import {
     getUser, getPageSize, getTotalUsersCount, getCurrentPage,
@@ -67,7 +67,7 @@ let mapStateToProps = (state) => {
 }
 
 export default compose(
-    // withAuthRedirect,
+    withAuthRedirect,
     connect(mapStateToProps, {
         follow, unfollow, removeFriendNotification, addFriendNotification,
         setCurrentPage, toggleFollowingProgress, getUsers, removefromFriendsAC

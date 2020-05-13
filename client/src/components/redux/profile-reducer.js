@@ -64,7 +64,7 @@ const profileReducer = (state = initialState, action) => {
         case SAVE_PHOTO_SUCCESS: {
             return {
                 ...state,
-                profile: { ...state.profile, photos: action.photos }
+                profile: { ...state.profile, photos: { small: action.photos} }
             };
         }
 
@@ -97,16 +97,9 @@ const likePostAC = (updatedPost) => {
 }
 
 export const likePost = (userId, postId) => async (dispatch) => {
-    //console.log(myId, userId, postId)
     let response = await profileAPI.likePost(userId, postId);
     dispatch(likePostAC(response.data.updatedPost));
-   // console.log(response.data.updatedPost);
 }
-
-
-
-
-
 
 const setPostAC = (postsFromDB) => {
     return { type: SET_POSTS, postsFromDB }
@@ -114,14 +107,8 @@ const setPostAC = (postsFromDB) => {
 
 export const setPosts = (userId) => async (dispatch) => {
     const response = await profileAPI.getPosts(userId)
-    //console.log(response.data.posts, 'profile-reducer')
     dispatch(setPostAC(response.data.posts));
 }
-
-
-
-
-
 
 export const setUserProfile = (profile) => {
     return { type: SET_USER_PROFILE, profile }
@@ -151,17 +138,15 @@ export const getUserStatus = (userId) => async (dispatch) => {
 
 export const updateUserStatus = (status) => async (dispatch) => {
     let response = await profileAPI.updateStatus(status)
-    if (response.data.resultCode === 0) { //из документации (если =1 - ошибка, =0 - все ок)
+    if (response.data.resultCode === 0) { 
         dispatch(setStatus(status));
     }
 }
 
 //thunk for choose main photo
-export const savePhoto = (file) => async (dispatch) => {
-    let response = await profileAPI.savePhoto(file)
-    if (response.data.resultCode === 0) { //из документации (если =1 - ошибка, =0 - все ок)
-        dispatch(savePhotoSuccess(response.data.data.photos));
-    }
+export const savePhoto = (photoLink) => async (dispatch) => {
+    const response = await profileAPI.savePhoto(photoLink)
+    dispatch(savePhotoSuccess(response.data.photo));
 }
 
 export default profileReducer

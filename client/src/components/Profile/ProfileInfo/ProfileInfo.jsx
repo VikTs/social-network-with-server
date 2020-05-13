@@ -1,25 +1,45 @@
-import React from 'react';
-import classes from './ProfileInfo.module.css'
+import React, { useState } from 'react';
+
 import { Spinner } from '../../common/Spinner/Spinner';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 import userPhoto from '../../../images/user.png'
+import ChoosePhotoModal from './ChoosePhotoModal/ChoosePhotoModal';
+
+import './ProfileInfo.scss'
 
 const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ...props }) => {
+  const [isPhotoModal, togglePhotoModal] = useState(false);
+  const openPhotoModal = () => togglePhotoModal(true);
+  const closePhotoModal = () => togglePhotoModal(false);
+  
   if (!profile) {
     return <Spinner />
   }
 
-  const onMainPhotoSelected = (e) => {
-    if (e.target.files.length) {
-      savePhoto(e.target.files[0]);
+  const handleImageClick = () => {
+    openPhotoModal();
+  }
+
+  const handleSavePhoto = (photoLink) => {
+    if (isOwner) {
+      savePhoto(photoLink);
     }
   }
 
   return (
     <div>
-      <div className={classes.descriptionBlock}>
-        <img alt="profile" src={profile.photos.large || userPhoto} className={classes.mainPhoto} />
-        {isOwner && <input type={"file"} onChange={onMainPhotoSelected} />}
+      {isPhotoModal && <ChoosePhotoModal
+        onCloseMethod={closePhotoModal}
+        onSubmit={handleSavePhoto}
+      />}
+      <div className="descriptionBlock">
+        <img
+          alt="profile"
+          src={profile.photos.small || userPhoto}
+          className="mainPhoto"
+          onClick={handleImageClick}
+        />
+        {/* {isOwner && <input type={"file"} onChange={onMainPhotoSelected} />} */}
 
         <p>{'Name: ' + (profile.name || " ")}</p>
         <p>{'Surname: ' + (profile.surname || " ")}</p>

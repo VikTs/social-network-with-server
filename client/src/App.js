@@ -1,21 +1,21 @@
 import React from 'react';
-import HeaderContainer from './components/Header/HeaderContainer';
-import Navbar from './components/Navbar/Navbar';
-import { Route, withRouter, Redirect } from 'react-router-dom';
-import News from './components/News/News';
-import Settings from './components/Settings/Settings';
-import Music from './components/Music/Music';
-import { initializeApp } from './components/redux/app-reducer';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Spinner } from '../src/components/common/Spinner/Spinner';
-import store from '../src/components/redux/redux-store';
-import { BrowserRouter } from 'react-router-dom';
+import { Route, withRouter, Redirect, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { withSuspense } from './hoc/withSuspense';
 import socketIOClient from "socket.io-client";
+
+import store from '../src/components/redux/redux-store';
+import HeaderContainer from './components/Header/HeaderContainer';
+import Navbar from './components/Navbar/Navbar';
+import News from './components/News/NewsContainer';
+import Settings from './components/Settings/SettingsContainer';
+import Requests from './components/Requests/RequestsContainer';
 import SignIn from './components/Login/SignIn/SignInContainer';
 import SignUp from './components/Login/SignUp/SignUpContainer';
+import { initializeApp } from './components/redux/app-reducer';
+import { Spinner } from '../src/components/common/Spinner/Spinner';
+import { withSuspense } from './hoc/withSuspense';
 
 import './styles/general.scss';
 import './styles/scroll.scss';
@@ -54,11 +54,11 @@ class App extends React.Component {
             <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
             <Route path='/users' render={withSuspense(UsersContainer)} />
             <Route path='/friends' render={withSuspense(UsersContainer)} />
+            <Route path='/requests' component={Requests} />
             <Route path='/notification' render={withSuspense(NotificationContainer)} />
             <Route path='/login' component={SignIn} />
             <Route path='/signUp' component={SignUp} />
             <Route path='/news' component={News} />
-            <Route path='/music' component={Music} />
             <Route path='/settings' component={Settings} />
             {!this.props.isAuth ?
               <Route exact path='/'> <Redirect to="login" /></Route> :
