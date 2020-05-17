@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-// import styles from './users.module.css';
-// import userPhoto from '../../images/user.png';
 import Paginator from '../common/Paginator/Paginator';
 import UsersFilter from './UsersFilter/UsersFilter';
 import User from './User';
+
+import './Users.scss';
 
 let Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
     users, followingInProgress, follow, unfollow, isFriendsPage,
@@ -16,7 +16,7 @@ let Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
     }, [users]);
 
     return (
-        <div>
+        <div className="users">
             {/* <Paginator
                 totalItemsCount={totalUsersCount}
                 pageSize={pageSize}
@@ -24,15 +24,16 @@ let Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
                 onPageChanged={onPageChanged}
             /> */}
 
-            {!isFriendsPage && (
-                <UsersFilter
-                    users={users}
-                    setFilteredUsers={setFilteredUsers}
-                />
-            )}
+            <UsersFilter
+                users={users}
+                setFilteredUsers={setFilteredUsers}
+            />
             <div>
                 {filteredUsers.map((u, i) =>
                     (<User user={u}
+                        setFilteredUsers={setFilteredUsers}
+                        users={users}
+                        filteredUsers={filteredUsers}
                         isFriendsPage={isFriendsPage}
                         key={u._id}
                         followingInProgress={followingInProgress}

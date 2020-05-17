@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+import logo from '../../images/logo.jpg';
 
 import "./Header.scss";
 
@@ -12,7 +13,7 @@ const Header = ({ login, isAuth, newNotificationsCount }) => {
       <img
         className="logo"
         alt="social network logo"
-        src="https://99designs-start-attachments.imgix.net/alchemy-pictures/2019%2F02%2F01%2F23%2F47%2F26%2Ff919da14-1e80-42b8-ae4c-33c381ede7f9%2Fextrafin.png?auto=format&ch=Width%2CDPR&fm=png&w=450&h=450"
+        src={logo}
       />
       <div className="login-block">
         {isAuth ? (

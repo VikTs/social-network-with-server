@@ -5,6 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import './DialogItem.scss';
 import Modal from '../../common/Modal/Modal';
+import { Card, CardContent } from '@material-ui/core';
 
 const DialogItem = ({ id, name, description, isOwner, owner, deleteChat, filteredChats, setFilteredChats }) => {
     const [isOpenDeleteModal, toggleDeleteModal] = useState(false);
@@ -29,10 +30,14 @@ const DialogItem = ({ id, name, description, isOwner, owner, deleteChat, filtere
                     onCloseMethod={() => toggleDeleteModal(false)}
                 />
             }
-            <NavLink to={'/dialogs/' + id} className="dialog-item">
-                <div className="dialog-item-info">
-                    <div className="dialog-item-name">{name}</div>
-                    <div className="dialog-item-description">{description}</div>
+            <Card className="dialog-card">
+                <CardContent className="dialog-card-content">
+                    <NavLink to={'/dialogs/' + id} className="dialog-item">
+                        <div className="dialog-item-info">
+                            <div className="dialog-item-name">{name}</div>
+                            <div className="dialog-item-description">{description}</div>
+                        </div>
+                    </NavLink>
                     {isOwner ?
                         <div className="dialog-owner owner-me">
                             <GradeIcon style={{ color: 'yellow' }} />
@@ -40,8 +45,8 @@ const DialogItem = ({ id, name, description, isOwner, owner, deleteChat, filtere
                         </div> :
                         <div className="dialog-owner owner-user">{owner.name}</div>
                     }
-                </div>
-            </NavLink>
+                </CardContent>
+            </Card>
         </>
     )
 }

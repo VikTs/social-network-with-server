@@ -2,12 +2,14 @@ import React from 'react';
 import Post from './Post/Post';
 import { TextField, Button } from '@material-ui/core';
 import { useFormik } from 'formik';
+import { Field, Form, Formik, FormikProps } from 'formik';
+
 
 import { validateNewPost } from '../../utils/validators/validators';
 
 import './MyPosts.scss';
 
-const AddNewPostForm = ({ addPost }) => {
+const AddNewPostForm = ({ addPost, ...props }) => {
   const formik = useFormik({
     initialValues: {
       newPostText: '',
@@ -29,6 +31,7 @@ const AddNewPostForm = ({ addPost }) => {
           label="Post: "
           name="newPostText"
           placeholder="Enter post message"
+          className="add-new-post"
           onChange={formik.handleChange}
           value={formik.values.newPostText}
           helperText={formik.errors.newPostText}
@@ -40,8 +43,26 @@ const AddNewPostForm = ({ addPost }) => {
         />
       </div>
       <Button type="submit">Add post</Button>
-      {/* <button>Remove</button> */}
     </form>
+    // <Formik
+    //   initialValues={{ newPostText: '' }}
+    //   onSubmit={(values, actions) => {
+    //     const { newPostText } = values;
+    //     addPost(newPostText);
+    //   }}>{(props) => (
+    //     <Form>
+    //       <Field
+    //         component="textarea"
+    //         type="text"
+    //         name="newPostText"
+    //         className="add-new-post"
+    //         rows="2" 
+    //         cols="20"
+    //       />
+    //       <Button type="submit">Add post</Button>
+    //     </Form>
+    //   )}
+    // </Formik>
   )
 }
 
@@ -72,10 +93,10 @@ const MyPosts = React.memo(({
   ));
 
   return (
-    <div className="postsBlock">
-      <h3>My posts: </h3>
+    <div className="posts">
+      {!!postsElements.length && <h3 className="posts-title">Publications: </h3>}
       {isOwner && <AddNewPostForm addPost={addPost} isOwner={isOwner} />}
-      <div className="posts">
+      <div className="posts-container">
         {postsElements.reverse()}
       </div>
     </div>

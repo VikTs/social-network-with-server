@@ -4,6 +4,7 @@ import { usersAPI } from '../../api/api'
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
+const SET_SUBSCRIBERS = 'SET_SUBSCRIBERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
@@ -12,6 +13,7 @@ const REMOVE_FROM_FRIENDS = 'REMOVE-FROM-FRIENDS';
 
 let initialState = {
     users: [],
+    subscribers: null,
     pageSize: 3,
     totalUsersCount: 0,
     currentPage: 1,
@@ -24,7 +26,6 @@ const usersReducer = (state = initialState, action) => {
         case FOLLOW:
             return {
                 ...state,
-                //users: updateObjectsInArray(state.users, action.userId, 'id', {followed: true} )
                 users: state.users.map(u => {
                     if (u._id === action.userId) {
                         return { ...u, followed: true }
@@ -70,17 +71,22 @@ const usersReducer = (state = initialState, action) => {
                     : state.followingInProgress.filter(id => id != action.userId)
             }
 
-            case REMOVE_FROM_FRIENDS:
-                return {
-                    ...state,
-                    users: state.users.filter(u => {
-                        if (u._id !== action.userId) {
-                            return u
-                        } 
-                        return false
-                    })
-                }
-            
+        case REMOVE_FROM_FRIENDS:
+            return {
+                ...state,
+                users: state.users.filter(u => {
+                    if (u._id !== action.userId) {
+                        return u
+                    }
+                    return false
+                })
+            }
+        case SET_SUBSCRIBERS:
+            return {
+                ...state,
+                subscribers: action.subscribers
+            }
+
 
 
         default: return state;
@@ -106,7 +112,14 @@ export const setUsers = (users) => {
         type: SET_USERS,
         users
     }
-}
+};
+
+export const setSubscribers = (subscribers) => {
+    return {
+        type: SET_SUBSCRIBERS,
+        subscribers
+    }
+};
 
 export const setCurrentPage = (currentPage) => {
     return {

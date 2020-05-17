@@ -1,9 +1,60 @@
-.descriptionBlock {
+.profile-info {
   padding: 10px;
 }
 
-.mainPhoto {
-  width: 200px;
-  height: 200px;
+.profile-info-media {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  position: relative;
+}
+.profile-info-media-photo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+}
+
+.profile-info-media-icon {
+  position: absolute;
+  font-size: 0;
+  bottom: 5px;
+  right: 5px;
+  background-color: #eee;
+  border-radius: 50%;
+  padding: 5px;
+  .media-icon-img {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.profile-info-content {
+  text-align: center;
+}
+
+.profile-info-content-name {
+  margin: 5px 0 10px;
+  font-size: 22px;
+}
+
+.profile-info-content-data {
+  padding: 6px 18px;
+}
+
+.content-blur {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #eeeeee40;
+  filter: blur(1.5rem);
 }

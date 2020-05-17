@@ -3,8 +3,8 @@
 .message-list {
   display: flex;
   flex-direction: column;
-  max-height: $main-content-min-height - 130px;
-  min-height: $main-content-min-height - 130px;
+  max-height: calc($main-content-min-height - 130px);
+  min-height: calc($main-content-min-height - 130px);
   overflow-y: auto;
   position: relative;
   &::-webkit-scrollbar {

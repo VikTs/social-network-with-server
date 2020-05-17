@@ -1,49 +1,92 @@
-import React from 'react';
-import style from './Post.module.css'
+import React, { useState } from 'react';
+import './Post.scss'
+import { Card, CardContent, Typography, CardActions, IconButton } from '@material-ui/core';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-class Post extends React.Component {
-    onLikePost(e) {
-        const postId = this.props.postFullInfo._id;
-        const userId = this.props.userId;
-        const myId = this.props.myId;
-        this.props.likePost(userId, postId);
+import ModalMain from '../../common/Modal/Modal';
+
+const Post = ({
+    createLikeNotification,
+    likePost,
+    deletePost,
+    isOwner,
+    postFullInfo,
+    userId,
+    myId,
+    isLiked,
+}) => {
+    const [isOpenDeletePostModal, toggleDeletePostModal] = useState(false);
+    const openDeletePostModal = () => toggleDeletePostModal(true);
+    const closeDeletePostModal = () => toggleDeletePostModal(false);
+
+    function onLikePost(e) {
+        const postId = postFullInfo._id;
+        likePost(userId, postId);
         if (myId !== userId) {
-            this.props.createLikeNotification(userId, postId, !this.props.isLiked);
+            createLikeNotification(userId, postId, !isLiked);
         }
     }
 
-    onDeletePost() {
-        const postId = this.props.postFullInfo._id
-        this.props.deletePost(postId);
+    function onDeletePost() {
+        const postId = postFullInfo._id
+        deletePost(postId);
     }
-    render() {
-        const postInfo = this.props.postFullInfo;
-        let dateInfo = new Date(postInfo.date);
-        window.currdate = new Date(this.props.postFullInfo.date);
 
-        const postDate =
-            `${dateInfo.getDate()} ${dateInfo.toLocaleString('en-US', { month: 'long' })} ${dateInfo.getFullYear()}`;
-        const postTime =
-            `${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
-        const postDayOfWeek = dateInfo.toLocaleDateString('en-US', { weekday: 'long' })
+    const postInfo = postFullInfo;
+    let dateInfo = new Date(postInfo.date);
+    window.currdate = new Date(postFullInfo.date);
 
-        return (
-            <div className={style.item}>
-                <div> {postDate} </div>
-                <div> {postTime} </div>
-                <div> {postDayOfWeek} </div>
-                <img
-                    alt="profile"
-                    src='https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-                />
-                {postInfo.name}
-                <button
-                    className={postInfo.isLiked ? style.isLiked : style.isNotLiked}
-                    onClick={this.onLikePost.bind(this)}>&#x2764; {postInfo.likesCount}</button>
-                {this.props.isOwner && <button onClick={this.onDeletePost.bind(this)}>🗑️</button>}
-            </div>
-        );
-    }
+    const postDate =
+        `${dateInfo.getDate()} ${dateInfo.toLocaleString('en-US', { month: 'long' })} ${dateInfo.getFullYear()}`;
+    const postTime =
+        `${dateInfo.toLocaleTimeString().slice(0, 5)}`;
+    // const postDayOfWeek = dateInfo.toLocaleDateString('en-US', { weekday: 'long' })
+
+    return (
+        <>
+            {isOpenDeletePostModal && (
+                <ModalMain
+                    title="Do you really want to delete this post?"
+                    onSubmit={onDeletePost}
+                    onCloseMethod={closeDeletePostModal}
+                />)}
+            <Card className="post-card">
+                <CardContent>
+                    <Typography color="textSecondary" variant="body2">
+                        {postDate}
+                    </Typography>
+                    <Typography color="textSecondary" variant="body2" gutterBottom>
+                        {postTime}
+                    </Typography>
+                    {/* <Typography color="textSecondary">
+                    {postDayOfWeek}
+                </Typography> */}
+                    <Typography variant="paragraph" >
+                        <p className="post-card-text">{postInfo.name}</p>
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <div>
+                        <IconButton aria-label="create like" size="small">
+                            <FavoriteIcon
+                                classes={{ root: postInfo.isLiked ? 'isLiked' : 'isNotLiked' }}
+                                onClick={onLikePost}
+                            />
+                        </IconButton>
+                        {postInfo.likesCount}
+                    </div>
+                    {isOwner &&
+                        <IconButton aria-label="delete post" size="small">
+                            <DeleteIcon
+                                onClick={openDeletePostModal}
+                            />
+                        </IconButton>
+                    }
+                </CardActions>
+            </Card>
+        </>
+    );
 }
 
 export default Post;

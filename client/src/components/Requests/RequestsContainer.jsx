@@ -1,24 +1,24 @@
-import {
-  getUsers,
-} from "../redux/users-reducer";
+import {  getUsers, setSubscribers, follow } from "../redux/users-reducer";
+import {  getMyData } from "../redux/auth-reducer";
 import Requests from "./Requests";
 import { connect } from "react-redux";
 import { compose } from 'redux';
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
-    likesNotification: state.notification.likesNotification,
-    // friendNotificationRequest: state.notification.friendNotificationRequest,
-    // friendNotificationResponse: state.notification.friendNotificationResponse,
-    // friendNotificationDeleteRequest: state.notification.friendNotificationDeleteRequest,
-    // newNotificationsCount: state.notification.newNotificationsCount
+    myFullData: state.auth.myFullData,
+    users: state.userPage.users,
+    subscribers: state.userPage.subscribers,    
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = {
   getUsers,
-})
+  getMyData,
+  setSubscribers,
+  follow,
+};
 
 export default compose( 
   connect(mapStateToProps, mapDispatchToProps), 

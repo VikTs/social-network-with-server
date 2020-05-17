@@ -2,17 +2,18 @@
   text-decoration: none;
 }
 
-.dialog-item-info {
-  color: white;
-  font-size: 20px;
-  position: relative;  
-  padding: 8px 10px;
-  border: 1px solid gray;
-  background-color: rgba(150, 150, 150, 0.5); 
+.dialog-card-content {
+  position: relative;
+}
+
+.dialog-card {
+  margin: 5px 0;
   cursor: pointer;
-  &:hover {
-    background-color: rgba(150, 150, 150, 1);
-  }
+}
+
+.dialog-item-info {
+  color: #230127;
+  padding-top: 7px;
 }
 
 .dialog-item-name {
@@ -28,8 +29,8 @@
   position: absolute;
   color: #2e2c2c;
   font-size: 16px;
-  top: 5px;
-  right: 5px;
+  top: 3px;
+  right: 3px;
   &.owner-me {
     text-decoration: underline;
     font-size: 15px;

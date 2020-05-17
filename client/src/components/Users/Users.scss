@@ -1,0 +1,16 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.user-photo-media {
+  width: 100px;
+  height: 100px;
+}
+
+.user-data {
+  justify-content: center;
+}

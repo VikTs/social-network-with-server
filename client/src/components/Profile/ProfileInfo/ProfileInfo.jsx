@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 
 import { Spinner } from '../../common/Spinner/Spinner';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
-import userPhoto from '../../../images/user.png'
+import userPhoto from '../../../images/user.png';
 import ChoosePhotoModal from './ChoosePhotoModal/ChoosePhotoModal';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import './ProfileInfo.scss'
 
 const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ...props }) => {
+  const { name, surname, city, age, contacts, aboutMe } = profile || {};
   const [isPhotoModal, togglePhotoModal] = useState(false);
   const openPhotoModal = () => togglePhotoModal(true);
   const closePhotoModal = () => togglePhotoModal(false);
-  
+
   if (!profile) {
     return <Spinner />
   }
@@ -21,9 +23,12 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ..
   }
 
   const handleSavePhoto = (photoLink) => {
-    if (isOwner) {
-      savePhoto(photoLink);
-    }
+    savePhoto(photoLink);
+  };
+
+  const capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
   }
 
   return (
@@ -32,32 +37,39 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ..
         onCloseMethod={closePhotoModal}
         onSubmit={handleSavePhoto}
       />}
-      <div className="descriptionBlock">
-        <img
-          alt="profile"
-          src={profile.photos.small || userPhoto}
-          className="mainPhoto"
-          onClick={handleImageClick}
-        />
-        {/* {isOwner && <input type={"file"} onChange={onMainPhotoSelected} />} */}
-
-        <p>{'Name: ' + (profile.name || " ")}</p>
-        <p>{'Surname: ' + (profile.surname || " ")}</p>
-        <p>{'City: ' + (profile.city || " ")}</p>
-        <p>{'Age: ' + (profile.age || " ")}</p>
-
-        {isOwner
-          ? <ProfileStatusWithHooks status={status} updateUserStatus={updateUserStatus} />
-          : <span> {'Status: ' + (status || "-------")} </span>}
-
-        <p>{'About me: ' + (profile.aboutMe || " ")}</p>
-
-        {profile.contacts &&
-          <div>
-            <p>{'Facebook: ' + (profile.contacts.facebook || " ")}</p>
-            <p>{'Yotube: ' + (profile.contacts.youtube || " ")}</p>
-          </div>}
-
+      <div className="profile-info">
+        <div className="profile-info-media">
+          <div className="content-blur"></div>
+          <img
+            alt="profile"
+            src={profile.photos.small || userPhoto}
+            className="profile-info-media-photo"
+          />
+          {isOwner && (
+            <div className="profile-info-media-icon">
+              <PhotoCameraIcon
+                classes={{ root: 'media-icon-img' }}
+                onClick={handleImageClick}
+              />
+            </div>
+          )}
+        </div>
+        <div className="profile-info-content">
+          <p className="profile-info-content-name">{(`${capitalize(name)} ${capitalize(surname)}`)}</p>
+          <div className="profile-info-content-data">
+            <p className="profile-info-content-city">{`City: ${(capitalize(city))}`}</p>
+            <p className="profile-info-content-age">{'Age: ' + (age || " ")}</p>
+            {isOwner
+              ? <ProfileStatusWithHooks status={status} updateUserStatus={updateUserStatus} />
+              : <span> {'Status: ' + (status || "---")} </span>}
+            <p>{'About me: ' + (aboutMe || " ")}</p>
+            {contacts &&
+              <div>
+                {contacts.facebook && (<p>{`Facebook: ${contacts.facebook}`}</p>)}
+                {contacts.youtube && (<p>{`Yotube: ${contacts.youtube}`}</p>)}
+              </div>}
+          </div>
+        </div>
       </div>
     </div>
   );

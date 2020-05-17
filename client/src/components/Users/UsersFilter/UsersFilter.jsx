@@ -18,8 +18,9 @@ let UsersFilter = ({ users, setFilteredUsers }) => {
   return (<div>
     <Input
       autoFocus={true}
-      placeholder="Enter friend name"
+      placeholder="Enter user name"
       onChange={handleChange}
+      className="users-filter"
       startAdornment={
         <InputAdornment position="start">
           <AccountCircle />
