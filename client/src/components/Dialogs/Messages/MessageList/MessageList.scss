@@ -3,8 +3,7 @@
 .message-list {
   display: flex;
   flex-direction: column;
-  max-height: calc($main-content-min-height - 130px);
-  min-height: calc($main-content-min-height - 130px);
+  height: $mess-list-height;
   overflow-y: auto;
   position: relative;
   &::-webkit-scrollbar {
@@ -21,9 +20,9 @@
   }  
 }
 
-.scroll-bottom {
+.scroll-bottom.MuiButtonBase-root {
   position: absolute;
-  right: 10px;
+  right: 13px;
   bottom: 10px;
   z-index: 5;
 }

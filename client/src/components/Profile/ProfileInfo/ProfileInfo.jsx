@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import { Spinner } from '../../common/Spinner/Spinner';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 import userPhoto from '../../../images/user.png';
 import ChoosePhotoModal from './ChoosePhotoModal/ChoosePhotoModal';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import { capitalize } from '../../../utils/format/format';
 
 import './ProfileInfo.scss'
+import { NavLink } from 'react-router-dom';
 
 const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ...props }) => {
   const { name, surname, city, age, contacts, aboutMe } = profile || {};
@@ -26,11 +29,6 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ..
     savePhoto(photoLink);
   };
 
-  const capitalize = (s) => {
-    if (typeof s !== 'string') return ''
-    return s.charAt(0).toUpperCase() + s.slice(1)
-  }
-
   return (
     <div>
       {isPhotoModal && <ChoosePhotoModal
@@ -46,11 +44,21 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ..
             className="profile-info-media-photo"
           />
           {isOwner && (
-            <div className="profile-info-media-icon">
-              <PhotoCameraIcon
-                classes={{ root: 'media-icon-img' }}
-                onClick={handleImageClick}
-              />
+            <div className="profile-info-media-icons">
+              <div className="profile-info-media-icon">
+                <PhotoCameraIcon
+                  classes={{ root: 'media-icon-img' }}
+                  onClick={handleImageClick}
+                />
+              </div>
+              <div className="profile-info-media-icon">
+                <NavLink to="/settings">
+                  <SettingsIcon
+                    classes={{ root: 'media-icon-img' }}
+                    onClick={handleImageClick}
+                  />
+                </NavLink>
+              </div>
             </div>
           )}
         </div>

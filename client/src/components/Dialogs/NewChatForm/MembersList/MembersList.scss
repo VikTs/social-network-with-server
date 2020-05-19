@@ -1,19 +1,18 @@
 .member-item {
-  border: 1px solid gray;
   margin: 3px;
-  padding: 8px;
-  background-color: rgba(211, 211, 211, 0.7);
-  cursor: pointer;
   position: relative;
-  &:hover {
-    background-color: rgba(211, 211, 211, 1);
-  }
+}
+
+.member-item-card {
+  padding-right: 30px;
+  position: relative;
 }
 
 .member-name {
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 1.5;
   margin-bottom: 3px;
-  color: white;
+  color: #3b0346;
 }
 
 .member-city {
@@ -23,8 +22,8 @@
 .member-choose {
   display: none;
   &:checked + label:before {
-    background-color: MediumSeaGreen;
-    border-color: MediumSeaGreen;
+    background-color: rgb(145, 60, 179);
+    border-color: rgb(145, 60, 179);
     color: #fff;
   }
 }
@@ -36,8 +35,8 @@
   padding: 0.2em;
   position: absolute;
   z-index: 1;
-  right: 10px;
-  top: 10px;
+  right: 0;
+  top: 0;
   &:before {
     content: "\2714";
     border: 0.1em solid #eee;

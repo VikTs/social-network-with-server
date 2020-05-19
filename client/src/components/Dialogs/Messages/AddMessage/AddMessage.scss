@@ -1,12 +1,20 @@
 @import '../../../../styles/variables.scss';
 
 .new-message-container {
-  padding: 10px 0;
-  background-color: $add-message-bg;
+  position: absolute;
+  bottom: 0;
   width: 100%;
 }
 
 .new-message-body {
-  width: 80%;
-  margin: 0 3%;
+  background-color: $add-message-bg;
+  font-size: 40px;
+  width: 100%;
+  .MuiFilledInput-input {
+    padding: 15px;
+  }
+}
+
+.new-message-send-button {
+  cursor: pointer;
 }

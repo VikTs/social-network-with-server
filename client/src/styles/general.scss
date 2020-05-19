@@ -6,7 +6,8 @@
   box-sizing: content-box;
 }
 
-body {
+body,
+::placeholder {
   font-family: 'Cairo', sans-serif;
 }
 

@@ -1,6 +1,9 @@
 //HEADER - color
 $main-header-bg: #9952c9;
 $bell-color: #fff;
+//HEADER - size
+$main-header-height: 80px;
+$main-header-margin-btm: 6px;
 
 //NAVIGATION - color
 $nav-bg: #200631;
@@ -13,11 +16,14 @@ $nav-link-size: 16px;
 //APP MAIN CONTENT - color
 $main-content-bg: #b084ce;
 //APP MAIN CONTENT - size
-$main-content-min-height: 560px;
+$main-content-min-height: calc(100vh - 80px - 6px);
 
 //MESSAGES - color
-$message-header-bg: #b6b6b6;
-$add-message-bg: #b6b6b6;
+$message-header-bg: #f0f0f0;
+$add-message-bg: #fff;
+$mess-date-color: #797979;
+//MESSAGES - size
+$mess-list-height: calc(100vh - 216px);
 
 //MODAL - color
 $mess-modal-bg: #ffffff;

@@ -11,21 +11,21 @@ const ChatParamentsToChoose = ({ setChatDescription, setChatName }) => {
 
   return (
     <div className="chat-inputs">
-      <input 
-      required 
-      className="chat-inputs-name"
-      type="text" 
-      placeholder="Enter chat name" 
-      name="name" 
-      onChange={handleNameChange} 
+      <input
+        required
+        className="chat-inputs-name"
+        type="text"
+        placeholder="Enter chat name"
+        name="name"
+        onChange={handleNameChange}
       />
-      <textarea 
-      rows="4"
-      className="chat-inputs-description"
-      placeholder="Enter description" 
-      name="description" 
-      onChange={handleDescriptionChange} 
-      />      
+      <textarea
+        rows="4"
+        className="chat-inputs-description"
+        placeholder="Enter description"
+        name="description"
+        onChange={handleDescriptionChange}
+      />
     </div>
   )
 }

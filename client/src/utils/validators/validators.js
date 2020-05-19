@@ -81,8 +81,12 @@ export const maxLengthCreator = maxLength => value => {
 export const validateNewMessage = (values) => {
   const errors = {};
 
+  const maxMessageLength = 50;
+
   if (!values.newMessageBody) {
     errors.newMessageBody = 'Required';
+  } else if (values.newMessageBody.length > maxMessageLength) {
+    errors.newMessageBody = `Message length must be less than ${maxMessageLength}`;
   }
 
   return errors;

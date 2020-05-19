@@ -2,8 +2,10 @@ import React from 'react';
 import { useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SendIcon from '@material-ui/icons/Send';
 
-// import { validateNewMessage } from '../../../../utils/validators/validators';
+import { validateNewMessage } from '../../../../utils/validators/validators';
 
 import './AddMessage.scss';
 
@@ -12,12 +14,11 @@ const AddMessage = ({ addNewMessage, chat }) => {
     initialValues: {
       newMessageBody: '',
     },
-    // validate: validateNewMessage,
+    validate: validateNewMessage,
     onSubmit: (values, { resetForm }) => {
       values.newMessageBody && addNewMessage(values);
       resetForm();
     },
-    validateOnChange: false,
   });
 
   return (
@@ -27,16 +28,24 @@ const AddMessage = ({ addNewMessage, chat }) => {
           id="newMessageBody"
           name="newMessageBody"
           type="text"
+          variant="filled"
           placeholder="Message:"
           classes={{ root: 'new-message-body' }}
           onChange={formik.handleChange}
           value={formik.values.newMessageBody}
-          helperText={formik.errors.newMessageBody}
+          // helperText={formik.errors.newMessageBody}
           error={!!formik.errors.newMessageBody}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SendIcon
+                  onClick={formik.handleSubmit}
+                  classes={{ root: "new-message-send-button" }}
+                />
+              </InputAdornment>
+            ),
+          }}
         />
-        <Button variant="contained" type="submit" classes={{ root: 'new-message-submit' }}>
-          Send
-      </Button>
       </form>
     </div>
   );

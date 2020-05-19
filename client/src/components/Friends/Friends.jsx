@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Paginator from '../common/Paginator/Paginator';
-import UsersFilter from './UsersFilter/UsersFilter';
+import FriendsFilter from './FriendsFilter/FriendsFilter';
 import User from '../common/User/UserContainer';
 
-import './Users.scss';
+import './Friends.scss';
 
-const Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
+const Friends = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
     users, followingInProgress, follow, unfollow, isFriendsPage,
     removeFriendNotification, addFriendNotification, removefromFriendsAC, ...props }) => {
 
-    const [filteredUsers, setFilteredUsers] = useState(users);
+    const [filteredFriends, setFilteredFriends] = useState(users);
 
     useEffect(() => {
-        setFilteredUsers(users);
+        setFilteredFriends(users);
     }, [users]);
 
     return (
@@ -24,16 +24,16 @@ const Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
                 onPageChanged={onPageChanged}
             /> */}
 
-            <UsersFilter
+            <FriendsFilter
                 users={users}
-                setFilteredUsers={setFilteredUsers}
+                setFilteredFriends={setFilteredFriends}
             />
             <div>
-                {filteredUsers.map((u, i) =>
+                {filteredFriends.map((u, i) =>
                     (<User user={u}
-                        setFilteredUsers={setFilteredUsers}
-                        filteredUsers={filteredUsers}
-                        isFriendsPage={false}
+                        setFilteredUsers={setFilteredFriends}
+                        filteredUsers={filteredFriends}
+                        isFriendsPage={isFriendsPage}
                         key={u._id}
                     />))}
             </div>
@@ -41,4 +41,4 @@ const Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
     )
 }
 
-export default Users
+export default Friends

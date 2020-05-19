@@ -1,24 +1,34 @@
 import React from 'react';
+import { Input, InputAdornment } from '@material-ui/core';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+
+import { compareIncludeStrings } from '../../../../utils/format/format';
+
 import './SearchNewChatMembers.scss';
 
 const SearchNewChatMembers = ({ setFilteredFriends, friends }) => {
   const handleChange = (e) => {
-    const filter = e.target.value;
     setFilteredFriends(friends.filter(({ name, surname, city }) =>
-      name.includes(filter) || 
-      surname.includes(filter) ||
-      city.includes(filter)
-      ))
+      compareIncludeStrings([name, surname, city], e.target.value)
+    ))
   }
 
   return (
     <div className="new-chat-search">
-      <input
+      <Input
         type="text"
         name="searchFriend"
-        placeholder="Enter friend name"
         className="search-field"
+        placeholder="Enter friend name"
         onChange={handleChange}
+        fullWidth
+        disableUnderline
+        autoFocus
+        startAdornment={
+          <InputAdornment position="start">
+            <AccountCircle classes={{ root: 'new-chat-search-icon' }} />
+          </InputAdornment>
+        }
       />
     </div>
   )

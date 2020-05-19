@@ -4,7 +4,7 @@ import GradeIcon from '@material-ui/icons/Grade';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import './DialogItem.scss';
-import Modal from '../../common/Modal/Modal';
+import Modal from '../../../common/Modal/Modal';
 import { Card, CardContent } from '@material-ui/core';
 
 const DialogItem = ({ id, name, description, isOwner, owner, deleteChat, filteredChats, setFilteredChats }) => {

@@ -7,7 +7,7 @@
 }
 
 .chat-modal-container {
-  width: 60%;
+  width: 85%;
   outline: none;
   background-color: $mess-modal-bg;
   position: relative;
@@ -25,7 +25,7 @@
   text-decoration: underline;
 }
 
-.chat-modal-close {
+#chat-modal-close {
   position: absolute;
   right: 5px;
 }
@@ -39,6 +39,10 @@
   color:$close-button-color;
 }
 
+.chat-modal-info-main {
+  line-height: 1.4;
+}
+
 .chat-modal-members {
   margin: 30px 10%;
   border: 1px solid gray;
@@ -49,9 +53,8 @@
 .chat-modal-member {
   display: flex;
   align-items: center;
-  margin: 5px 0;
   &.member-add {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 5px; 
     display: flex;
     align-items: center;
@@ -60,6 +63,10 @@
       background-color: $modal-add-memb-hover;
     }
   }
+}
+
+.chat-modal-add-members {
+  margin-top: 3px;
 }
 
 .chat-modal-member-delete {
@@ -73,7 +80,7 @@
 }
 
 .chat-modal-member-name {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .modal-member-add-icon {

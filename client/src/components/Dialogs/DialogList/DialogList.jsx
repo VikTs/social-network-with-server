@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DialogList.scss';
-import DialogItem from '../DialogItem/DialogItem';
+import DialogItem from './DialogItem/DialogItem';
 import DialogHeader from '../DialogsHeader/DialogsHeader';
 import { Spinner } from '../../common/Spinner/Spinner';
 

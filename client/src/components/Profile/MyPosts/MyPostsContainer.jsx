@@ -1,5 +1,5 @@
-import { addPost, setPosts, deletePost, likePost } from '../redux/profile-reducer';
-import { createLikeNotification } from '../redux/notification-reducer';
+import { addPost, setPosts, deletePost, likePost } from '../../redux/profile-reducer';
+import { createLikeNotification } from '../../redux/notification-reducer';
 import MyPosts from './MyPosts';
 import { connect } from 'react-redux';
 

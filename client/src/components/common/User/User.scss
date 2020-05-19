@@ -1,0 +1,71 @@
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.user-card {
+  width: 100%;
+  max-width: 200px;
+}
+
+.user-profile-link {
+  text-decoration: none;
+}
+
+
+
+.profile-photo-container {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  position: relative;
+}
+
+.user-photo-media {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-data {
+  text-align: center;
+  margin-top: 7px;
+  font-size: 19px;
+  color: #000;
+}
+
+.user-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+////FOLLOW
+
+.user-follow-toggle {
+  font-size: 10pt;
+  border: 1px solid;
+  border-radius: 3px;
+  display: inline-block;
+  text-align: center;
+  padding: 5px 15px;
+  margin: 6px 0 0;
+  &.follow {
+    color: #dd3dd0;
+    background-color: #ffffff;
+    border-color: #dd3dd0;
+  }
+  &.unfollow {
+    color: #fff;
+    background-color: #c21db4;
+    border-color: #c21db4;
+  }
+}

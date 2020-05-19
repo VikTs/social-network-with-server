@@ -14,7 +14,7 @@ const REMOVE_FROM_FRIENDS = 'REMOVE-FROM-FRIENDS';
 let initialState = {
     users: [],
     subscribers: null,
-    pageSize: 3,
+    pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,

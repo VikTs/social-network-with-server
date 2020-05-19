@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import Message from './Message/Message';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { IconButton } from '@material-ui/core';
@@ -34,8 +34,8 @@ const MessageList = ({ messages, chat }) => {
     const handleScroll = () => {
         const listMessBottom = messagesListRef.current.getBoundingClientRect().bottom;
         const listEndBottom = messagesEndRef.current.getBoundingClientRect().bottom;
-        if(listMessBottom >= listEndBottom) toggleScrollButtonShow(false);
-        else if(!isScrollButtonShow) toggleScrollButtonShow(true);
+        if (listMessBottom >= listEndBottom) toggleScrollButtonShow(false);
+        else if (!isScrollButtonShow) toggleScrollButtonShow(true);
     }
 
     return (

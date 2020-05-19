@@ -5,6 +5,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 import MessagesInfoModal from './MessagesInfoModal/MessagesInfoModalContainer';
+import { compareIncludeStrings } from '../../../../utils/format/format';
 
 import './MessagesHeader.scss';
 
@@ -41,14 +42,12 @@ const MessagesHeader = ({
     toggleIsSearch(false);
   }
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      setFilteredMessages(messages.filter(mess => mess.context.includes(e.target.value)));
-    }
+  const handleChange = (e) => {
+    setFilteredMessages(messages.filter(mess => compareIncludeStrings(mess.context, e.target.value)));
   }
 
   const handleGoBack = () => {
-    goBack(); 
+    goBack();
   }
 
   return (
@@ -69,7 +68,7 @@ const MessagesHeader = ({
           type="text"
           placeholder="Search"
           className="message-search-input"
-          onKeyPress={handleKeyPress}
+          onChange={handleChange}
         />
       </div> :
         <div className='header-chat-info' onClick={handleOpen}>

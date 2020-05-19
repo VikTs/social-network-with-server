@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import SearchNewChatMembers from './SearchNewChatMembers/SearchNewChatMembers'
 import { useHistory } from 'react-router-dom';
+import { Button } from '@material-ui/core';
+
+import SearchNewChatMembers from './SearchNewChatMembers/SearchNewChatMembers'
 import MembersList from './MembersList/MembersList';
-import './NewChatForm.scss';
 import ChatParamentsToChoose from './ChatParamentsToChoose/ChatParamentsToChoose';
+
+import './NewChatForm.scss';
 
 const NewChatForm = ({
   createChat,
@@ -61,7 +64,7 @@ const NewChatForm = ({
         <form action="post" onSubmit={handleSubmit}>
           <MembersList friends={filteredFriends} choosedMembersId={choosedMembersId} setNewMemberId={setNewMemberId} />
           <ChatParamentsToChoose setChatName={setChatName} setChatDescription={setChatDescription} />
-          <button className="submit" type="submit">Create new chat</button>
+          <Button variant="contained" className="submit" type="submit">Create</Button>
         </form>
       </div>
     }

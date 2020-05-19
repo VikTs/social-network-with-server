@@ -28,7 +28,7 @@ const SignIn = ({ login, isAuth }) => {
     if (isAuth) return <Redirect to={"/profiles"} />
 
     return (
-        <form onSubmit={formik.handleSubmit} className="form-sign-in">
+        <form onSubmit={formik.handleSubmit} className="sign-in-form">
             <h1 className="form-sign-in-header">Login:</h1>
             <TextField
                 id="email"

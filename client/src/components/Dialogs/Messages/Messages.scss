@@ -1,4 +1,8 @@
+@import '../../../styles/variables.scss';
+
 .messages-container {
   display: flex;
   flex-direction: column;
+  position: relative;
+  height: $main-content-min-height;
 }

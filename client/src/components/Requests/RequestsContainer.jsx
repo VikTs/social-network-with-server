@@ -1,4 +1,4 @@
-import {  getUsers, setSubscribers, follow } from "../redux/users-reducer";
+import {  getUsers, setSubscribers } from "../redux/users-reducer";
 import {  getMyData } from "../redux/auth-reducer";
 import Requests from "./Requests";
 import { connect } from "react-redux";
@@ -17,7 +17,6 @@ const mapDispatchToProps = {
   getUsers,
   getMyData,
   setSubscribers,
-  follow,
 };
 
 export default compose( 

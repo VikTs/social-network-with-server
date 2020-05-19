@@ -1,17 +1,8 @@
 .new-chat {
   position: relative;
-  padding: 40px 20px 12px;
+  padding: 35px 10px 12px;
   .submit {
-    border: 1px solid #eee;
-    border-radius: 4px;
-    padding: 4px 6px;
-    outline: none;
-    cursor: pointer;
-    &:hover {
-      background-color: #c4c4c4;
-      border-color: #c4c4c4;
-      transition: 100ms;
-    }
+    width: 100%;
   }
   .cancel {
     position: absolute;
@@ -24,8 +15,14 @@
     color: white;
     cursor: pointer;
     &:hover {
-      color: red;
+      color: #d63434;
       transition: 200ms;
     }
   }
+}
+
+.search-field {
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 3px;
 }

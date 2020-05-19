@@ -6,10 +6,16 @@
 
 .chat-inputs-name,
 .chat-inputs-description {
+  outline: none;
   width: calc(100% - 12px);
   padding: 4px 6px;
   border-radius: 3px;
   border: 1px solid #eee;
+}
+
+.chat-inputs-name {
+  padding: 8px 6px;
+  height: 20px;
 }
 
 .chat-inputs-description {

@@ -2,9 +2,14 @@
 
 .header {
   background-color: $main-header-bg;
-  height: 80px;
-  margin-bottom: 6px;
+  height: $main-header-height;
+  margin-bottom: $main-header-margin-btm;
   color: #fff;
+}
+
+.header-user-name {
+  margin-top: 5px;
+  margin-right: 5px;
 }
 
 .logo {

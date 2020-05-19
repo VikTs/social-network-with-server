@@ -5,12 +5,12 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { compareIncludeStrings } from '../../../utils/format/format';
 
-import './UsersFilter.scss';
+import './FriendsFilter.scss';
 
-const UsersFilter = ({ users, setFilteredUsers }) => {
+const FriendsFilter = ({ users, setFilteredFriends }) => {
   const handleChange = (e) => {
     const inputValue = e.target.value;
-    setFilteredUsers(users.filter(user =>
+    setFilteredFriends(users.filter(user =>
       compareIncludeStrings([user.name, user.surname], inputValue)
     ))
   };
@@ -34,4 +34,4 @@ const UsersFilter = ({ users, setFilteredUsers }) => {
 }
 
 
-export default UsersFilter
+export default FriendsFilter

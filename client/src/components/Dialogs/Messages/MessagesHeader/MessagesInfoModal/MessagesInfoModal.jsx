@@ -75,6 +75,7 @@ const MessagesInfoModal = ({
           <FormControlLabel
             control={
               <Checkbox
+                className="chat-modal-member-check"
                 onChange={() => { toggleNewMembList(friend._id) }}
                 name={friend._id}
                 color="primary"
@@ -167,12 +168,12 @@ const MessagesInfoModal = ({
         className="messages-chat-modal"
       >
         <div className="chat-modal-container">
-          <IconButton onClick={handleClose} className="chat-modal-close">
+          <IconButton onClick={handleClose} id="chat-modal-close">
             <CloseIcon classes={{ root: 'chat-modal-close-icon' }} />
           </IconButton>
           <div className="chat-modal-info">
             <ChatIcon classes={{ root: 'chat-modal-chat-icon' }} />
-            <div>
+            <div className="chat-modal-info-main">
               <h3 className="chat-modal-name">{chat_name}</h3>
               <p className="chat-modal-memb-number">{members.length} members</p>
               <p className="chat-modal-description">{chat_description}</p>
@@ -192,7 +193,7 @@ const MessagesInfoModal = ({
                     size="medium"
                     variant="outlined"
                     endIcon={<DeleteForeverIcon />}
-                  > Delete chat </Button> 
+                  > Delete chat </Button>
                   :
                   <Button
                     onClick={setLeaveMember}
@@ -210,7 +211,13 @@ const MessagesInfoModal = ({
                   {friendsInfo.length ?
                     <div>
                       {friendsInfo}
-                      <button type="button" onClick={addMembersToChat}>Add</button>
+                      <Button
+                        className="chat-modal-add-members"
+                        variant="outlined"
+                        type="button"
+                        onClick={addMembersToChat}
+                      >
+                        Add members</Button>
                     </div> :
                     <div>
                       <p>All your friends in this chat</p>

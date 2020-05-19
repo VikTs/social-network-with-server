@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import { Field, Form, Formik, FormikProps } from 'formik';
 
 
-import { validateNewPost } from '../../utils/validators/validators';
+import { validateNewPost } from '../../../utils/validators/validators';
 
 import './MyPosts.scss';
 

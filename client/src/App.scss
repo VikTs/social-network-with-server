@@ -4,14 +4,17 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+
 }
 
 .app-wrapper-content {
   display: flex;
+  height: 100%;
   min-height: $main-content-min-height;
 }
 
 .main-content {
     background-color: $main-content-bg;
     flex-grow: 6;
+    position: relative;
 }

@@ -7,7 +7,7 @@ import socketIOClient from "socket.io-client";
 
 import store from '../src/components/redux/redux-store';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Navbar from './components/Navbar/Navbar';
+import NavbarContainer from './components/Navbar/NavbarContainer';
 import News from './components/News/NewsContainer';
 import Settings from './components/Settings/SettingsContainer';
 import Requests from './components/Requests/RequestsContainer';
@@ -27,6 +27,7 @@ var socket = socketIOClient("http://localhost:5000/");
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
+const FriendsContainer = React.lazy(() => import('./components/Friends/FriendsContainer'));
 const NotificationContainer = React.lazy(() => import('./components/Notification/NotificationContainer'));
 
 class App extends React.Component {
@@ -48,12 +49,12 @@ class App extends React.Component {
       <div className="app-wrapper">
         <HeaderContainer />
         <div className="app-wrapper-content">
-          <Navbar />
+          <NavbarContainer />
           <div className="main-content">
             <Route path='/profiles/:userId?' render={withSuspense(ProfileContainer)} />
             <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
             <Route path='/users' render={withSuspense(UsersContainer)} />
-            <Route path='/friends' render={withSuspense(UsersContainer)} />
+            <Route path='/friends' render={withSuspense(FriendsContainer)} />
             <Route path='/requests' component={Requests} />
             <Route path='/notification' render={withSuspense(NotificationContainer)} />
             <Route path='/login' component={SignIn} />

@@ -15,7 +15,7 @@ const Header = ({ login, isAuth, newNotificationsCount }) => {
         alt="social network logo"
         src={logo}
       />
-      <div className="login-block">
+      {/* <div className="login-block">
         {isAuth ? (
           <div>
             <div className="notification">
@@ -25,14 +25,14 @@ const Header = ({ login, isAuth, newNotificationsCount }) => {
                 </NavLink>
               </button>
             </div>
-            <div>
-              {login}
+            <div className="header-user-name">
+              {login.toUpperCase()}
             </div>
           </div>
         ) : (
             <NavLink to={"/login"}>Login</NavLink>
           )}
-      </div>
+      </div> */}
     </header>
   );
 };

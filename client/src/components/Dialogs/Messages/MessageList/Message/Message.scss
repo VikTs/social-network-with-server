@@ -1,18 +1,37 @@
+@import '../../../../../styles/variables.scss';
+
 .message {
   display: flex;
   flex-direction: column;
-  margin: 4px 0;
+  margin: 4px 6px;
   position: relative;
   width: auto;
   padding: 2px;
 }
 
+#message-card-content {
+  padding: 2px 4px;
+}
+
+.message-card {
+  margin: 4px 0;
+  display: inline-block;
+}
+
+.message-card::after {
+  content: ''; 
+  position: absolute;
+  right: 10px; bottom: -18px; 
+  border: 13px solid transparent;
+  border-top: 13px solid #fff;
+ }
+
 .message-date {
   position: absolute;
-  right: 0;
-  * {
-    margin: 0;
-  }
+  right: 4px;
+  top: 8px;
+  line-height: 1.2;
+  color: $mess-date-color;
 }
 
 .message-author {
@@ -22,12 +41,14 @@
 
 .message-author-name {
   display: inline;
-  text-decoration: underline;
-  color: green;
+  text-decoration: none;
+  color: rgb(82, 8, 99);
+  font-size: 15px;
   font-weight: bold;
 }
 
 .message-context {
-  display: inline;
+  padding-right: 60px;
+  word-wrap: break-word;
   margin: 0;
 }

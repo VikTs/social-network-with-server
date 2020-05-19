@@ -4,7 +4,7 @@ import { Card, CardContent, Typography, CardActions, IconButton } from '@materia
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import ModalMain from '../../common/Modal/Modal';
+import ModalMain from '../../../common/Modal/Modal';
 
 const Post = ({
     createLikeNotification,
