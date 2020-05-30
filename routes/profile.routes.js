@@ -21,7 +21,6 @@ router.get(
         }
     })
 
-
 router.put(
     '/status',
     async (req, res) => {
@@ -51,6 +50,47 @@ router.get(
     })
 
 router.put(
+    '/',
+    async (req, res) => {
+        try {
+            const { updatedData, myId } = req.body;
+            const {
+                name,
+                surname,
+                aboutMe,
+                age,
+                city,
+                facebook,
+                youtube,
+                image
+            } = updatedData;
+
+            await User.updateOne(
+                { _id: new ObjectId(myId) },
+                {
+                    $set:
+                    {
+                        name,
+                        surname,
+                        aboutMe,
+                        age,
+                        city,
+                        contacts: { facebook, youtube },
+                        photos: { small: image },
+                    }
+                }
+            );
+
+            const newData = await User.findOne({ _id: new ObjectId(myId) })
+            res.status(200).json(newData);
+
+
+        } catch (error) {
+            res.status(500).json({ message: `Something wrong: profile wasn't be updated: ${error}` })
+        }
+    })
+
+router.put(
     '/photo',
     async (req, res) => {
         try {
@@ -59,13 +99,13 @@ router.put(
             const myData = await User.findOne({ _id: new ObjectId(userId) })
 
             User.updateOne(
-                { _id: new ObjectId(userId) },          
+                { _id: new ObjectId(userId) },
                 { $set: { photos: { small: photoLink } } },
                 function (err) {
-                  if (err) return console.log(err);
-                  res.status(200).json({ message: 'Main image was loaded', photo: photoLink })
+                    if (err) return console.log(err);
+                    res.status(200).json({ message: 'Main image was loaded', photo: photoLink })
                 }
-              );          
+            );
         } catch (error) {
             res.status(500).json({ message: 'Something wrong: main image wasn`t be loaded' })
         }

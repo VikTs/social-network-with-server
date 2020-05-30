@@ -44,16 +44,16 @@ const Navbar = ({ logout, deletePage }) => {
           Users
         </NavLink>
       </div>
-      <div className="item">
+      {/* <div className="item">
         <NavLink to='/requests' className="item" activeClassName="active">
           Requests
         </NavLink>
-      </div>
-      <div className="item">
+      </div> */}
+      {/* <div className="item">
         <NavLink to='/news' className="item" activeClassName="active">
           News
         </NavLink>
-      </div>
+      </div> */}
       <div className="item">
         <button className="item" onClick={openLogOutModal}>
           LOGOUT

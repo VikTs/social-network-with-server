@@ -13,7 +13,9 @@ const Friends = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
 
     useEffect(() => {
         setFilteredFriends(users);
+        console.log(users)
     }, [users]);
+
 
     return (
         <div className="users">
@@ -29,13 +31,16 @@ const Friends = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
                 setFilteredFriends={setFilteredFriends}
             />
             <div>
-                {filteredFriends.map((u, i) =>
-                    (<User user={u}
-                        setFilteredUsers={setFilteredFriends}
-                        filteredUsers={filteredFriends}
-                        isFriendsPage={isFriendsPage}
-                        key={u._id}
-                    />))}
+                {filteredFriends.length ?
+                    filteredFriends.map((u, i) =>
+                        (<User user={u}
+                            setFilteredUsers={setFilteredFriends}
+                            filteredUsers={filteredFriends}
+                            isFriendsPage={isFriendsPage}
+                            key={u._id}
+                        />)) :
+                    "No users found"
+                }
             </div>
         </div>
     )

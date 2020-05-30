@@ -16,6 +16,7 @@ import SignUp from './components/Login/SignUp/SignUpContainer';
 import { initializeApp } from './components/redux/app-reducer';
 import { Spinner } from '../src/components/common/Spinner/Spinner';
 import { withSuspense } from './hoc/withSuspense';
+import { getMyData } from './components/redux/auth-reducer';
 
 import './styles/general.scss';
 import './styles/scroll.scss';
@@ -31,13 +32,9 @@ const FriendsContainer = React.lazy(() => import('./components/Friends/FriendsCo
 const NotificationContainer = React.lazy(() => import('./components/Notification/NotificationContainer'));
 
 class App extends React.Component {
-  // state = {
-  //   endpoint: "http://localhost:5000/" 
-  // };
-  // socket = socketIOClient(this.state.endpoint);
-
   componentDidMount() {
-    this.props.initializeApp()
+    this.props.initializeApp();
+    this.props.getMyData();
   }
 
   render() {
@@ -79,7 +76,7 @@ const mapStateToProps = (state) => ({
 
 const AppContainer = compose(
   withRouter, //withRouter - так как коннектим App компонент, сбиваются Route
-  connect(mapStateToProps, { initializeApp }))(App);
+  connect(mapStateToProps, { initializeApp, getMyData }))(App);
 
 const SocialApp = (props) => {
   return (

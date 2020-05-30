@@ -9,7 +9,7 @@ import { Spinner } from '../common/Spinner/Spinner'
 import { withAuthRedirect } from '../../hoc/withAuthRedirect'
 import { compose } from 'redux'
 import {
-    getUser, getPageSize, getTotalUsersCount, getCurrentPage,
+    getUser, getFriend, getPageSize, getTotalUsersCount, getCurrentPage,
     getIsFetching, getFollowingInProgress
 } from '../redux/users-selectors'
 import { useEffect } from 'react'
@@ -17,9 +17,8 @@ import { useEffect } from 'react'
 
 const FriendsContainer = (props) => {
     useEffect(() => {
-        const isFriendsPage = true;
         const { currentPage, pageSize } = props;
-        props.getUsers(currentPage, pageSize, isFriendsPage);
+        props.getUsers(currentPage, pageSize, false);
     }, []);
 
     const onPageChanged = (pageNumber) => {
@@ -29,28 +28,30 @@ const FriendsContainer = (props) => {
 
     return (
         <>
-            {props.isFetching ? <Spinner /> : null}
-            <Friends
-                totalUsersCount={props.totalUsersCount}
-                pageSize={props.pageSize}
-                onPageChanged={onPageChanged}
-                currentPage={props.currentPage}
-                users={props.users}
-                follow={props.follow}
-                unfollow={props.unfollow}
-                addFriendNotification={props.addFriendNotification}
-                removeFriendNotification={props.removeFriendNotification}
-                followingInProgress={props.followingInProgress}
-                getFriends={props.getFriends}
-                isFriendsPage={true}
-                removefromFriendsAC={props.removefromFriendsAC}
-            />
+            {props.isFetching ? <Spinner /> :
+                <Friends
+                    totalUsersCount={props.totalUsersCount}
+                    pageSize={props.pageSize}
+                    onPageChanged={onPageChanged}
+                    currentPage={props.currentPage}
+                    users={props.users}
+                    follow={props.follow}
+                    unfollow={props.unfollow}
+                    addFriendNotification={props.addFriendNotification}
+                    removeFriendNotification={props.removeFriendNotification}
+                    followingInProgress={props.followingInProgress}
+                    getFriends={props.getFriends}
+                    isFriendsPage={true}
+                    removefromFriendsAC={props.removefromFriendsAC}
+                />
+            }
         </>)
+
 }
 
 const mapStateToProps = (state) => {
     return {
-        users: getUser(state),
+        users: getFriend(state),
         pageSize: getPageSize(state),
         totalUsersCount: getTotalUsersCount(state),
         currentPage: getCurrentPage(state),

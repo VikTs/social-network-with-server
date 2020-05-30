@@ -30,14 +30,14 @@ const Messages = ({
 }) => {
   const { id } = useParams();
 
-  // const watchForMessagesUpdate = () => {
-  //   // socket.emit('chat message', values.newMessageBody);
-  //   socket.on('output', function (data) {
-  //     console.log(data, 'output');
-  //     // getMessages();
-  //   });
-  // }
-  // watchForMessagesUpdate();
+  const watchForMessagesUpdate = () => {
+    // socket.emit('chat message', values.newMessageBody);
+    socket.on('output', function (data) {
+      console.log(data, 'output');
+      // getMessages();
+    });
+  }
+  watchForMessagesUpdate();
 
   const [filteredMessages, setFilteredMessages] = useState([]);
 
@@ -45,9 +45,9 @@ const Messages = ({
       getMessages();
 
       // Messages listener from DB
-      // socket.on('output', function (data) {
-      //   getMessages();
-      // });
+      socket.on('output', function (data) {
+        getMessages();
+      });
       
     getChats();
     getMyData();

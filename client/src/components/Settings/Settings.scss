@@ -1,0 +1,23 @@
+.form-profile-edit {
+  margin: 0 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-profile-edit-header {
+  text-align: center;
+}
+
+.form-profile-edit-submit {
+  &.MuiButton-root {
+    margin-top: 10px;
+  }
+}
+
+.settings {
+  &.go-back {
+    position: relative;
+    top: 30px;
+    left: 20px;
+  }
+}

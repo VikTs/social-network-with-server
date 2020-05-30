@@ -5,7 +5,7 @@ import {
 } from '../redux/users-reducer'
 import { removeFriendNotification, addFriendNotification } from '../redux/notification-reducer'
 import Users from './Users'
-import {Spinner} from '../common/Spinner/Spinner'
+import { Spinner } from '../common/Spinner/Spinner'
 import { withAuthRedirect } from '../../hoc/withAuthRedirect'
 import { compose } from 'redux'
 import {
@@ -21,12 +21,6 @@ class UsersContainer extends React.Component {
         this.props.getUsers(currentPage, pageSize, this.isFriendsPage);
     }
 
-    // componentDiUpdate() {
-    //     console.log('componentDiUpdate')
-    //     this.isFriendsPage = window.location.pathname === '/friends';
-    //     this.getUsers();
-    // }
-
     onPageChanged = (pageNumber) => {
         const { pageSize } = this.props;
         this.props.getUsers(pageNumber, pageSize, this.isFriendsPage);
@@ -35,22 +29,23 @@ class UsersContainer extends React.Component {
     render() {
         return (
             <>
-                {this.props.isFetching ? <Spinner /> : null}
-                <Users
-                    totalUsersCount={this.props.totalUsersCount}
-                    pageSize={this.props.pageSize}
-                    onPageChanged={this.onPageChanged}
-                    currentPage={this.props.currentPage}
-                    users={this.props.users}
-                    follow={this.props.follow}
-                    unfollow={this.props.unfollow}
-                    addFriendNotification={this.props.addFriendNotification}
-                    removeFriendNotification={this.props.removeFriendNotification}
-                    followingInProgress={this.props.followingInProgress}
-                    getFriends={this.props.getFriends}
-                    isFriendsPage={this.isFriendsPage}
-                    removefromFriendsAC={this.props.removefromFriendsAC}
-                />
+                {this.props.isFetching ? <Spinner /> :
+                    <Users
+                        totalUsersCount={this.props.totalUsersCount}
+                        pageSize={this.props.pageSize}
+                        onPageChanged={this.onPageChanged}
+                        currentPage={this.props.currentPage}
+                        users={this.props.users}
+                        follow={this.props.follow}
+                        unfollow={this.props.unfollow}
+                        addFriendNotification={this.props.addFriendNotification}
+                        removeFriendNotification={this.props.removeFriendNotification}
+                        followingInProgress={this.props.followingInProgress}
+                        getFriends={this.props.getFriends}
+                        isFriendsPage={this.isFriendsPage}
+                        removefromFriendsAC={this.props.removefromFriendsAC}
+                    />
+                }
             </>)
     }
 }

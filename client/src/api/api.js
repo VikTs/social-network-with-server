@@ -5,8 +5,7 @@ import { authCheck, getCurrentUserId } from '../middleware/auth.middleware'
 const instance = axios.create({
     withCredentials: true, //сервер должен поддерж
     baseURL: '/api',
-    headers: {//'API-KEY': '916a03f6-7b8e-4743-b877-221854dab6ae'
-    }
+    headers: { }
 });
 
 export const usersAPI = {
@@ -33,6 +32,10 @@ export const usersAPI = {
 export const profileAPI = {
     getProfile(userId) {
         return instance.get(`profile/${userId}`);
+    },
+    updateProfile(updatedData) {
+        const myId = getCurrentUserId();
+        return instance.put(`profile`, { updatedData, myId });
     },
     getStatus(userId) {
         return instance.get(`profile/status/${userId}`);

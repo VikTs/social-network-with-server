@@ -13,6 +13,7 @@ const REMOVE_FROM_FRIENDS = 'REMOVE-FROM-FRIENDS';
 
 let initialState = {
     users: [],
+    friends: [],
     subscribers: null,
     pageSize: 5,
     totalUsersCount: 0,
@@ -46,7 +47,8 @@ const usersReducer = (state = initialState, action) => {
         case SET_USERS:
             return {
                 ...state,
-                users: [...action.users]
+                users: [...action.users],
+                friends: action.users.filter(user => user.followed === true),
             }
         case SET_CURRENT_PAGE:
             return {

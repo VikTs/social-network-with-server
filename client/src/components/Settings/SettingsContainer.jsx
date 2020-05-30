@@ -3,6 +3,7 @@ import {
   deletePage,
   getMyData,
 } from '../redux/auth-reducer';
+import { updateProfile } from '../redux/profile-reducer';
 import Settings from './Settings';
 import { connect } from 'react-redux';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
@@ -20,6 +21,7 @@ const mapDispatchToProps = ({
   logout, 
   deletePage,
   getMyData,
+  updateProfile,
 })
 
 export default compose( 

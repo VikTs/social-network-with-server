@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+// import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-import ModalMain from "../common/Modal/Modal";
+// import ModalMain from "../common/Modal/Modal";
+import { validateSetting } from '../../utils/validators/validators';
 
 import './Settings.scss';
 
-const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData }) => {
+const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, updateProfile }) => {
     ////////DELETE PAGE
     // const { push } = useHistory();
     // const [isOpenDeletePageModal, toggleOpenDeletePageModal] = useState(false);
@@ -20,19 +22,26 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData }) 
     //     push('/signUp');
     // }
 
+    const { push, goBack } = useHistory();
+
+    const handleGoBack = () => goBack();
+
     const formik = useFormik({
         initialValues: {
             name: (myFullData && myFullData.name) || '',
-            surname: '',
-            age: 14,
-            city: '',
-            facebook: '',
-            youtube: '',
-            image: ''
+            surname: (myFullData && myFullData.surname) || '',
+            aboutMe: (myFullData && myFullData.aboutMe) || '',
+            age: (myFullData && myFullData.age) || 14,
+            city: (myFullData && myFullData.city) || '',
+            facebook: (myFullData && myFullData.contacts && myFullData.contacts.facebook) || '',
+            youtube: (myFullData && myFullData.contacts && myFullData.contacts.youtube) || '',
+            image: (myFullData && myFullData.photos && myFullData.photos.small) || null,
         },
-        // validate: validateLogin,
+        validate: validateSetting,
         onSubmit: (values) => {
-            console.log(values);
+            updateProfile(values);
+            getMyData();
+            push('/profiles');
         },
         validateOnChange: false,
     });
@@ -43,14 +52,17 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData }) 
 
     return (
         <div>
+            <button type="button" className="go-back settings">
+                <ArrowBackIcon onClick={handleGoBack} />
+            </button>
             {myFullData && (
                 <form onSubmit={formik.handleSubmit} className="form-profile-edit">
                     <h1 className="form-profile-edit-header">Edit profile:</h1>
                     <TextField
                         id="name"
+                        label="Name:"
                         name="name"
                         type="text"
-                        label="Name:"
                         defaultValue={myFullData.name}
                         onChange={formik.handleChange}
                         value={formik.values.name}
@@ -59,15 +71,26 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData }) 
                     />
                     <TextField
                         id="surname"
+                        label="Surname:"
                         name="surname"
                         type="text"
-                        label="Surname:"
                         defaultValue={myFullData.surname}
                         onChange={formik.handleChange}
                         value={formik.values.surname}
                         helperText={formik.errors.surname}
                         error={!!formik.errors.surname}
                     />
+                    <TextField
+                        id="aboutMe"
+                        label="About me:"
+                        name="aboutMe"
+                        type="text"
+                        defaultValue={myFullData.aboutMe}
+                        onChange={formik.handleChange}
+                        value={formik.values.aboutMe}
+                        helperText={formik.errors.aboutMe}
+                        error={!!formik.errors.aboutMe}
+                    />                    
                     <TextField
                         id="age"
                         label="Age:"
@@ -112,6 +135,17 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData }) 
                         value={formik.values.youtube}
                         helperText={formik.errors.youtube}
                         error={!!formik.errors.youtube}
+                    />
+                    <TextField
+                        id="image"
+                        label="Image link:"
+                        name="image"
+                        type="url"
+                        defaultValue={myFullData.image}
+                        onChange={formik.handleChange}
+                        value={formik.values.image}
+                        helperText={formik.errors.image}
+                        error={!!formik.errors.image}
                     />
                     <Button variant="contained" type="submit" classes={{ root: 'form-profile-edit-submit' }}>
                         Edit

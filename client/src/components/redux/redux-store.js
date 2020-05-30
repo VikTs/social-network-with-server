@@ -7,7 +7,7 @@ import authReducer from "./auth-reducer";
 import appReducer from "./app-reducer";
 import notificationReducer from "./notification-reducer";
 import thunkMiddleware from "redux-thunk"
-import { reducer as formReducer } from 'redux-form'
+// import { reducer as formReducer } from 'redux-form'
 
 
 let reducers = combineReducers ({
@@ -18,7 +18,7 @@ let reducers = combineReducers ({
     auth: authReducer,
     app: appReducer,
     notification: notificationReducer,
-    form: formReducer //для formReducer обязательно писать form - это значение по умолчанию, название стейта форм в глобальном стейте
+    // form: formReducer //для formReducer обязательно писать form - это значение по умолчанию, название стейта форм в глобальном стейте
 })
 
 //for chrome devTools

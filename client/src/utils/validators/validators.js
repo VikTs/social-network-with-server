@@ -12,13 +12,40 @@ export const validateLogin = (values) => {
   return errors;
 };
 
+export const validateSetting = (values) => {
+  const errors = {};
+
+  const minAge = 14;
+  const maxAge = 100;
+
+  if (!values.name) {
+    errors.name = 'Required';
+  }
+
+  if (!values.surname) {
+    errors.surname = 'Required';
+  }
+
+  if (!values.age) {
+    errors.age = 'Required';
+  } else if (values.age < minAge || values.age > maxAge) {
+    errors.age = `You have to choose age from ${minAge} to ${maxAge}`;
+  }
+
+  if (!values.city) {
+    errors.city = 'Required';
+  }
+
+  return errors;
+}
+
 export const validateNewPost = (values) => {
   const errors = {};
   const newPostMaxLength = 50;
 
   if (!values.newPostText) {
     errors.newPostText = 'You cannot post nothing';
-  } else if(values.newPostText.length > newPostMaxLength) {
+  } else if (values.newPostText.length > newPostMaxLength) {
     errors.newPostText = `Too much symbols. Max count - ${newPostMaxLength}`;
   }
 
@@ -37,7 +64,7 @@ export const validateRegister = (values) => {
 
   if (!values.password) {
     errors.password = 'Required';
-  } 
+  }
   // else if (values.password.length < 6) {
   //   errors.password = 'Must be 6 characters or more';
   // } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(values.password)) {
