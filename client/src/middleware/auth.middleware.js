@@ -2,9 +2,9 @@ var jwtDecode = require('jwt-decode');
 
 export const authCheck = () => {
   if (localStorage.getItem('userData')) {
-    let userData = localStorage.getItem('userData')
+    const userData = localStorage.getItem('userData')
     return jwtDecode(userData)
-  } else { return null }
+  } else { return '' }
 }
 
 export const getCurrentUserId = () => {

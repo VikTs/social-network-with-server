@@ -31,7 +31,6 @@ app.use(express.json({ extended: true }))
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/profile', require('./routes/profile.routes'));
 app.use('/api/users', require('./routes/users.routes'));
-app.use('/api/notification', require('./routes/notification.routes'));
 app.use('/api/messages', require('./routes/messages.routes'));
 
 const PORT = config.get('port') || 5000 //порт сервера

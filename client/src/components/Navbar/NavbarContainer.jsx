@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "./Navbar";
 import { connect } from "react-redux";
 import {
@@ -7,7 +6,7 @@ import {
 } from '../redux/auth-reducer';
 
 const mapStateToProps = state => ({
-
+  isAuth: state.auth.isAuth
 });
 
 const mapDispatchToProps = ({
@@ -15,4 +14,4 @@ const mapDispatchToProps = ({
   deletePage, 
 })
 
-export default connect(null, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

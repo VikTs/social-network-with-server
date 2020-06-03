@@ -5,7 +5,7 @@ import ModalMain from "../common/Modal/Modal";
 
 import './Navbar.scss';
 
-const Navbar = ({ logout, deletePage }) => {
+const Navbar = ({ logout, deletePage, isAuth }) => {
   const { push } = useHistory();
   const [isOpenLogOutModal, toggleOpenLogOutModal] = useState(false);
 
@@ -44,21 +44,11 @@ const Navbar = ({ logout, deletePage }) => {
           Users
         </NavLink>
       </div>
-      {/* <div className="item">
-        <NavLink to='/requests' className="item" activeClassName="active">
-          Requests
-        </NavLink>
-      </div> */}
-      {/* <div className="item">
-        <NavLink to='/news' className="item" activeClassName="active">
-          News
-        </NavLink>
-      </div> */}
-      <div className="item">
-        <button className="item" onClick={openLogOutModal}>
+      {isAuth && <div className="item">
+        <button className="item logout" onClick={openLogOutModal}>
           LOGOUT
         </button>
-      </div>
+      </div>}
     </nav>
   );
 }

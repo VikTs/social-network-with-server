@@ -9,9 +9,8 @@ import { validateRegister } from '../../../utils/validators/validators';
 
 import './SignUp.scss';
 
-const SignUp = ({ registration, isAuth }) => {
+const SignUp = ({ registration, isAuth, getMyData }) => {
     const [registerError, setRegisterError] = useState('');
-
     const { goBack } = useHistory();
 
     const formik = useFormik({
@@ -28,10 +27,10 @@ const SignUp = ({ registration, isAuth }) => {
         validate: validateRegister,
         onSubmit: (values) => {
             registration(values)
-                .then(info => console.log(info))
+                .then(async(info) => await getMyData())
                 .catch((err) => {
                     setRegisterError(err.message)
-                })
+                });
         },
         validateOnChange: false,
     });
@@ -132,7 +131,7 @@ const SignUp = ({ registration, isAuth }) => {
                     Register
       </Button>
                 {registerError && <div className="sign-up-error">
-                    <p className="sign-up-error-message">Registration denied</p>
+                    <p className="sign-up-error-message">Registration denied: this email is registered</p>
                 </div>}
             </form>
         </>

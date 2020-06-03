@@ -9,6 +9,7 @@ const SET_CURRENT_CHAT = 'SET_CURRENT_CHAT';
 const SET_CURRENT_MESSAGES = 'SET_CURRENT_MESSAGES';
 const DELETE_CHAT = 'DELETE_CHAT';
 const DELETE_MEMBER_FROM_CHAT = 'DELETE_MEMBER_FROM_CHAT';
+const DELETE_MESSAGE = 'DELETE_MESSAGE';
 
 let initialState = {
     currentChat: null,
@@ -79,7 +80,11 @@ const dialogsReducer = (state = initialState, action) => {
                     return chat;
                 })
             }
-
+            case DELETE_MESSAGE:
+                return {
+                    ...state,
+                    messages: state.messages.filter(mess => mess._id !== payload.id)
+                }
         default: return state;
     }
 }
@@ -109,6 +114,11 @@ export const deleteChatAC = (chatId) => ({
     payload: { chatId },
 });
 
+const deleteMessageAC = (id) => ({
+    type: DELETE_MESSAGE,
+    payload: { id },
+});
+
 const deleteMemberFromChatAC = (memberId, chatId) => ({
     type: DELETE_MEMBER_FROM_CHAT,
     payload: { memberId, chatId },
@@ -129,6 +139,11 @@ export const addNewChatMemberAC = (newMember, chatId) => {
         type: ADD_NEW_CHAT_MEMBER,
         payload: { newMember, chatId },
     }
+}
+
+export const deleteMessage = (id) => async (dispatch) => {
+    await messagesAPI.deleteMessage(id);
+    dispatch(deleteMessageAC(id));
 }
 
 export const sendMessageCreator = (newMessage) => async (dispatch) => {

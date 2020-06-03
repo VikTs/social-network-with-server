@@ -14,11 +14,7 @@ const User = ({
     unfollow,
     follow,
     isFriendsPage,
-    isSubscribersPage,
-    setSubscribers,
-    removeFriendNotification,
-    addFriendNotification,
-    removefromFriendsAC,
+
     setFilteredUsers,
     filteredUsers
 }) => {
@@ -28,13 +24,8 @@ const User = ({
         e.preventDefault();
 
         follow(id);
-        addFriendNotification(id);
         if (isFriendsPage) {
             setFilteredUsers([...filteredUsers, users.find(user => user._id === id)]);
-            setSubscribers(filteredUsers.filter(user => user._id !== id));
-        }
-        if(isSubscribersPage) {
-            
         }
     };
 
@@ -43,9 +34,7 @@ const User = ({
         e.preventDefault();
 
         unfollow(id);
-        removeFriendNotification(id);
         if (isFriendsPage) {
-            setSubscribers([...filteredUsers, users.find(user => user._id === id)])
             setFilteredUsers(filteredUsers.filter(user => user._id !== id));
         }
     };
@@ -54,7 +43,7 @@ const User = ({
         <div key={user._id} className="user">
             <Card className="user-card">
                 <CardContent className="user-card-content">
-                    <Typography>
+                    <Typography variant="subtitle1">
                         <NavLink to={'/profiles/' + user._id} className="user-profile-link">
                             <span className="user-main">
                                 <div className="profile-photo-container">

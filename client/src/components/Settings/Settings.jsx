@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 // import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -37,13 +37,14 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
             youtube: (myFullData && myFullData.contacts && myFullData.contacts.youtube) || '',
             image: (myFullData && myFullData.photos && myFullData.photos.small) || null,
         },
-        validate: validateSetting,
+        validate: validateSetting,        
         onSubmit: (values) => {
             updateProfile(values);
             getMyData();
             push('/profiles');
         },
         validateOnChange: false,
+        enableReinitialize: true,
     });
 
     useEffect(() => {
@@ -63,7 +64,6 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
                         label="Name:"
                         name="name"
                         type="text"
-                        defaultValue={myFullData.name}
                         onChange={formik.handleChange}
                         value={formik.values.name}
                         helperText={formik.errors.name}
@@ -74,7 +74,6 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
                         label="Surname:"
                         name="surname"
                         type="text"
-                        defaultValue={myFullData.surname}
                         onChange={formik.handleChange}
                         value={formik.values.surname}
                         helperText={formik.errors.surname}
@@ -85,7 +84,6 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
                         label="About me:"
                         name="aboutMe"
                         type="text"
-                        defaultValue={myFullData.aboutMe}
                         onChange={formik.handleChange}
                         value={formik.values.aboutMe}
                         helperText={formik.errors.aboutMe}
@@ -96,7 +94,6 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
                         label="Age:"
                         name="age"
                         type="number"
-                        defaultValue={myFullData.age}
                         onChange={formik.handleChange}
                         value={formik.values.age}
                         helperText={formik.errors.age}
@@ -108,7 +105,6 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
                         label="City:"
                         name="city"
                         type="text"
-                        defaultValue={myFullData.city}
                         onChange={formik.handleChange}
                         value={formik.values.city}
                         helperText={formik.errors.city}
@@ -119,7 +115,6 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
                         label="Facebook:"
                         name="facebook"
                         type="text"
-                        defaultValue={myFullData.facebook}
                         onChange={formik.handleChange}
                         value={formik.values.facebook}
                         helperText={formik.errors.facebook}
@@ -130,7 +125,6 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
                         label="Youtube:"
                         name="youtube"
                         type="text"
-                        defaultValue={myFullData.youtube}
                         onChange={formik.handleChange}
                         value={formik.values.youtube}
                         helperText={formik.errors.youtube}
@@ -141,7 +135,6 @@ const Settings = ({ login, logout, deletePage, userId, myFullData, getMyData, up
                         label="Image link:"
                         name="image"
                         type="url"
-                        defaultValue={myFullData.image}
                         onChange={formik.handleChange}
                         value={formik.values.image}
                         helperText={formik.errors.image}

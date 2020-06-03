@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import Paginator from '../common/Paginator/Paginator';
+
+// import Paginator from '../common/Paginator/Paginator';
 import FriendsFilter from './FriendsFilter/FriendsFilter';
 import User from '../common/User/UserContainer';
+import { compareIncludeStrings } from '../../utils/format/format';
 
 import './Friends.scss';
 
 const Friends = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
-    users, followingInProgress, follow, unfollow, isFriendsPage,
-    removeFriendNotification, addFriendNotification, removefromFriendsAC, ...props }) => {
+    users, followingInProgress, follow, unfollow, removefromFriendsAC }) => {
 
     const [filteredFriends, setFilteredFriends] = useState(users);
+    const [filteredFriendsText, setFilteredFriendsText] = useState('');
 
     useEffect(() => {
-        setFilteredFriends(users);
-        console.log(users)
+        if (!filteredFriends) {
+            setFilteredFriends(users);
+        } else {
+            setFilteredFriends(users.filter(user =>
+                user.followed === true &&
+                compareIncludeStrings(`${user.name} ${user.surname}`, filteredFriendsText)
+            ));
+        }
     }, [users]);
 
 
@@ -29,18 +37,20 @@ const Friends = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
             <FriendsFilter
                 users={users}
                 setFilteredFriends={setFilteredFriends}
+                filteredFriendsText={filteredFriendsText}
+                setFilteredFriendsText={setFilteredFriendsText}
             />
             <div>
-                {filteredFriends.length ?
+                {filteredFriends &&
                     filteredFriends.map((u, i) =>
                         (<User user={u}
                             setFilteredUsers={setFilteredFriends}
                             filteredUsers={filteredFriends}
-                            isFriendsPage={isFriendsPage}
+                            isFriendsPage={true}
                             key={u._id}
-                        />)) :
-                    "No users found"
+                        />))
                 }
+                {(!filteredFriends || !filteredFriends.length) && "No friends found"}
             </div>
         </div>
     )

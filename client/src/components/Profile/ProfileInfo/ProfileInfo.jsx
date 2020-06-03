@@ -11,7 +11,7 @@ import { capitalize } from '../../../utils/format/format';
 import './ProfileInfo.scss'
 import { NavLink } from 'react-router-dom';
 
-const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ...props }) => {
+const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, getMyData }) => {
   const { name, surname, city, age, contacts, aboutMe } = profile || {};
   const [isPhotoModal, togglePhotoModal] = useState(false);
   const openPhotoModal = () => togglePhotoModal(true);
@@ -25,8 +25,9 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto, ..
     openPhotoModal();
   }
 
-  const handleSavePhoto = (photoLink) => {
-    savePhoto(photoLink);
+  const handleSavePhoto = async(photoLink) => {
+    await savePhoto(photoLink);
+    await getMyData();
   };
 
   return (

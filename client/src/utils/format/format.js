@@ -5,7 +5,7 @@ export const capitalize = (s) => {
 
 export const compareIncludeStrings = (initialValue, inputValue) => {
   if (typeof initialValue === 'string')
-    return initialValue.toLowerCase().includes(inputValue.toLowerCase());
+    return initialValue.toLowerCase().includes(inputValue.trim().toLowerCase());
   else if (Array.isArray(initialValue))
-    return initialValue.some(value => value.toLowerCase().includes(inputValue.toLowerCase()))
+    return initialValue.some(value => value.toLowerCase().includes(inputValue.trim().toLowerCase()))
 }

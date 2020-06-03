@@ -20,7 +20,6 @@ export const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 posts: [...state.posts, action.addNewPost],
-                // newPostText: ''
             };
 
         case SET_POSTS: {
@@ -57,7 +56,7 @@ export const profileReducer = (state = initialState, action) => {
         case DELETE_POST: {
             return {
                 ...state,
-                posts: state.posts.filter(e => e._id != action.postId)
+                posts: state.posts.filter(e => e._id !== action.postId)
             };
         }
 
@@ -87,7 +86,7 @@ export const deletePostAC = (postId) => {
 }
 
 export const deletePost = (postId) => async (dispatch) => {
-    let response = await profileAPI.deletePost(postId)
+    await profileAPI.deletePost(postId)
     dispatch(deletePostAC(postId));
 }
 

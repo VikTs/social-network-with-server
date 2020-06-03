@@ -1,4 +1,4 @@
-import { registration } from '../../redux/auth-reducer';
+import { registration, getMyData } from '../../redux/auth-reducer';
 import SignUp from './SignUp';
 import { connect } from 'react-redux';
 
@@ -8,6 +8,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = ({
   registration,
+  getMyData,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

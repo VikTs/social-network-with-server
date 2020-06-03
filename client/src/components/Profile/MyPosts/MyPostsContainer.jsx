@@ -1,5 +1,4 @@
 import { addPost, setPosts, deletePost, likePost } from '../../redux/profile-reducer';
-import { createLikeNotification } from '../../redux/notification-reducer';
 import MyPosts from './MyPosts';
 import { connect } from 'react-redux';
 
@@ -24,9 +23,6 @@ let mapDispatchToProps = (dispatch) => {
     },
     likePost: (userId, postId) => {
       dispatch(likePost(userId, postId));
-    },
-    createLikeNotification: (userId, postId, isLiked) => {
-      dispatch(createLikeNotification(userId, postId, isLiked));
     }
   }
 }

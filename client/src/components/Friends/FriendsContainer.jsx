@@ -3,17 +3,15 @@ import { connect } from 'react-redux'
 import {
     follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers, removefromFriendsAC
 } from '../redux/users-reducer'
-import { removeFriendNotification, addFriendNotification } from '../redux/notification-reducer'
 import Friends from './Friends'
 import { Spinner } from '../common/Spinner/Spinner'
 import { withAuthRedirect } from '../../hoc/withAuthRedirect'
 import { compose } from 'redux'
 import {
-    getUser, getFriend, getPageSize, getTotalUsersCount, getCurrentPage,
+    getFriend, getPageSize, getTotalUsersCount, getCurrentPage,
     getIsFetching, getFollowingInProgress
 } from '../redux/users-selectors'
 import { useEffect } from 'react'
-
 
 const FriendsContainer = (props) => {
     useEffect(() => {
@@ -37,8 +35,6 @@ const FriendsContainer = (props) => {
                     users={props.users}
                     follow={props.follow}
                     unfollow={props.unfollow}
-                    addFriendNotification={props.addFriendNotification}
-                    removeFriendNotification={props.removeFriendNotification}
                     followingInProgress={props.followingInProgress}
                     getFriends={props.getFriends}
                     isFriendsPage={true}
@@ -63,7 +59,6 @@ const mapStateToProps = (state) => {
 export default compose(
     withAuthRedirect,
     connect(mapStateToProps, {
-        follow, unfollow, removeFriendNotification, addFriendNotification,
-        setCurrentPage, toggleFollowingProgress, getUsers, removefromFriendsAC
+        follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers, removefromFriendsAC
     })
 )(FriendsContainer)

@@ -11,6 +11,13 @@
   color: $nav-link-color;
   text-decoration: none;
   font-size: $nav-link-size;
+
+  &.logout {
+    &:hover {
+      color: $nav-link-hover-color;
+    }
+  }
+
   a {
     &.active {
       color: $nav-link-active-color;

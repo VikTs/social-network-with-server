@@ -21,7 +21,7 @@ const MembersList = ({ choosedMembersId, setNewMemberId, friends }) => {
             <CardContent>
               <h2 className="member-name" >{`${friend.name} ${friend.surname}`}</h2>
               <p className="member-city" >{friend.city}</p>
-              <div class="form-group">
+              <div className="form-group">
                 <input
                   className="member-choose"
                   type="checkbox"
@@ -29,7 +29,7 @@ const MembersList = ({ choosedMembersId, setNewMemberId, friends }) => {
                   id={friend._id}
                   onChange={handleChange}
                 />
-                <label className="member-choose-label" for={friend._id}></label>
+                <label className="member-choose-label" htmlFor={friend._id}></label>
               </div>
             </CardContent>
           </Card>

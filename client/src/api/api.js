@@ -24,7 +24,6 @@ export const usersAPI = {
         return instance.delete(`users/follow?userid=${userId}&myid=${myId}`)
     },
     getProfile(userId) {
-        console.warn('Obsolete method. Use profileAPI')
         return profileAPI.getProfile(userId);
     }
 }
@@ -53,9 +52,6 @@ export const profileAPI = {
         const userId = getCurrentUserId()
         return instance.put(`profile/posts`, { postText, userId });
     },
-    // getPosts(userId, myId) {        
-    //     return instance.get(`profile/posts/${userId}`);
-    // },
     getPosts(userId) {
         const myId = getCurrentUserId()
         return instance.get(`profile/posts/${userId}/${myId}`);
@@ -111,37 +107,6 @@ export const securityAPI = {
     }
 }
 
-export const notificationAPI = {
-    createLikeNotification(userId, postId, isLiked) {
-        const myId = getCurrentUserId()
-        return instance.post(`notification/newLike`, { myId, userId, postId, isLiked })
-    },
-    addReqFriendNotification(userId) {
-        const myId = getCurrentUserId()
-        return instance.post(`notification/friendreq`, { myId, userId })
-    },
-    removeReqFriendNotification(userId) {
-        const myId = getCurrentUserId();
-        return instance.delete(`notification/friendreq/${myId}/${userId}`);
-    },
-    getNotificationList() {
-        const myId = getCurrentUserId();
-        return instance.get(`notification/getList/${myId}`);
-    },
-    getNewNotificationCount() {
-        const myId = getCurrentUserId();
-        return instance.get(`notification/getNewCount/${myId}`);
-    },
-    zeroingNewCount() {
-        const myId = getCurrentUserId();
-        return instance.delete(`notification/zeroingNew/${myId}`);
-    },
-    cleanAllNotifications() {
-        const myId = getCurrentUserId();
-        return instance.delete(`notification/${myId}`);
-    }
-}
-
 export const messagesAPI = {
     sendMessage(newMessage) {
         return instance.post(`messages/message`, {newMessage});
@@ -165,6 +130,9 @@ export const messagesAPI = {
     },
     deleteMemberFromChat(memberId, chatId) {
         return instance.delete(`messages/chats/${chatId}/${memberId}`);
+    },
+    deleteMessage(id) {
+        return instance.delete(`messages/message/${id}`);
     }
 }
 

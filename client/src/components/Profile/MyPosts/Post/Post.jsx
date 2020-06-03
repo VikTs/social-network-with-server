@@ -7,7 +7,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ModalMain from '../../../common/Modal/Modal';
 
 const Post = ({
-    createLikeNotification,
     likePost,
     deletePost,
     isOwner,
@@ -23,9 +22,6 @@ const Post = ({
     function onLikePost(e) {
         const postId = postFullInfo._id;
         likePost(userId, postId);
-        if (myId !== userId) {
-            createLikeNotification(userId, postId, !isLiked);
-        }
     }
 
     function onDeletePost() {
@@ -52,7 +48,7 @@ const Post = ({
                     onCloseMethod={closeDeletePostModal}
                 />)}
             <Card className="post-card">
-                <CardContent>
+                <CardContent className="post-card-content">
                     <Typography color="textSecondary" variant="body2">
                         {postDate}
                     </Typography>
@@ -62,25 +58,22 @@ const Post = ({
                     {/* <Typography color="textSecondary">
                     {postDayOfWeek}
                 </Typography> */}
-                    <Typography variant="paragraph" >
+                    <Typography variant="subtitle1" >
                         <p className="post-card-text">{postInfo.name}</p>
                     </Typography>
                 </CardContent>
                 <CardActions>
                     <div>
-                        <IconButton aria-label="create like" size="small">
+                        <IconButton aria-label="create like" size="small" onClick={onLikePost}>
                             <FavoriteIcon
                                 classes={{ root: postInfo.isLiked ? 'isLiked' : 'isNotLiked' }}
-                                onClick={onLikePost}
                             />
                         </IconButton>
                         {postInfo.likesCount}
                     </div>
                     {isOwner &&
-                        <IconButton aria-label="delete post" size="small">
-                            <DeleteIcon
-                                onClick={openDeletePostModal}
-                            />
+                        <IconButton aria-label="delete post" size="small" onClick={openDeletePostModal}>
+                            <DeleteIcon />
                         </IconButton>
                     }
                 </CardActions>

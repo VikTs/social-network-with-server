@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { IconButton, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import CloseIcon from '@material-ui/icons/Close';
@@ -15,7 +15,7 @@ import './MessagesInfoModal.scss';
 import { useHistory } from 'react-router-dom';
 
 const MessagesInfoModal = ({
-  getMyData,
+  // getMyData,
   myId,
   chat,
   open,
@@ -71,7 +71,7 @@ const MessagesInfoModal = ({
   friends.forEach(friend => {
     if (!membersId.includes(friend._id))
       friendsInfo.push(
-        <div className="chat-modal-member">
+        <div className="chat-modal-member" key={friend._id}>
           <FormControlLabel
             control={
               <Checkbox

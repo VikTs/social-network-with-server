@@ -1,16 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Route, withRouter, Redirect, BrowserRouter } from 'react-router-dom';
+import { Route, withRouter, Redirect, BrowserRouter, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import socketIOClient from "socket.io-client";
 
 import store from '../src/components/redux/redux-store';
 import HeaderContainer from './components/Header/HeaderContainer';
 import NavbarContainer from './components/Navbar/NavbarContainer';
-import News from './components/News/NewsContainer';
 import Settings from './components/Settings/SettingsContainer';
-import Requests from './components/Requests/RequestsContainer';
 import SignIn from './components/Login/SignIn/SignInContainer';
 import SignUp from './components/Login/SignUp/SignUpContainer';
 import { initializeApp } from './components/redux/app-reducer';
@@ -29,7 +27,6 @@ const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsCo
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const FriendsContainer = React.lazy(() => import('./components/Friends/FriendsContainer'));
-const NotificationContainer = React.lazy(() => import('./components/Notification/NotificationContainer'));
 
 class App extends React.Component {
   componentDidMount() {
@@ -52,15 +49,16 @@ class App extends React.Component {
             <Route path='/dialogs' render={withSuspense(DialogsContainer)} />
             <Route path='/users' render={withSuspense(UsersContainer)} />
             <Route path='/friends' render={withSuspense(FriendsContainer)} />
-            <Route path='/requests' component={Requests} />
-            <Route path='/notification' render={withSuspense(NotificationContainer)} />
-            <Route path='/login' component={SignIn} />
-            <Route path='/signUp' component={SignUp} />
-            <Route path='/news' component={News} />
             <Route path='/settings' component={Settings} />
             {!this.props.isAuth ?
-              <Route exact path='/'> <Redirect to="login" /></Route> :
-              <Route exact path='/' render={withSuspense(ProfileContainer)} />
+              <Switch>
+                <Route path='/login' component={SignIn} />
+                <Route path='/signUp' component={SignUp} />
+                <Route path='*'> <Redirect to="/login" /></Route>
+              </Switch> :
+              <Switch>
+                <Route exact path='/'> <Redirect to="/profiles" /></Route>
+              </Switch>
             }
           </div>
         </div>

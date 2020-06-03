@@ -11,7 +11,7 @@ import { Spinner } from '../../common/Spinner/Spinner';
 const Messages = ({
   myId,
   chats,
-  myData,
+  // myData,
   friends,
   messages,
   getChats,
@@ -20,6 +20,7 @@ const Messages = ({
   currentChat,
   getMessages,
   deleteChatAC,
+  deleteMessage,
   filteredChats,
   setCurrentChat,
   currentMessages,
@@ -37,18 +38,19 @@ const Messages = ({
       // getMessages();
     });
   }
-  watchForMessagesUpdate();
+
+  // watchForMessagesUpdate();
 
   const [filteredMessages, setFilteredMessages] = useState([]);
 
   useEffect(() => {
-      getMessages();
+    getMessages();
 
-      // Messages listener from DB
-      socket.on('output', function (data) {
-        getMessages();
-      });
-      
+    // Messages listener from DB
+    socket.on('output', function (data) {
+      getMessages();
+    });
+
     getChats();
     getMyData();
   }, []);
@@ -63,7 +65,7 @@ const Messages = ({
 
   useEffect(() => {
     if (chats) {
-      setCurrentChat(chats.find(chat => `${chat._id}` == `${id}`))
+      setCurrentChat(chats.find(chat => `${chat._id}` === `${id}`))
     }
   }, [chats]);
 
@@ -79,7 +81,7 @@ const Messages = ({
     setFilteredMessages([...filteredMessages, newMessage]);
   }
 
-  if(!messages) return <Spinner />
+  if (!messages) return <Spinner />
 
   return (
     <>
@@ -97,10 +99,15 @@ const Messages = ({
             messages={currentMessages}
             getMyData={getMyData}
             chat={currentChat}
-            friends={friends} 
+            friends={friends}
             myId={myId}
           />
-          <MessageList messages={filteredMessages} chat={currentChat} />
+          <MessageList
+            myId={myId}
+            chat={currentChat}
+            messages={filteredMessages}
+            deleteMessage={deleteMessage}
+          />
           <AddMessage addNewMessage={addNewMessage} chat={currentChat} />
         </div>)}
     </>

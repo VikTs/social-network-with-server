@@ -2,8 +2,6 @@ import React from 'react';
 import Post from './Post/Post';
 import { TextField, Button } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { Field, Form, Formik, FormikProps } from 'formik';
-
 
 import { validateNewPost } from '../../../utils/validators/validators';
 
@@ -75,7 +73,6 @@ const MyPosts = React.memo(({
   likePost,
   deletePost,
   currentPageUserId,
-  createLikeNotification,
 }) => {
   const postsElements = posts.map(p => (
     <Post
@@ -87,8 +84,6 @@ const MyPosts = React.memo(({
       myId={myId}
       userId={currentPageUserId}
       likePost={likePost}
-      createLikeNotification={createLikeNotification}
-      myId={myId}
     />
   ));
 

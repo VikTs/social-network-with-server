@@ -12,10 +12,10 @@ const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
 const REMOVE_FROM_FRIENDS = 'REMOVE-FROM-FRIENDS';
 
 let initialState = {
-    users: [],
+    users: null,
     friends: [],
     subscribers: null,
-    pageSize: 5,
+    pageSize: 50,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
@@ -70,7 +70,7 @@ const usersReducer = (state = initialState, action) => {
                 ...state,
                 followingInProgress: action.isFetching
                     ? [...state.followingInProgress, action.userId]
-                    : state.followingInProgress.filter(id => id != action.userId)
+                    : state.followingInProgress.filter(id => id !== action.userId)
             }
 
         case REMOVE_FROM_FRIENDS:

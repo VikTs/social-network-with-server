@@ -13,11 +13,11 @@ const getMyId = (state) => {
 //который изменяется только когда изменяется значение ф-ии,
 //от которой  реселект зависит
 export const getUser =  createSelector(getUserSelector, (users) => {
-    return users.filter(u => true)
+    return users ? users.filter(u => true) : null
 })
 
 export const getFriend =  createSelector(getUserSelector, getMyId, (users, myId) => {
-    return users.filter(u => u.friends.includes(myId))
+    return users ? users.filter(u => u.friends.includes(myId)): null
 })
 
 export const getPageSize = (state) => {

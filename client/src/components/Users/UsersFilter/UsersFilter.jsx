@@ -7,11 +7,12 @@ import { compareIncludeStrings } from '../../../utils/format/format';
 
 import './UsersFilter.scss';
 
-const UsersFilter = ({ users, setFilteredUsers }) => {
+const UsersFilter = ({ users, setFilteredUsers, setFilteredText }) => {
   const handleChange = (e) => {
     const inputValue = e.target.value;
+    setFilteredText(inputValue);
     setFilteredUsers(users.filter(user =>
-      compareIncludeStrings([user.name, user.surname], inputValue)
+      compareIncludeStrings(`${user.name} ${user.surname}`, inputValue)
     ))
   };
 

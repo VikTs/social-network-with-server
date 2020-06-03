@@ -1,7 +1,6 @@
 const { Router } = require('express')
 const router = Router() //create router
 const User = require('../models/UserModel'); 
-const Notification = require('../models/NotificationModel'); 
 const Post = require('../models/PostModel');
 const Chat = require('../models/Chat/ChatModel');
 const bcrypt = require('bcryptjs'); // хэширует и сравнивает пароли
@@ -54,19 +53,9 @@ router.post(
                 status: 'Here must be my status', aboutMe: 'Hi, I am new user',
                 photos: { small: null, large: '' },
                // friends:[], myRequestsToFriends: [], subscribers: []
-                //notifications: []
             }) 
             await user.save() //ждём, пока пользователь сохраниться
-
-            const notification = new Notification({
-                likesNotification: [],
-                addToFriendNotification: [],
-                newNotificationsCount: 0,
-                owner: user.id 
-              });
           
-            await notification.save() //сохраняем ссылку
-
             const posts = new Post({
                 posts: [],
                 owner: user.id
@@ -111,14 +100,16 @@ router.get(
     '/myData/:myid',
     async (req, res) => {
         try {
-            const myData = await User.findOne({ _id: new ObjectId(req.params.myid) });
+            const { myid } = req.params;
+
+            const myData = await User.findOne({ _id: new ObjectId(myid) });
             const users = await User.find();            
             const friends = users.filter(user => myData.friends.includes(user._id))
 
             res.json({myData, friends}).status(200).json({ message: 'My data was loaded' });            
            
         } catch (error) {
-            res.status(500).json({ message: `Something wrong: ${error}` }) //500-ошибка сервера, json кидает сообщение
+            res.status(401).json({ message: `You are not autorized` });
         }
     })
 
@@ -180,16 +171,7 @@ router.delete(
     async (req, res) => {
         try {
             const { id } = req.params;
-
-            // Chat.updateOne(
-            //     { _id: new ObjectId(chatid) },          
-            //     { $pull: { members: { id: memberid } } },
-            //     function (err) {
-            //       if (err) return console.log(err);
-            //       res.status(200).json({ message: 'Member from chat was deleted' })
-            //     }
             
-            await Notification.deleteMany({ owner: new ObjectId(id) })
             await Post.deleteMany({ owner: new ObjectId(id) })
             await Chat.deleteMany({ owner_id: new ObjectId(id) })
            

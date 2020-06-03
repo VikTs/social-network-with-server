@@ -10,7 +10,6 @@ import {
     removefromFriendsAC,
     setSubscribers,
 } from '../../redux/users-reducer';
-import { removeFriendNotification, addFriendNotification } from '../../redux/notification-reducer';
 import {
   getUser, 
   getPageSize, 
@@ -40,8 +39,6 @@ const mapDispatchToProps = ({
   setCurrentPage, 
   setSubscribers,
   removefromFriendsAC,
-  addFriendNotification,
-  removeFriendNotification, 
   toggleFollowingProgress, 
 })
 

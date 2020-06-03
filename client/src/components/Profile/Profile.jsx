@@ -10,11 +10,13 @@ const Profile = ({
   status,
   updateUserStatus,
   savePhoto,
-  currentPageUserId
+  currentPageUserId,
+  getMyData
 }) => {
   return (
     <div className="profile-content">
       <ProfileInfo
+      getMyData={getMyData}
         isOwner={isOwner}
         profile={profile}
         status={status}

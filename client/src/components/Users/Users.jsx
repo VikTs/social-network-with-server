@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import Paginator from '../common/Paginator/Paginator';
+
+// import Paginator from '../common/Paginator/Paginator';
 import UsersFilter from './UsersFilter/UsersFilter';
 import User from '../common/User/UserContainer';
+import { compareIncludeStrings } from '../../utils/format/format';
 
 import './Users.scss';
 
-const Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
-    users, followingInProgress, follow, unfollow, isFriendsPage,
-    removeFriendNotification, addFriendNotification, removefromFriendsAC, ...props }) => {
+const Users = ({ users }) => {
 
     const [filteredUsers, setFilteredUsers] = useState(users);
+    const [filteredText, setFilteredText] = useState('');
 
     useEffect(() => {
-        setFilteredUsers(users);
+        if (users) {
+            setFilteredUsers(users.filter(user =>
+                compareIncludeStrings(`${user.name} ${user.surname}`, filteredText)
+            ));
+        }
     }, [users]);
 
     return (
@@ -27,15 +32,20 @@ const Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize,
             <UsersFilter
                 users={users}
                 setFilteredUsers={setFilteredUsers}
+                filteredText={filteredText}
+                setFilteredText={setFilteredText}
             />
             <div>
-                {filteredUsers.map((u, i) =>
-                    (<User user={u}
-                        setFilteredUsers={setFilteredUsers}
-                        filteredUsers={filteredUsers}
-                        isFriendsPage={false}
-                        key={u._id}
-                    />))}
+                {filteredUsers &&
+                    filteredUsers.map((u, i) =>
+                        (<User user={u}
+                            setFilteredUsers={setFilteredUsers}
+                            filteredUsers={filteredUsers}
+                            isFriendsPage={false}
+                            key={u._id}
+                        />))
+                }
+                {(!filteredUsers || !filteredUsers.length) && "No users found"}
             </div>
         </div>
     )

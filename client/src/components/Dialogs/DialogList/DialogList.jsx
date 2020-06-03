@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './DialogList.scss';
 import DialogItem from './DialogItem/DialogItem';
 import DialogHeader from '../DialogsHeader/DialogsHeader';

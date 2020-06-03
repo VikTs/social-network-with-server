@@ -9,9 +9,7 @@ router.post(
   '/message',
   async (req, res) => {
     try {
-
       const { chat_id, user_id, context, date_create } = req.body.newMessage;
-      console.log(chat_id, user_id, context, date_create);
 
       const newMessage = new Message({
         context,
@@ -108,6 +106,19 @@ router.delete(
       res.status(500).json({ message: `Something wrong: ${error}` });
     }
   });
+
+  router.delete(
+    '/message/:id',
+    async (req, res) => {
+      try {
+        const { id } = req.params;
+        await Message.deleteOne({ _id: new ObjectId(id) });
+  
+        res.status(200).json({ message: `Message with id ${id} was deleted` });
+      } catch (error) {
+        res.status(500).json({ message: `Something wrong: ${error}` });
+      }
+    });  
 
   router.delete(
     '/chats/:chatid/:memberid',

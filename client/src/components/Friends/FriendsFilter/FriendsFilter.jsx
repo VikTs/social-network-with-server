@@ -7,11 +7,18 @@ import { compareIncludeStrings } from '../../../utils/format/format';
 
 import './FriendsFilter.scss';
 
-const FriendsFilter = ({ users, setFilteredFriends }) => {
+const FriendsFilter = ({
+  users,
+  setFilteredFriends,
+  filteredFriendsText,
+  setFilteredFriendsText
+}) => {
   const handleChange = (e) => {
     const inputValue = e.target.value;
+    setFilteredFriendsText(inputValue);
     setFilteredFriends(users.filter(user =>
-      compareIncludeStrings([user.name, user.surname], inputValue)
+      user.followed === true &&
+      compareIncludeStrings(`${user.name} ${user.surname}`, inputValue)
     ))
   };
 

@@ -8,7 +8,8 @@ import {
   updateUserStatus, 
   savePhoto, 
   setPosts 
-} from '../redux/profile-reducer'
+} from '../redux/profile-reducer';
+import { getMyData } from '../redux/auth-reducer';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
 
@@ -46,6 +47,7 @@ class ProfileContainer extends React.Component {
         status={this.props.status}
         updateUserStatus={this.props.updateUserStatus}        
         savePhoto={this.props.savePhoto}
+        getMyData={this.props.getMyData}
       />
     );
   }
@@ -60,7 +62,9 @@ let mapStateToProps = (state) => ({
 })
 
 export default compose( //конвеер, перекидывает элемент, снизу вверх
-  connect(mapStateToProps, { getUserProfile, getUserStatus, updateUserStatus, savePhoto, setPosts}),
+  connect(mapStateToProps, { 
+    getUserProfile, getUserStatus, updateUserStatus, savePhoto, setPosts, getMyData
+  }),
   withRouter,
   withAuthRedirect
 )(ProfileContainer)

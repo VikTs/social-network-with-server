@@ -1,6 +1,5 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SendIcon from '@material-ui/icons/Send';
@@ -16,7 +15,7 @@ const AddMessage = ({ addNewMessage, chat }) => {
     },
     validate: validateNewMessage,
     onSubmit: (values, { resetForm }) => {
-      values.newMessageBody && addNewMessage(values);
+      addNewMessage(values);
       resetForm();
     },
   });
@@ -33,7 +32,6 @@ const AddMessage = ({ addNewMessage, chat }) => {
           classes={{ root: 'new-message-body' }}
           onChange={formik.handleChange}
           value={formik.values.newMessageBody}
-          // helperText={formik.errors.newMessageBody}
           error={!!formik.errors.newMessageBody}
           InputProps={{
             endAdornment: (

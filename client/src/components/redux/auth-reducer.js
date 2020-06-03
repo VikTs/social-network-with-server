@@ -78,23 +78,24 @@ export const getMyData = () => async (dispatch) => {
 }
 
 export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
-    await authAPI.login(email, password, rememberMe, captcha)
-    dispatch(getAuthUserData())
+    await authAPI.login(email, password, rememberMe, captcha);
+    dispatch(getAuthUserData());
+    
+    const response = await authAPI.getMyData();
+    const { myData, friends } = response.data;
+    dispatch(getMyDataAC(myData, friends));
 }
 
 export const logout = () => async (dispatch) => {
     const response = await authAPI.logout()
     if (response.data.resultCode === 0) { //если вылогинились, удаляются куки
-        dispatch(setAuthUserData(null, null, null, false))
+        dispatch(setAuthUserData(null, null, null, false));
+        dispatch(getMyDataAC(null, null));    
     }
 }
 
 export const registration = (formData) => async (dispatch) => {
-    // try {
     const response = await authAPI.registration(formData);
-    // }
-    // catch(err){ console.log(err);}
-    console.log(response.data);
     if (response.data.resultCode === 0) {
         dispatch(registerUser(formData))
         dispatch(getAuthUserData())

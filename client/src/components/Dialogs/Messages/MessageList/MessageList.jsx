@@ -5,7 +5,7 @@ import { IconButton } from '@material-ui/core';
 
 import './MessageList.scss';
 
-const MessageList = ({ messages, chat }) => {
+const MessageList = ({ myId, messages, chat, deleteMessage }) => {
     const messagesEndRef = useRef(null);
     const messagesListRef = useRef(null);
 
@@ -23,10 +23,14 @@ const MessageList = ({ messages, chat }) => {
     }
 
     const messageElements = messages.map(message => (
-        <Message
-            key={message.id}
+        message._id && <Message
+            myId={myId}
+            key={message._id}
+            message_id={message._id}
+            message_owner={message.user_id}
             context={message.context}
             date={message.date_create}
+            deleteMessage={deleteMessage}
             user={chat.members.find(member => member.id === message.user_id)}
         />
     ));
@@ -41,11 +45,8 @@ const MessageList = ({ messages, chat }) => {
     return (
         <div className="message-list" onScroll={handleScroll} ref={messagesListRef}>
             {isScrollButtonShow && (
-                <IconButton aria-label="scroll" className="scroll-bottom">
-                    <KeyboardArrowDownIcon
-                        onClick={handleScrollClick}
-                        className="scroll-bottom-button"
-                    />
+                <IconButton aria-label="scroll" className="scroll-bottom" onClick={handleScrollClick}>
+                    <KeyboardArrowDownIcon className="scroll-bottom-button" />
                 </IconButton>
             )}
             {messageElements}

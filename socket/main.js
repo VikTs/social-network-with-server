@@ -3,11 +3,9 @@ const mongoose = require('mongoose');
 // // calling mongoose models
 require('../models/Chat/ChatModel');
 require('../models/Chat/MessageModel');
-require('../models/Chat/MessageStatusModel');
 
 // const chatModel = mongoose.model('Chat');
 const messageModel = mongoose.model('Message');
-// const messageStatusModel = mongoose.model('MessageStatus');
 
 
 module.exports.sockets = function (http) {
@@ -19,11 +17,19 @@ module.exports.sockets = function (http) {
       console.log("Disconnected")
     });
 
-    const changeStream = messageModel.watch();
+    
 
-    changeStream.on('change', (change) => {
-      io.emit('output', change);
-    });
+    /////////////////////MESSAGES/////////////////////////////
+    
+    // const changeStream = messageModel.watch();
+
+    // changeStream.on('change', (change) => {
+    //   io.emit('output', change);
+    // });
+
+
+
+
 
 
     //   socket.on('chat message', async (msg) => {
