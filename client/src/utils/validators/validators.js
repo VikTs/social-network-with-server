@@ -73,6 +73,14 @@ export const validateRegister = (values) => {
     errors.password = 'Only letters and digits are supported';
   }
 
+  if (!values.passwordConfirm) {
+    errors.passwordConfirm = 'Enter password to confirm!';
+  } else if(values.password !== values.passwordConfirm) {
+    errors.passwordConfirm = 'Passwords are different';
+  }
+
+  
+
   if (!values.name) {
     errors.name = 'Required';
   }

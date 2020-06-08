@@ -17,6 +17,7 @@ const SignUp = ({ registration, isAuth, getMyData }) => {
         initialValues: {
             email: '',
             password: '',
+            passwordConfirm: '',
             name: '',
             surname: '',
             age: 14,
@@ -65,6 +66,16 @@ const SignUp = ({ registration, isAuth, getMyData }) => {
                     value={formik.values.password}
                     helperText={formik.errors.password}
                     error={!!formik.errors.password}
+                />
+                <TextField
+                    id="password-confirm"
+                    label="Confirm password:"
+                    name="passwordConfirm"
+                    type="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.passwordConfirm}
+                    helperText={formik.errors.passwordConfirm}
+                    error={!!formik.errors.passwordConfirm}
                 />
                 <TextField
                     id="name"

@@ -3,6 +3,13 @@ import { useFormik } from 'formik';
 import { Redirect, NavLink } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { validateLogin } from '../../../utils/validators/validators';
 
@@ -10,6 +17,8 @@ import './SignIn.scss';
 
 const SignIn = ({ login, isAuth }) => {
     const [isLoginError, toggleLoginError] = useState(false);
+    const [showPassword, toggleShowPassword] = useState(false);
+    const handleClickShowPassword = () => toggleShowPassword(!showPassword);
 
     const formik = useFormik({
         initialValues: {
@@ -40,16 +49,28 @@ const SignIn = ({ login, isAuth }) => {
                 helperText={formik.errors.email}
                 error={!!formik.errors.email}
             />
-            <TextField
-                id="password"
-                label="Password:"
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                helperText={formik.errors.password}
-                error={!!formik.errors.password}
-            />
+            <FormControl>
+                <InputLabel htmlFor="password">Password:</InputLabel>
+                <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    helperText={formik.errors.password}
+                    error={!!formik.errors.password}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                            >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    }
+                />
+            </FormControl>
             <span className="sign-up-link">
                 Are you not login yet? Let`s {" "}
                 <NavLink className="sign-up-link-text" to="/signUp">register</NavLink>
