@@ -8,6 +8,7 @@ import './Message.scss';
 
 const Message = ({ myId, message_owner, context, date, user, message_id, deleteMessage }) => {
   const [isOpenDeleteMessModal, toggleDeleteMessModal] = useState(false);
+  const [istapedTwice, toggleTapedTwice] = useState(false);
   const openModal = () => toggleDeleteMessModal(true);
   const closeModal = () => toggleDeleteMessModal(false);
 
@@ -18,6 +19,15 @@ const Message = ({ myId, message_owner, context, date, user, message_id, deleteM
     if (myId === message_owner) deleteMessage(message_id);
   }
 
+  const simulateDoubleClick = (e) => {
+    if(!istapedTwice) {
+        toggleTapedTwice(true);
+        setTimeout( function() { toggleTapedTwice(false); }, 300 );
+        return false;
+    }
+    setTimeout( function() { openModal(); }, 300 );    
+}
+
   return (
     <>
       {isOpenDeleteMessModal &&
@@ -27,7 +37,7 @@ const Message = ({ myId, message_owner, context, date, user, message_id, deleteM
           onCloseMethod={closeModal}
         />
       }
-      <div className="message" onDoubleClick={openModal}>
+      <div className="message" onDoubleClick={openModal} onTouchStart={simulateDoubleClick}>
         <Card className="message-card">
           <CardContent id="message-card-content">
             <Typography>

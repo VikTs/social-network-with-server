@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
-// import classes from './ProfileInfo.module.css'
-
-//HOOKS
-//1) НЕ использовать в условиях if(...){hook}
 
 const ProfileStatusWithHooks = (props) => {
 
-    let [editMode, setEditMode] = useState(false)
-    let [status, setStatus] = useState(props.status)
+    const [editMode, setEditMode] = useState(false);
+    const [status, setStatus] = useState(props.status);
+    const [istapedTwice, toggleTapedTwice] = useState(false);
 
-    //useEffect - ф-я, которая вызывается после отрисовки (изменение state, первая отрисовка)
-    //Если добавить [], то вызовется только во время первой отрисовки
-    //[] - компонент ни от чьего состояния не зависит, поэтому отрисовывается всего один раз
     useEffect(() => {
         setStatus(props.status)
     }, [props.status] 
@@ -30,11 +24,20 @@ const ProfileStatusWithHooks = (props) => {
         setStatus(e.currentTarget.value)
     }
 
+    const simulateDoubleClick = (e) => {
+        if(!istapedTwice) {
+            toggleTapedTwice(true);
+            setTimeout( function() { toggleTapedTwice(false); }, 300 );
+            return false;
+        }
+        activateEditMode();
+    }
+
     return (
         <div>
             {!editMode &&
                 <div>
-                    <span onDoubleClick={activateEditMode}>
+                    <span onDoubleClick={activateEditMode} onTouchStart={simulateDoubleClick}>
                         {'Status: ' + (props.status || "-------")}
                     </span>
                 </div>}
