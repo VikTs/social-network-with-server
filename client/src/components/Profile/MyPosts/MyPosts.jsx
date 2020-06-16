@@ -18,7 +18,7 @@ const AddNewPostForm = ({ addPost, ...props }) => {
       addPost(newPostText);
       resetForm();
     },
-    validateOnChange: false,
+    // validateOnChange: false,
   });
 
   return (

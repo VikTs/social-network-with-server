@@ -14,6 +14,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { validateLogin } from '../../../utils/validators/validators';
 
 import './SignIn.scss';
+import { FormHelperText } from '@material-ui/core';
 
 const SignIn = ({ login, isAuth }) => {
     const [isLoginError, toggleLoginError] = useState(false);
@@ -57,8 +58,8 @@ const SignIn = ({ login, isAuth }) => {
                     type={showPassword ? 'text' : 'password'}
                     onChange={formik.handleChange}
                     value={formik.values.password}
-                    helperText={formik.errors.password}
                     error={!!formik.errors.password}
+                    aria-describedby="password-error"
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton
@@ -70,6 +71,7 @@ const SignIn = ({ login, isAuth }) => {
                         </InputAdornment>
                     }
                 />
+                <FormHelperText id="password-error" error> {formik.errors.password} </FormHelperText>
             </FormControl>
             <span className="sign-up-link">
                 Are you not login yet? Let`s {" "}

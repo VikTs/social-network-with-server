@@ -34,12 +34,12 @@ const Messages = ({
   const watchForMessagesUpdate = () => {
     // socket.emit('chat message', values.newMessageBody);
     socket.on('output', function (data) {
-      console.log(data, 'output');
-      // getMessages();
+      // console.log(data, 'output');
+      getMessages();
     });
   }
 
-  // watchForMessagesUpdate();
+  watchForMessagesUpdate();
 
   const [filteredMessages, setFilteredMessages] = useState([]);
 

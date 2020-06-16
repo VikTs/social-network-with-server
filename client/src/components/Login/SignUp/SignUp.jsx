@@ -4,6 +4,9 @@ import { Redirect, useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { Input, InputAdornment, IconButton, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 
 import { validateRegister } from '../../../utils/validators/validators';
 
@@ -11,6 +14,8 @@ import './SignUp.scss';
 
 const SignUp = ({ registration, isAuth, getMyData }) => {
     const [registerError, setRegisterError] = useState('');
+    const [showPassword, toggleShowPassword] = useState(false);
+    const handleClickShowPassword = () => toggleShowPassword(!showPassword);
     const { goBack } = useHistory();
 
     const formik = useFormik({
@@ -28,7 +33,7 @@ const SignUp = ({ registration, isAuth, getMyData }) => {
         validate: validateRegister,
         onSubmit: (values) => {
             registration(values)
-                .then(async(info) => await getMyData())
+                .then(async (info) => await getMyData())
                 .catch((err) => {
                     setRegisterError(err.message)
                 });
@@ -57,16 +62,29 @@ const SignUp = ({ registration, isAuth, getMyData }) => {
                     helperText={formik.errors.email}
                     error={!!formik.errors.email}
                 />
-                <TextField
-                    id="password"
-                    label="Password:"
-                    name="password"
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    helperText={formik.errors.password}
-                    error={!!formik.errors.password}
-                />
+                <FormControl>
+                    <InputLabel htmlFor="password">Password:</InputLabel>
+                    <Input
+                        id="password"
+                        name="password"
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
+                        error={!!formik.errors.password}
+                        aria-describedby="password-error"
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                >
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                    <FormHelperText id="password-error" error> {formik.errors.password} </FormHelperText>
+                </FormControl>
                 <TextField
                     id="password-confirm"
                     label="Confirm password:"

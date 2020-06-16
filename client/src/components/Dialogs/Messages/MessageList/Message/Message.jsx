@@ -9,7 +9,7 @@ import './Message.scss';
 const Message = ({ myId, message_owner, context, date, user, message_id, deleteMessage }) => {
   const [isOpenDeleteMessModal, toggleDeleteMessModal] = useState(false);
   const [istapedTwice, toggleTapedTwice] = useState(false);
-  const openModal = () => toggleDeleteMessModal(true);
+  const openModal = () => {if (myId === message_owner) toggleDeleteMessModal(true)};
   const closeModal = () => toggleDeleteMessModal(false);
 
   const { id, name } = user;
